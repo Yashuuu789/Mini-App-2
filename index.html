@@ -2,296 +2,579 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Base Vibe</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#0a0a0a;color:white;font-family:Arial,sans-serif;min-height:100vh;padding:20px}
-h1{font-size:26px;margin-bottom:6px;text-align:center}
-.sub{color:#888;margin-bottom:24px;text-align:center;font-size:14px}
-.vibes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;width:100%;max-width:360px;margin:0 auto}
-.vibe-btn{padding:16px 8px;border-radius:14px;border:2px solid #222;background:#111;cursor:pointer;font-size:22px;color:white;width:100%}
-.vibe-btn span{display:block;font-size:11px;color:#aaa;margin-top:4px}
-.card{background:#111;border-radius:16px;border:2px solid #6366f1;padding:20px;width:100%;max-width:360px;margin:16px auto}
-.btn{padding:12px 24px;background:#6366f1;border:none;border-radius:10px;color:white;font-size:15px;cursor:pointer;width:100%;margin-top:10px}
-.btn.green{background:#22c55e}
-.streak-num{font-size:48px;font-weight:bold;color:#f59e0b;text-align:center}
-.streak-label{color:#888;text-align:center;font-size:13px}
-.nav{display:flex;gap:8px;margin:0 auto 20px auto;width:100%;max-width:360px}
-.nav-btn{flex:1;padding:8px;background:#111;border:2px solid #222;border-radius:10px;color:#888;font-size:12px}
-.nav-btn.active{border-color:#6366f1;color:white}
-.quiz-q{font-size:16px;font-weight:bold;margin-bottom:16px;line-height:1.4}
-.quiz-opts{display:flex;flex-direction:column;gap:8px}
-.opt-btn{padding:12px;background:#1a1a1a;border:2px solid #333;border-radius:10px;color:white;text-align:left;font-size:14px;width:100%}
-.opt-btn.correct{border-color:#22c55e;background:#052e16}
-.opt-btn.wrong{border-color:#ef4444;background:#2d0000}
-.score{font-size:32px;font-weight:bold;color:#6366f1;text-align:center}
-.lb-item{display:flex;align-items:center;gap:12px;padding:12px;background:#111;border-radius:12px;margin-bottom:8px}
-.lb-rank{font-size:20px;font-weight:bold;color:#f59e0b;width:30px}
-.lb-name{flex:1;font-size:14px}
-.lb-pts{color:#6366f1;font-weight:bold}
-.badge{display:inline-block;padding:6px 12px;border-radius:20px;font-size:12px;margin:4px;background:#1a1a1a;border:1px solid #333}
-.badge.earned{border-color:#f59e0b;color:#f59e0b}
-.progress{background:#1a1a1a;border-radius:10px;height:8px;width:100%;margin:8px 0}
-.progress-bar{background:#6366f1;height:8px;border-radius:10px}
-.wallet-bar{display:flex;align-items:center;justify-content:space-between;background:#111;border-radius:12px;padding:10px 14px;max-width:360px;margin:0 auto 16px auto;border:1px solid #222}
-.wallet-addr{font-size:12px;color:#6366f1}
-.name-input{width:100%;padding:14px;background:#1a1a1a;border:2px solid #333;border-radius:12px;color:white;font-size:16px;margin-top:10px;outline:none}
-.name-input:focus{border-color:#6366f1}
-.welcome-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+:root {
+  --base: #0052FF;
+  --base-bright: #4D8EFF;
+  --base-glow: rgba(0,82,255,0.25);
+  --bg: #04060F;
+  --surface: #0A0E1A;
+  --surface2: #111827;
+  --surface3: #1A2235;
+  --border: rgba(255,255,255,0.07);
+  --border-active: rgba(0,82,255,0.5);
+  --text: #F0F4FF;
+  --muted: #5A6A8A;
+  --gold: #FFB800;
+  --green: #00E5A0;
+  --red: #FF4D6A;
+  --font-display: 'Syne', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:var(--font-display);min-height:100vh;max-width:430px;margin:0 auto;overflow-x:hidden}
+body::before{content:'';position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(0,82,255,0.12) 0%,transparent 70%);pointer-events:none;z-index:0}
+#app{position:relative;z-index:1;padding-bottom:90px}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 12px;position:sticky;top:0;background:rgba(4,6,15,0.85);backdrop-filter:blur(20px);z-index:100;border-bottom:1px solid var(--border)}
+.logo{font-size:20px;font-weight:800;letter-spacing:-0.5px;display:flex;align-items:center;gap:10px}
+.logo span{color:var(--base-bright)}
+.logo-b{width:28px;height:28px;border-radius:50%;background:var(--base);position:relative;flex-shrink:0;box-shadow:0 0 12px var(--base-glow)}
+.logo-b::before{content:'';position:absolute;border-radius:50%;background:var(--bg);width:19px;height:19px;right:-4px;top:50%;transform:translateY(-50%)}
+.logo-b::after{content:'';position:absolute;border-radius:50%;background:var(--base);width:11px;height:11px;right:1px;top:50%;transform:translateY(-50%)}
+.logo-b .wall{position:absolute;top:0;left:0;width:10px;height:100%;background:var(--bg)}
+.wallet-chip{display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border-active);border-radius:20px;padding:6px 12px;font-family:var(--font-mono);font-size:11px;color:var(--base-bright);cursor:pointer}
+.wallet-dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(10,14,26,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;z-index:100;padding:8px 0 8px}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0;cursor:pointer;border:none;background:none;color:var(--muted);font-family:var(--font-display);transition:all 0.2s}
+.nav-item.active{color:var(--base-bright)}
+.nav-icon{font-size:20px}
+.nav-label{font-size:10px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase}
+.nav-item.active .nav-icon{filter:drop-shadow(0 0 8px var(--base-bright))}
+.page{padding:20px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px;margin-bottom:14px;position:relative;overflow:hidden}
+.card.glow{border-color:var(--border-active);box-shadow:0 0 30px var(--base-glow)}
+.card.gold-glow{border-color:rgba(255,184,0,0.4);box-shadow:0 0 30px rgba(255,184,0,0.1)}
+.section-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 10px;text-align:center}
+.stat-num{font-size:26px;font-weight:800;color:var(--base-bright)}
+.stat-label{font-size:10px;color:var(--muted);margin-top:2px;font-family:var(--font-mono)}
+.vibe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.vibe-btn{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:16px 8px 14px;cursor:pointer;text-align:center;transition:all 0.18s;color:var(--text);font-family:var(--font-display)}
+.vibe-btn:active{transform:scale(0.94)}
+.vibe-btn.selected{border-color:var(--base-bright);background:linear-gradient(135deg,rgba(0,82,255,0.15),rgba(77,142,255,0.08));box-shadow:0 0 20px var(--base-glow)}
+.vibe-emoji{font-size:28px;display:block;margin-bottom:6px}
+.vibe-name{font-size:10px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase}
+.vibe-btn.selected .vibe-name{color:var(--base-bright)}
+.checkin-confirm{background:linear-gradient(135deg,rgba(0,82,255,0.12),rgba(0,229,160,0.06));border:1px solid var(--border-active);border-radius:20px;padding:20px;margin-bottom:14px;display:flex;align-items:center;gap:16px}
+.confirm-emoji{font-size:44px}
+.confirm-vibe{font-size:18px;font-weight:800}
+.confirm-sub{font-size:12px;color:var(--muted);font-family:var(--font-mono);margin-top:2px}
+.btn-primary{width:100%;padding:16px;background:var(--base);border:none;border-radius:16px;color:white;font-family:var(--font-display);font-size:15px;font-weight:700;cursor:pointer;transition:all 0.18s;position:relative;overflow:hidden}
+.btn-primary::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:rgba(255,255,255,0.25)}
+.btn-primary:active{transform:scale(0.97);background:#0047E0}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed}
+.btn-secondary{width:100%;padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:16px;color:var(--text);font-family:var(--font-display);font-size:14px;font-weight:600;cursor:pointer;transition:all 0.18s;margin-top:10px}
+.btn-green{width:100%;padding:16px;background:#00875A;border:none;border-radius:16px;color:white;font-family:var(--font-display);font-size:15px;font-weight:700;cursor:pointer;transition:all 0.18s}
+.btn-green:active{transform:scale(0.97)}
+.quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.quiz-counter{font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+.quiz-pts{font-family:var(--font-mono);font-size:12px;color:var(--gold);font-weight:500}
+.progress-track{height:4px;background:var(--surface2);border-radius:4px;margin-bottom:24px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--base),var(--base-bright));border-radius:4px;transition:width 0.4s ease}
+.question-text{font-size:19px;font-weight:700;line-height:1.4;margin-bottom:20px;letter-spacing:-0.3px}
+.options-list{display:flex;flex-direction:column;gap:10px}
+.opt-btn{padding:15px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;color:var(--text);text-align:left;font-family:var(--font-display);font-size:14px;font-weight:500;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:12px;width:100%}
+.opt-letter{width:28px;height:28px;border-radius:8px;background:var(--surface3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:var(--font-mono);flex-shrink:0;color:var(--muted)}
+.opt-btn.correct{border-color:var(--green);background:rgba(0,229,160,0.08)}
+.opt-btn.correct .opt-letter{background:var(--green);color:var(--bg)}
+.opt-btn.wrong{border-color:var(--red);background:rgba(255,77,106,0.08)}
+.opt-btn.wrong .opt-letter{background:var(--red);color:white}
+.quiz-result{text-align:center;padding:16px}
+.result-emoji{font-size:60px;display:block;margin-bottom:12px}
+.result-score{font-size:64px;font-weight:800;color:var(--gold);letter-spacing:-3px;line-height:1}
+.result-label{color:var(--muted);font-size:13px;margin-top:4px;font-family:var(--font-mono)}
+.result-breakdown{display:flex;justify-content:center;gap:24px;margin:20px 0;padding:16px;background:var(--surface2);border-radius:14px}
+.breakdown-item{text-align:center}
+.breakdown-num{font-size:22px;font-weight:800}
+.breakdown-sub{font-size:11px;color:var(--muted);font-family:var(--font-mono)}
+.lb-list{display:flex;flex-direction:column;gap:8px}
+.lb-item{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:16px}
+.lb-item.me{border-color:var(--border-active);background:linear-gradient(135deg,rgba(0,82,255,0.1),rgba(77,142,255,0.05))}
+.lb-rank-badge{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;flex-shrink:0;background:var(--surface2);font-family:var(--font-mono);color:var(--muted)}
+.lb-rank-badge.r1{background:rgba(255,184,0,0.15);color:var(--gold);font-size:20px}
+.lb-rank-badge.r2{background:rgba(200,200,200,0.1);color:#C0C0C0;font-size:20px}
+.lb-rank-badge.r3{background:rgba(205,127,50,0.1);color:#CD7F32;font-size:20px}
+.lb-info{flex:1}
+.lb-name{font-size:14px;font-weight:700}
+.lb-detail{font-size:11px;color:var(--muted);font-family:var(--font-mono);margin-top:2px}
+.lb-score{text-align:right}
+.lb-pts{font-size:16px;font-weight:800;color:var(--base-bright)}
+.lb-streak{font-size:11px;color:var(--muted);font-family:var(--font-mono)}
+.badges-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.badge-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px 14px;text-align:center;opacity:0.4;transition:all 0.2s}
+.badge-card.earned{opacity:1;border-color:rgba(255,184,0,0.4);background:linear-gradient(135deg,rgba(255,184,0,0.08),rgba(255,184,0,0.03));box-shadow:0 0 20px rgba(255,184,0,0.08)}
+.badge-icon{font-size:32px;display:block;margin-bottom:8px}
+.badge-name{font-size:13px;font-weight:700;margin-bottom:3px}
+.badge-req{font-size:11px;color:var(--muted);font-family:var(--font-mono)}
+.history-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.history-row:last-child{border-bottom:none}
+.history-left{display:flex;align-items:center;gap:10px}
+.history-emoji-wrap{width:36px;height:36px;border-radius:10px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:18px}
+.history-name{font-size:13px;font-weight:600}
+.history-date{font-size:11px;color:var(--muted);font-family:var(--font-mono)}
+.connect-screen{min-height:calc(100vh - 70px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center}
+.connect-logo{font-size:72px;margin-bottom:16px;filter:drop-shadow(0 0 30px rgba(0,82,255,0.4))}
+.connect-title{font-size:32px;font-weight:800;letter-spacing:-1px;margin-bottom:8px}
+.connect-title span{color:var(--base-bright)}
+.connect-sub{color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:32px;max-width:280px}
+.feature-list{width:100%;max-width:320px;margin-bottom:32px}
+.feature-item{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:8px;text-align:left}
+.feature-icon{font-size:20px;flex-shrink:0}
+.feature-text{font-size:13px;font-weight:600}
+.feature-sub{font-size:11px;color:var(--muted);font-family:var(--font-mono)}
+.connect-hint{font-size:11px;color:var(--muted);margin-top:12px;font-family:var(--font-mono)}
+.name-setup{min-height:calc(100vh - 70px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px}
+.setup-head{text-align:center;margin-bottom:32px}
+.setup-emoji{font-size:48px;margin-bottom:12px}
+.setup-title{font-size:26px;font-weight:800;letter-spacing:-0.5px}
+.setup-sub{color:var(--muted);font-size:13px;margin-top:6px;font-family:var(--font-mono)}
+.text-input{width:100%;padding:16px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;color:var(--text);font-family:var(--font-display);font-size:16px;font-weight:600;outline:none;transition:border 0.2s;margin-bottom:12px}
+.text-input:focus{border-color:var(--base-bright)}
+.text-input::placeholder{color:var(--muted);font-weight:400}
+.checked-banner{background:linear-gradient(135deg,rgba(0,229,160,0.1),rgba(0,82,255,0.08));border:1px solid rgba(0,229,160,0.25);border-radius:20px;padding:20px;margin-bottom:14px;display:flex;align-items:center;gap:14px}
+.check-icon{font-size:32px}
+.check-title{font-size:16px;font-weight:800;color:var(--green)}
+.check-sub{font-size:12px;color:var(--muted);font-family:var(--font-mono);margin-top:2px}
+.profile-header{text-align:center;padding:24px 20px 16px}
+.profile-avatar{width:72px;height:72px;border-radius:22px;background:linear-gradient(135deg,var(--base),var(--base-bright));display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 12px;box-shadow:0 0 30px var(--base-glow)}
+.profile-name{font-size:22px;font-weight:800;letter-spacing:-0.5px}
+.profile-addr{font-size:11px;color:var(--muted);font-family:var(--font-mono);margin-top:4px}
+.onchain-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(0,82,255,0.12);border:1px solid rgba(0,82,255,0.3);border-radius:20px;padding:4px 10px;font-size:11px;font-family:var(--font-mono);color:var(--base-bright);margin-bottom:12px}
+.onchain-dot{width:5px;height:5px;border-radius:50%;background:var(--green)}
+.tx-overlay{position:fixed;inset:0;background:rgba(4,6,15,0.9);backdrop-filter:blur(10px);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999}
+.spinner{width:48px;height:48px;border:3px solid var(--surface3);border-top-color:var(--base);border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tx-label{font-size:15px;font-weight:700;color:var(--text)}
+.tx-sub{font-size:12px;color:var(--muted);font-family:var(--font-mono);margin-top:6px}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(0);background:var(--surface2);border:1px solid var(--border-active);border-radius:14px;padding:12px 20px;font-size:14px;font-weight:600;z-index:200;animation:toastIn 0.3s ease,toastOut 0.3s ease 2.2s forwards;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(16px)}}
+@keyframes toastOut{to{opacity:0;transform:translateX(-50%) translateY(-8px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp 0.35s ease forwards}
 </style>
 </head>
 <body>
 <div id="app"></div>
 
 <script>
-var streak=parseInt(localStorage.getItem('streak')||'0');
-var points=parseInt(localStorage.getItem('points')||'0');
-var quizzes=parseInt(localStorage.getItem('quizzes')||'0');
-var lastCheckin=localStorage.getItem('lastCheckin')||'';
-var vibeHistory=JSON.parse(localStorage.getItem('vibeHistory')||'[]');
-var currentQ=0;
-var quizScore=0;
-var answered=false;
-var selectedVibe={emoji:'',name:''};
-var quizDone=localStorage.getItem('quizDone')||'';
-var walletAddress=localStorage.getItem('walletAddress')||'';
-var username=localStorage.getItem('username')||'';
-var currentTab='vibe';
+var S={
+  streak:parseInt(localStorage.getItem('streak')||'0'),
+  points:parseInt(localStorage.getItem('points')||'0'),
+  quizzes:parseInt(localStorage.getItem('quizzes')||'0'),
+  lastCheckin:localStorage.getItem('lastCheckin')||'',
+  vibeHistory:JSON.parse(localStorage.getItem('vibeHistory')||'[]'),
+  quizDone:localStorage.getItem('quizDone')||'',
+  walletAddress:localStorage.getItem('walletAddress')||'',
+  username:localStorage.getItem('username')||'',
+  tab:'vibe',
+  selectedVibe:null,
+  currentQ:0,
+  quizScore:0,
+  quizAnswered:false,
+  totalCorrect:0,
+};
 
-var questions=[
-{q:"What is Base?",opts:["A Bitcoin Layer 2","An Ethereum Layer 2 by Coinbase","A new blockchain","A DeFi protocol"],a:1},
-{q:"Who created Base?",opts:["Ethereum Foundation","Binance","Coinbase","Polygon"],a:2},
-{q:"What tech stack is Base built on?",opts:["ZK Rollup","OP Stack","Arbitrum","Polygon CDK"],a:1},
-{q:"What is the native gas token on Base?",opts:["BASE","USDC","ETH","OP"],a:2},
-{q:"When did Base mainnet launch?",opts:["2021","2022","2023","2024"],a:2},
-{q:"What is OnchainKit?",opts:["A Base wallet","A toolkit for building onchain apps","A Base token","A DeFi protocol"],a:1},
-{q:"What is MiniKit used for?",opts:["Mining crypto","Building mini apps on Base","Sending NFTs","Trading tokens"],a:1},
-{q:"Base is part of which vision?",opts:["Ethereum 2.0","The Superchain","Web3 Alliance","DeFi Summer"],a:1},
-{q:"What does 'onchain' mean in Base context?",opts:["Stored on servers","Data recorded on blockchain","Encrypted data","Offline storage"],a:1},
-{q:"What is Farcaster?",opts:["A Base token","A decentralized social protocol","A DeFi app","A Base wallet"],a:1}
+function save(keys){keys.forEach(function(k){if(k==='vibeHistory')localStorage.setItem(k,JSON.stringify(S[k]));else localStorage.setItem(k,S[k]);});}
+
+var QUESTIONS=[
+  {q:"What is Base?",opts:["A Bitcoin Layer 2","An Ethereum L2 by Coinbase","A new L1 blockchain","A DeFi protocol"],a:1},
+  {q:"Who built and launched Base?",opts:["Ethereum Foundation","Binance","Coinbase","Polygon Labs"],a:2},
+  {q:"What technology stack does Base use?",opts:["ZK Rollup","OP Stack (Optimism)","Arbitrum Nitro","Polygon CDK"],a:1},
+  {q:"What is the native gas token on Base?",opts:["$BASE","$USDC","$ETH","$OP"],a:2},
+  {q:"Base mainnet launched publicly in which year?",opts:["2021","2022","2023","2024"],a:2},
+  {q:"What is OnchainKit?",opts:["A Base wallet app","Open-source toolkit for onchain apps","A Base governance token","A DeFi trading protocol"],a:1},
+  {q:"What is MiniKit used for?",opts:["Mining crypto on Base","Building mini apps on Base","Sending NFTs","Trading tokens"],a:1},
+  {q:"Base is part of which broader vision?",opts:["Ethereum 2.0","The Superchain by Optimism","Web3 Alliance","DeFi Summer 2.0"],a:1},
+  {q:"What does 'onchain' mean in Base context?",opts:["Stored on centralized servers","Data recorded on blockchain","Encrypted off-chain data","Offline storage"],a:1},
+  {q:"What is Farcaster?",opts:["A Base governance token","A decentralized social protocol","A Base DeFi app","A Base hardware wallet"],a:1}
 ];
 
-function shortAddr(addr){return addr?addr.slice(0,6)+'...'+addr.slice(-4):'';}
+var VIBES=[
+  {emoji:'🚀',name:'PUMPED'},
+  {emoji:'😎',name:'CHILL'},
+  {emoji:'💪',name:'GRIND'},
+  {emoji:'🤩',name:'WAGMI'},
+  {emoji:'😴',name:'TIRED'},
+  {emoji:'🔥',name:'DEGEN'},
+  {emoji:'😠',name:'ANGRY'},
+  {emoji:'😢',name:'CRYING'},
+  {emoji:'😊',name:'HAPPY'}
+];
+
+var LEADERBOARD=[
+  {name:'basebuilder.eth',pts:980,streak:14,rank:'r1',medal:'🥇'},
+  {name:'cryptovibe.eth',pts:870,streak:11,rank:'r2',medal:'🥈'},
+  {name:'onchainmaxi.eth',pts:760,streak:9,rank:'r3',medal:'🥉'},
+  {name:'wagmifrens.eth',pts:650,streak:7,rank:'',medal:'4'},
+  {name:'degenlife.eth',pts:540,streak:5,rank:'',medal:'5'},
+];
+
+var BADGES=[
+  {icon:'👑',name:'OG Vibe',req:'First check-in',earned:function(){return S.streak>=1}},
+  {icon:'🔥',name:'7 Day Streak',req:'7 days in a row',earned:function(){return S.streak>=7}},
+  {icon:'⚡',name:'Base Native',req:'30 day streak',earned:function(){return S.streak>=30}},
+  {icon:'🧠',name:'Quiz Master',req:'Complete 5 quizzes',earned:function(){return S.quizzes>=5}},
+  {icon:'💯',name:'Perfect Score',req:'10/10 on a quiz',earned:function(){return S.quizzes>=1&&S.totalCorrect>=10}},
+  {icon:'🏆',name:'Top Vibe',req:'Reach 500 points',earned:function(){return S.points>=500}},
+];
+
+function shortAddr(a){return a?a.slice(0,6)+'...'+a.slice(-4):'';}
+
+function toast(msg){
+  var t=document.createElement('div');
+  t.className='toast';t.innerText=msg;
+  document.body.appendChild(t);
+  setTimeout(function(){t.remove();},2500);
+}
+
+function showLoading(msg){
+  var o=document.createElement('div');
+  o.className='tx-overlay';o.id='tx-overlay';
+  o.innerHTML='<div class="spinner"></div><div class="tx-label">'+(msg||'Processing...')+'</div><div class="tx-sub">Please wait</div>';
+  document.body.appendChild(o);
+}
+
+function hideLoading(){
+  var o=document.getElementById('tx-overlay');
+  if(o)o.remove();
+}
 
 async function connectWallet(){
-if(typeof window.ethereum==='undefined'){
-alert('No wallet found! Please open this app inside Coinbase Wallet browser.');
-return;
-}
-try{
-var accounts=await window.ethereum.request({method:'eth_requestAccounts'});
-walletAddress=accounts[0];
-localStorage.setItem('walletAddress',walletAddress);
-try{
-await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x2105'}]});
-}catch(e){
-await window.ethereum.request({method:'wallet_addEthereumChain',params:[{chainId:'0x2105',chainName:'Base',nativeCurrency:{name:'Ether',symbol:'ETH',decimals:18},rpcUrls:['https://mainnet.base.org'],blockExplorerUrls:['https://basescan.org']}]});
-}
-renderSetupName();
-}catch(e){alert('Could not connect: '+e.message);}
+  if(typeof window.ethereum==='undefined'){
+    toast('Open in Coinbase Wallet browser!');return;
+  }
+  try{
+    showLoading('Connecting wallet...');
+    var accounts=await window.ethereum.request({method:'eth_requestAccounts'});
+    S.walletAddress=accounts[0];
+    localStorage.setItem('walletAddress',S.walletAddress);
+    try{
+      await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x2105'}]});
+    }catch(e){
+      await window.ethereum.request({method:'wallet_addEthereumChain',params:[{chainId:'0x2105',chainName:'Base',nativeCurrency:{name:'Ether',symbol:'ETH',decimals:18},rpcUrls:['https://mainnet.base.org'],blockExplorerUrls:['https://basescan.org']}]});
+    }
+    hideLoading();
+    renderSetupName();
+  }catch(e){hideLoading();toast('Connection failed');}
 }
 
 function renderSetupName(){
-var html='<div class="welcome-screen">';
-html+='<div style="font-size:60px;margin-bottom:16px">✨</div>';
-html+='<h1>Welcome to Base Vibe!</h1>';
-html+='<p class="sub">Wallet connected! Now set your username</p>';
-html+='<div class="card">';
-html+='<div style="color:#888;font-size:13px;margin-bottom:8px">Wallet: '+shortAddr(walletAddress)+'</div>';
-html+='<input class="name-input" id="username-input" type="text" placeholder="Enter your name or ENS..." maxlength="20">';
-html+='<p style="color:#555;font-size:11px;margin-top:8px">This name will show on the leaderboard</p>';
-html+='<button class="btn" onclick="saveUsername()">Continue →</button>';
-html+='</div>';
-html+='</div>';
-document.getElementById('app').innerHTML=html;
+  var html='<div class="name-setup fade-up">';
+  html+='<div class="setup-head">';
+  html+='<div class="setup-emoji">✨</div>';
+  html+='<div class="setup-title">Welcome to Base Vibe!</div>';
+  html+='<div class="setup-sub">'+shortAddr(S.walletAddress)+'</div>';
+  html+='</div>';
+  html+='<div style="width:100%;max-width:360px">';
+  html+='<div class="section-label">Choose your username</div>';
+  html+='<input class="text-input" id="uname" type="text" placeholder="Enter name or ENS..." maxlength="20" autofocus>';
+  html+='<div style="color:var(--muted);font-size:11px;font-family:var(--font-mono);margin-bottom:16px">This shows on the leaderboard</div>';
+  html+='<button class="btn-primary" onclick="saveUsername()">Let\'s Go →</button>';
+  html+='</div></div>';
+  document.getElementById('app').innerHTML=html;
 }
 
 function saveUsername(){
-var input=document.getElementById('username-input').value.trim();
-if(!input){alert('Please enter a name!');return;}
-username=input;
-localStorage.setItem('username',username);
-render('vibe');
+  var v=document.getElementById('uname').value.trim();
+  if(!v){toast('Enter a name!');return;}
+  S.username=v;
+  localStorage.setItem('username',v);
+  render('vibe');
 }
 
 function disconnectWallet(){
-walletAddress='';
-username='';
-localStorage.removeItem('walletAddress');
-localStorage.removeItem('username');
-render('vibe');
+  S.walletAddress='';S.username='';
+  localStorage.removeItem('walletAddress');
+  localStorage.removeItem('username');
+  render('vibe');
 }
 
-async function checkInTransaction(){
-if(!walletAddress){alert('Connect wallet first!');return;}
-try{
-var provider=new ethers.BrowserProvider(window.ethereum);
-var signer=await provider.getSigner();
-var tx=await signer.sendTransaction({
-to:'0x000000000000000000000000000000000000dEaD',
-value:ethers.parseEther('0.0001'),
-data:ethers.hexlify(ethers.toUtf8Bytes('BaseVibe:checkin'))
-});
-alert('Transaction sent! Confirming on Base...');
-await tx.wait();
-doCheckIn();
-}catch(e){alert('Transaction failed: '+e.message);}
+async function doTransaction(){
+  if(!S.walletAddress){toast('Connect wallet first!');return;}
+  try{
+    showLoading('Sending check-in on Base...');
+    var provider=new ethers.BrowserProvider(window.ethereum);
+    var signer=await provider.getSigner();
+    var tx=await signer.sendTransaction({
+      to:'0x000000000000000000000000000000000000dEaD',
+      value:ethers.parseEther('0.0001'),
+      data:ethers.hexlify(ethers.toUtf8Bytes('BaseVibe:checkin:'+S.username))
+    });
+    await tx.wait();
+    hideLoading();
+    doCheckIn();
+    toast('✅ Checked in onchain!');
+  }catch(e){hideLoading();toast('Transaction failed: '+e.message.slice(0,40));}
 }
 
 function doCheckIn(){
-var today=new Date().toDateString();
-var yesterday=new Date(Date.now()-86400000).toDateString();
-if(lastCheckin===today){alert('Already checked in today!');return;}
-if(lastCheckin===yesterday)streak++;
-else streak=1;
-lastCheckin=today;
-points+=10;
-localStorage.setItem('streak',streak);
-localStorage.setItem('points',points);
-localStorage.setItem('lastCheckin',lastCheckin);
-render('vibe');
+  var today=new Date().toDateString();
+  var yesterday=new Date(Date.now()-86400000).toDateString();
+  if(S.lastCheckin===today){toast('Already checked in today!');return;}
+  if(S.lastCheckin===yesterday)S.streak++;
+  else S.streak=1;
+  S.lastCheckin=today;
+  S.points+=10;
+  save(['streak','points','lastCheckin']);
+  render('vibe');
 }
 
-function nav(tab){
-currentTab=tab;
-var tabs=['vibe','quiz','lb','profile'];
-var html='<div class="nav">';
-tabs.forEach(function(t){
-var icons={vibe:'😎 Vibe',quiz:'🧠 Quiz',lb:'🏆 Board',profile:'👤 Me'};
-html+='<button class="nav-btn'+(t===tab?' active':'')+'" onclick="render(\''+t+'\')">'+icons[t]+'</button>';
-});
-return html+'</div>';
+function topbar(){
+  var html='<div class="topbar">';
+  html+='<div class="logo"><div class="logo-b"><div class="wall"></div></div>Base<span>Vibe</span></div>';
+  if(S.walletAddress){
+    var name=S.username||shortAddr(S.walletAddress);
+    html+='<div class="wallet-chip" onclick="disconnectWallet()"><div class="wallet-dot"></div>'+name+'</div>';
+  }else{
+    html+='<button class="wallet-chip" onclick="connectWallet()">🔗 Connect</button>';
+  }
+  html+='</div>';
+  return html;
 }
 
-function walletBar(){
-if(!walletAddress){
-return '<div style="max-width:360px;margin:0 auto 16px auto"><button class="btn" onclick="connectWallet()">🔗 Connect Wallet</button></div>';
+function bottomNav(){
+  var tabs=[{id:'vibe',icon:'😎',label:'Vibe'},{id:'quiz',icon:'🧠',label:'Quiz'},{id:'lb',icon:'🏆',label:'Board'},{id:'profile',icon:'👤',label:'Me'}];
+  var html='<div class="bottom-nav">';
+  tabs.forEach(function(t){
+    html+='<button class="nav-item'+(S.tab===t.id?' active':'')+'" onclick="render(\''+t.id+'\')">';
+    html+='<span class="nav-icon">'+t.icon+'</span>';
+    html+='<span class="nav-label">'+t.label+'</span>';
+    html+='</button>';
+  });
+  html+='</div>';
+  return html;
 }
-var displayName=username||shortAddr(walletAddress);
-return '<div class="wallet-bar"><span class="wallet-addr">✅ '+displayName+'</span><button style="font-size:11px;color:#ef4444;background:none;border:none;cursor:pointer" onclick="disconnectWallet()">Disconnect</button></div>';
+
+function renderVibe(){
+  var today=new Date().toDateString();
+  var checkedIn=S.lastCheckin===today;
+  var html='<div class="page fade-up">';
+
+  if(checkedIn){
+    html+='<div class="checked-banner">';
+    html+='<div class="check-icon">🔥</div>';
+    html+='<div><div class="check-title">Checked In!</div>';
+    html+='<div class="check-sub">'+S.streak+' day streak • +10 pts earned</div></div>';
+    html+='</div>';
+    html+='<div class="stats-row">';
+    html+='<div class="stat-card"><div class="stat-num">'+S.streak+'</div><div class="stat-label">Streak</div></div>';
+    html+='<div class="stat-card"><div class="stat-num">'+S.points+'</div><div class="stat-label">Points</div></div>';
+    html+='<div class="stat-card"><div class="stat-num">'+S.quizzes+'</div><div class="stat-label">Quizzes</div></div>';
+    html+='</div>';
+    html+='<button class="btn-primary" onclick="render(\'quiz\')">Take Today\'s Quiz 🧠</button>';
+  }else{
+    html+='<div class="onchain-tag"><div class="onchain-dot"></div>Daily Onchain Check-in</div>';
+    html+='<div style="font-size:22px;font-weight:800;margin-bottom:4px">What\'s your vibe?</div>';
+    html+='<div style="color:var(--muted);font-size:13px;font-family:var(--font-mono);margin-bottom:16px">Pick your mood to start your streak</div>';
+    html+='<div class="vibe-grid">';
+    VIBES.forEach(function(v){
+      var sel=S.selectedVibe&&S.selectedVibe.name===v.name?' selected':'';
+      html+='<button class="vibe-btn'+sel+'" onclick="pickVibe(\''+v.emoji+'\',\''+v.name+'\')">';
+      html+='<span class="vibe-emoji">'+v.emoji+'</span>';
+      html+='<span class="vibe-name">'+v.name+'</span>';
+      html+='</button>';
+    });
+    html+='</div>';
+    if(S.selectedVibe){
+      html+='<div class="checkin-confirm">';
+      html+='<div class="confirm-emoji">'+S.selectedVibe.emoji+'</div>';
+      html+='<div><div class="confirm-vibe">'+S.selectedVibe.name+'</div>';
+      html+='<div class="confirm-sub">Base • '+new Date().toDateString()+'</div></div>';
+      html+='</div>';
+      if(S.walletAddress){
+        html+='<button class="btn-green" onclick="doTransaction()">✅ Check In on Base (0.0001 ETH)</button>';
+      }else{
+        html+='<button class="btn-primary" onclick="connectWallet()">🔗 Connect Wallet to Check In</button>';
+      }
+    }
+  }
+  html+='</div>';
+  return html;
+}
+
+function renderQuiz(){
+  var today=new Date().toDateString();
+  var html='<div class="page fade-up">';
+  html+='<div style="font-size:22px;font-weight:800;margin-bottom:4px">Base Quiz</div>';
+  html+='<div style="color:var(--muted);font-size:13px;font-family:var(--font-mono);margin-bottom:16px">10 questions • 10 pts each</div>';
+
+  if(S.quizDone===today){
+    html+='<div class="card glow quiz-result">';
+    html+='<span class="result-emoji">✅</span>';
+    html+='<div style="font-size:20px;font-weight:800;margin-bottom:8px">Quiz Complete!</div>';
+    html+='<div style="color:var(--muted);font-size:13px;font-family:var(--font-mono)">Come back tomorrow for new questions</div>';
+    html+='<div style="margin-top:20px" class="result-breakdown">';
+    html+='<div class="breakdown-item"><div class="breakdown-num" style="color:var(--gold)">'+S.points+'</div><div class="breakdown-sub">Total pts</div></div>';
+    html+='<div class="breakdown-item"><div class="breakdown-num" style="color:var(--green)">'+S.streak+'</div><div class="breakdown-sub">Streak</div></div>';
+    html+='</div>';
+    html+='<button class="btn-primary" style="margin-top:8px" onclick="render(\'lb\')">View Leaderboard 🏆</button>';
+    html+='</div>';
+  }else if(S.currentQ>=QUESTIONS.length){
+    html+='<div class="card gold-glow quiz-result">';
+    html+='<span class="result-emoji">🎉</span>';
+    html+='<div class="result-score">+'+S.quizScore+'</div>';
+    html+='<div class="result-label">points earned</div>';
+    html+='<div class="result-breakdown">';
+    html+='<div class="breakdown-item"><div class="breakdown-num" style="color:var(--green)">'+S.totalCorrect+'</div><div class="breakdown-sub">Correct</div></div>';
+    html+='<div class="breakdown-item"><div class="breakdown-num" style="color:var(--red)">'+(10-S.totalCorrect)+'</div><div class="breakdown-sub">Wrong</div></div>';
+    html+='<div class="breakdown-item"><div class="breakdown-num" style="color:var(--gold)">'+S.points+'</div><div class="breakdown-sub">Total pts</div></div>';
+    html+='</div>';
+    html+='<button class="btn-primary" onclick="render(\'lb\')">View Leaderboard 🏆</button>';
+    html+='</div>';
+  }else{
+    var q=QUESTIONS[S.currentQ];
+    var letters=['A','B','C','D'];
+    html+='<div class="card glow">';
+    html+='<div class="quiz-header"><span class="quiz-counter">Question '+(S.currentQ+1)+' / '+QUESTIONS.length+'</span><span class="quiz-pts">+'+S.quizScore+' pts</span></div>';
+    html+='<div class="progress-track"><div class="progress-fill" style="width:'+((S.currentQ)/QUESTIONS.length*100)+'%"></div></div>';
+    html+='<div class="question-text">'+q.q+'</div>';
+    html+='<div class="options-list">';
+    q.opts.forEach(function(o,i){
+      html+='<button class="opt-btn" id="opt'+i+'" onclick="answerQ('+i+')">';
+      html+='<span class="opt-letter">'+letters[i]+'</span>'+o;
+      html+='</button>';
+    });
+    html+='</div></div>';
+  }
+  html+='</div>';
+  return html;
+}
+
+function renderLB(){
+  var myName=S.username||shortAddr(S.walletAddress)||'You';
+  var html='<div class="page fade-up">';
+  html+='<div style="font-size:22px;font-weight:800;margin-bottom:4px">Leaderboard</div>';
+  html+='<div style="color:var(--muted);font-size:13px;font-family:var(--font-mono);margin-bottom:16px">Top Base Vibers this week</div>';
+  html+='<div class="lb-list">';
+  LEADERBOARD.forEach(function(p,i){
+    html+='<div class="lb-item">';
+    html+='<div class="lb-rank-badge '+p.rank+'">'+p.medal+'</div>';
+    html+='<div class="lb-info"><div class="lb-name">'+p.name+'</div><div class="lb-detail">🔥 '+p.streak+' day streak</div></div>';
+    html+='<div class="lb-score"><div class="lb-pts">'+p.pts+'</div><div class="lb-streak">pts</div></div>';
+    html+='</div>';
+  });
+  html+='<div class="lb-item me">';
+  html+='<div class="lb-rank-badge">?</div>';
+  html+='<div class="lb-info"><div class="lb-name">'+myName+' (You)</div><div class="lb-detail">🔥 '+S.streak+' day streak</div></div>';
+  html+='<div class="lb-score"><div class="lb-pts">'+S.points+'</div><div class="lb-streak">pts</div></div>';
+  html+='</div>';
+  html+='</div></div>';
+  return html;
+}
+
+function renderProfile(){
+  var myName=S.username||shortAddr(S.walletAddress)||'Base Vibe Player';
+  var html='<div class="page fade-up">';
+  html+='<div class="profile-header">';
+  html+='<div class="profile-avatar">😎</div>';
+  html+='<div class="profile-name">'+myName+'</div>';
+  if(S.walletAddress)html+='<div class="profile-addr">'+shortAddr(S.walletAddress)+'</div>';
+  html+='</div>';
+  html+='<div class="stats-row">';
+  html+='<div class="stat-card"><div class="stat-num">'+S.streak+'</div><div class="stat-label">Streak</div></div>';
+  html+='<div class="stat-card"><div class="stat-num">'+S.points+'</div><div class="stat-label">Points</div></div>';
+  html+='<div class="stat-card"><div class="stat-num">'+S.quizzes+'</div><div class="stat-label">Quizzes</div></div>';
+  html+='</div>';
+  html+='<div class="card">';
+  html+='<div class="section-label">🎖️ Badges</div>';
+  html+='<div class="badges-grid">';
+  BADGES.forEach(function(b){
+    var e=b.earned();
+    html+='<div class="badge-card'+(e?' earned':'')+'">';
+    html+='<span class="badge-icon">'+b.icon+'</span>';
+    html+='<div class="badge-name">'+b.name+'</div>';
+    html+='<div class="badge-req">'+b.req+'</div>';
+    html+='</div>';
+  });
+  html+='</div></div>';
+  html+='<div class="card">';
+  html+='<div class="section-label">📊 Vibe History</div>';
+  if(S.vibeHistory.length===0){
+    html+='<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px 0">No vibes yet! Start your check-in 🚀</div>';
+  }else{
+    S.vibeHistory.slice(0,10).forEach(function(v){
+      html+='<div class="history-row">';
+      html+='<div class="history-left"><div class="history-emoji-wrap">'+v.emoji+'</div>';
+      html+='<div><div class="history-name">'+v.name+'</div><div class="history-date">'+v.date+'</div></div></div>';
+      html+='</div>';
+    });
+  }
+  html+='</div>';
+  if(S.walletAddress){
+    html+='<button class="btn-secondary" onclick="disconnectWallet()">Disconnect Wallet</button>';
+  }
+  html+='</div>';
+  return html;
 }
 
 function render(tab){
-currentTab=tab;
-var html='<h1>✨ Base Vibe</h1><p class="sub">Daily check-in on Base</p>';
-
-if(!walletAddress){
-html+='<div class="welcome-screen" style="min-height:80vh">';
-html+='<div style="font-size:60px;margin-bottom:16px">✨</div>';
-html+='<h1>Base Vibe</h1>';
-html+='<p class="sub">Daily mood check-in on Base blockchain</p>';
-html+='<div class="card" style="text-align:center">';
-html+='<div style="font-size:32px;margin-bottom:12px">🔗</div>';
-html+='<div style="font-weight:bold;margin-bottom:8px">Connect Your Wallet</div>';
-html+='<div style="color:#888;font-size:13px;margin-bottom:16px">Connect your Base wallet to start your daily streak and earn points!</div>';
-html+='<button class="btn" onclick="connectWallet()">🔗 Connect Wallet</button>';
-html+='</div>';
-html+='<div style="margin-top:20px;text-align:center;color:#555;font-size:12px">Open in Coinbase Wallet for best experience</div>';
-html+='</div>';
-document.getElementById('app').innerHTML=html;
-return;
-}
-
-html+=walletBar();
-html+=nav(tab);
-
-if(tab==='vibe'){
-var today=new Date().toDateString();
-var checkedIn=lastCheckin===today;
-if(!checkedIn){
-html+='<p class="sub">What\'s your vibe today?</p>';
-html+='<div class="vibes">';
-var vibes=[['🚀','PUMPED'],['😎','CHILL'],['💪','GRIND'],['🤩','WAGMI'],['😴','TIRED'],['🔥','DEGEN'],['😠','ANGRY'],['😢','CRYING'],['😊','HAPPY']];
-vibes.forEach(function(v){html+='<button class="vibe-btn" onclick="pickVibe(\''+v[0]+'\',\''+v[1]+'\')">'+v[0]+'<span>'+v[1]+'</span></button>';});
-html+='</div>';
-if(selectedVibe.name){
-html+='<div class="card" style="text-align:center">';
-html+='<div style="font-size:40px">'+selectedVibe.emoji+'</div>';
-html+='<div style="font-size:20px;font-weight:bold;margin:8px 0">'+selectedVibe.name+'</div>';
-html+='<div style="color:#888;font-size:13px;margin-bottom:4px">Base • Today</div>';
-html+='<button class="btn green" onclick="checkInTransaction()">✅ Check In on Base (0.0001 ETH)</button>';
-html+='</div>';
-}
-}else{
-html+='<div class="card" style="text-align:center">';
-html+='<div style="font-size:32px">🔥</div>';
-html+='<div style="font-weight:bold;margin:8px 0">Checked In Today!</div>';
-html+='<div class="streak-num">'+streak+'</div>';
-html+='<div class="streak-label">Day Streak 🔥</div>';
-html+='<button class="btn" onclick="render(\'quiz\')">Take Today\'s Quiz 🧠</button>';
-html+='</div>';
-}
-}
-
-else if(tab==='quiz'){
-var today=new Date().toDateString();
-if(quizDone===today){
-html+='<div class="card" style="text-align:center"><div style="font-size:32px">✅</div><div style="font-weight:bold;margin:8px 0">Quiz done for today!</div><div style="color:#888">Come back tomorrow!</div><div class="score">'+points+' pts total</div><button class="btn" onclick="render(\'lb\')">View Leaderboard 🏆</button></div>';
-}else if(currentQ>=questions.length){
-html+='<div class="card" style="text-align:center"><div style="font-size:32px">🎉</div><div style="font-weight:bold;margin:8px 0">Quiz Complete!</div><div class="score">+'+quizScore+' pts</div><button class="btn" onclick="render(\'lb\')">View Leaderboard 🏆</button></div>';
-}else{
-var q=questions[currentQ];
-html+='<div class="card"><div style="color:#6366f1;font-size:12px;margin-bottom:8px">Question '+(currentQ+1)+'/10</div><div class="progress"><div class="progress-bar" style="width:'+((currentQ+1)*10)+'%"></div></div><div class="quiz-q">'+q.q+'</div><div class="quiz-opts">';
-q.opts.forEach(function(o,i){html+='<button class="opt-btn" id="opt'+i+'" onclick="answerQ('+i+')">'+o+'</button>';});
-html+='</div></div>';
-}
-}
-
-else if(tab==='lb'){
-html+='<div style="max-width:360px;margin:0 auto">';
-var board=[['🥇','basebuilder.eth',980],['🥈','cryptovibe.eth',870],['🥉','onchainmaxi.eth',760],['4','wagmifrens.eth',650],['5','degenlife.eth',540]];
-board.forEach(function(b){html+='<div class="lb-item"><div class="lb-rank">'+b[0]+'</div><div class="lb-name">'+b[1]+'</div><div class="lb-pts">'+b[2]+' pts</div></div>';});
-var myName=username||shortAddr(walletAddress);
-html+='<div class="lb-item" style="border:2px solid #6366f1"><div class="lb-rank">?</div><div class="lb-name">'+myName+' (You)</div><div class="lb-pts">'+points+' pts</div></div>';
-html+='</div>';
-}
-
-else if(tab==='profile'){
-var myName=username||shortAddr(walletAddress);
-html+='<div class="card" style="text-align:center"><div style="font-size:40px">😎</div><div style="font-weight:bold;font-size:18px;margin:8px 0">'+myName+'</div><div style="color:#555;font-size:12px;margin-bottom:12px">'+shortAddr(walletAddress)+'</div><div style="display:flex;justify-content:space-around;margin-top:12px"><div><div class="streak-num" style="font-size:28px">'+streak+'</div><div class="streak-label">Streak</div></div><div><div class="streak-num" style="font-size:28px">'+points+'</div><div class="streak-label">Points</div></div><div><div class="streak-num" style="font-size:28px">'+quizzes+'</div><div class="streak-label">Quizzes</div></div></div></div>';
-html+='<div class="card"><div style="font-weight:bold;margin-bottom:12px">🎖️ Badges</div>';
-var badges=[{icon:'👑',name:'OG Vibe',earned:true},{icon:'🔥',name:'7 Day Streak',earned:streak>=7},{icon:'⚡',name:'Base Native',earned:streak>=30},{icon:'🧠',name:'Quiz Master',earned:quizzes>=5},{icon:'💯',name:'Perfect Score',earned:quizScore>=100}];
-badges.forEach(function(b){html+='<span class="badge'+(b.earned?' earned':'')+'">'+b.icon+' '+b.name+'</span>';});
-html+='</div>';
-html+='<div class="card"><div style="font-weight:bold;margin-bottom:12px">📊 Vibe History</div>';
-if(vibeHistory.length===0){html+='<div style="color:#888;font-size:13px">No vibes yet!</div>';}
-else{vibeHistory.slice(0,7).forEach(function(v){html+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #222"><span>'+v.emoji+' '+v.name+'</span><span style="color:#555;font-size:12px">'+v.date+'</span></div>';});}
-html+='</div>';
-}
-
-document.getElementById('app').innerHTML=html;
+  S.tab=tab;
+  var html=topbar();
+  if(!S.walletAddress){
+    html+='<div class="connect-screen fade-up">';
+    html+='<div class="connect-logo">✨</div>';
+    html+='<div class="connect-title">Base<span>Vibe</span></div>';
+    html+='<div class="connect-sub">Daily mood check-in on Base blockchain. Build streaks, learn Base, climb the leaderboard.</div>';
+    html+='<div class="feature-list">';
+    html+='<div class="feature-item"><span class="feature-icon">🔥</span><div><div class="feature-text">Daily Streaks</div><div class="feature-sub">Check in every day</div></div></div>';
+    html+='<div class="feature-item"><span class="feature-icon">🧠</span><div><div class="feature-text">Base Quiz</div><div class="feature-sub">10 questions daily</div></div></div>';
+    html+='<div class="feature-item"><span class="feature-icon">🏆</span><div><div class="feature-text">Leaderboard</div><div class="feature-sub">Compete globally</div></div></div>';
+    html+='<div class="feature-item"><span class="feature-icon">⛓️</span><div><div class="feature-text">Onchain Check-in</div><div class="feature-sub">Proof on Base blockchain</div></div></div>';
+    html+='</div>';
+    html+='<button class="btn-primary" style="max-width:320px;width:100%" onclick="connectWallet()">🔗 Connect Wallet</button>';
+    html+='<div class="connect-hint">Open in Coinbase Wallet for best experience</div>';
+    html+='</div>';
+  }else{
+    if(tab==='vibe')html+=renderVibe();
+    else if(tab==='quiz')html+=renderQuiz();
+    else if(tab==='lb')html+=renderLB();
+    else if(tab==='profile')html+=renderProfile();
+    html+=bottomNav();
+  }
+  document.getElementById('app').innerHTML=html;
 }
 
 function pickVibe(emoji,name){
-selectedVibe={emoji:emoji,name:name};
-var today=new Date().toDateString();
-vibeHistory.unshift({date:today,emoji:emoji,name:name});
-if(vibeHistory.length>30)vibeHistory=vibeHistory.slice(0,30);
-localStorage.setItem('vibeHistory',JSON.stringify(vibeHistory));
-render('vibe');
+  S.selectedVibe={emoji:emoji,name:name};
+  var today=new Date().toDateString();
+  S.vibeHistory.unshift({date:today,emoji:emoji,name:name});
+  if(S.vibeHistory.length>30)S.vibeHistory=S.vibeHistory.slice(0,30);
+  save(['vibeHistory']);
+  render('vibe');
 }
 
 function answerQ(i){
-if(answered)return;
-answered=true;
-var q=questions[currentQ];
-var opts=document.querySelectorAll('.opt-btn');
-if(i===q.a){opts[i].classList.add('correct');quizScore+=10;}
-else{opts[i].classList.add('wrong');opts[q.a].classList.add('correct');}
-setTimeout(function(){
-currentQ++;answered=false;
-if(currentQ>=questions.length){
-points+=quizScore;quizzes++;
-var today=new Date().toDateString();
-quizDone=today;
-localStorage.setItem('points',points);
-localStorage.setItem('quizzes',quizzes);
-localStorage.setItem('quizDone',today);
-}
-render('quiz');
-},1200);
+  if(S.quizAnswered)return;
+  S.quizAnswered=true;
+  var q=QUESTIONS[S.currentQ];
+  var opts=document.querySelectorAll('.opt-btn');
+  if(i===q.a){
+    opts[i].classList.add('correct');
+    S.quizScore+=10;
+    S.totalCorrect++;
+    toast('✅ Correct! +10 pts');
+  }else{
+    opts[i].classList.add('wrong');
+    opts[q.a].classList.add('correct');
+    toast('❌ Wrong!');
+  }
+  setTimeout(function(){
+    S.currentQ++;
+    S.quizAnswered=false;
+    if(S.currentQ>=QUESTIONS.length){
+      S.points+=S.quizScore;
+      S.quizzes++;
+      var today=new Date().toDateString();
+      S.quizDone=today;
+      save(['points','quizzes','quizDone']);
+    }
+    render('quiz');
+  },1200);
 }
 
 render('vibe');
