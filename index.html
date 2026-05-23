@@ -3,44 +3,173 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Proof of Vibe</title>
+<title>Base Vibe</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#0a0a0a;color:white;font-family:Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
-h1{font-size:28px;margin-bottom:8px}
-.sub{color:#888;margin-bottom:30px}
-.vibes{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:340px}
-.vibe-btn{padding:20px;border-radius:16px;border:2px solid #222;background:#111;cursor:pointer;font-size:24px;color:white;width:100%}
-.vibe-btn span{display:block;font-size:13px;color:#aaa;margin-top:4px}
-.result{margin-top:30px;padding:20px;background:#111;border-radius:16px;border:2px solid #6366f1;text-align:center;display:none;max-width:340px;width:100%}
-.share-btn{margin-top:12px;padding:10px 24px;background:#6366f1;border:none;border-radius:10px;color:white;font-size:15px;cursor:pointer}
+body{background:#0a0a0a;color:white;font-family:Arial,sans-serif;min-height:100vh;padding:20px}
+.screen{display:none;flex-direction:column;align-items:center;min-height:100vh;padding:20px}
+.screen.active{display:flex}
+h1{font-size:26px;margin-bottom:6px;text-align:center}
+.sub{color:#888;margin-bottom:24px;text-align:center;font-size:14px}
+.vibes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;width:100%;max-width:360px}
+.vibe-btn{padding:16px 8px;border-radius:14px;border:2px solid #222;background:#111;cursor:pointer;font-size:22px;color:white;width:100%}
+.vibe-btn span{display:block;font-size:11px;color:#aaa;margin-top:4px}
+.card{background:#111;border-radius:16px;border:2px solid #6366f1;padding:20px;width:100%;max-width:360px;margin-bottom:16px}
+.btn{padding:12px 24px;background:#6366f1;border:none;border-radius:10px;color:white;font-size:15px;cursor:pointer;width:100%;margin-top:10px}
+.btn.outline{background:transparent;border:2px solid #6366f1;margin-top:8px}
+.streak-num{font-size:48px;font-weight:bold;color:#f59e0b;text-align:center}
+.streak-label{color:#888;text-align:center;font-size:13px}
+.nav{display:flex;gap:8px;margin-bottom:20px;width:100%;max-width:360px}
+.nav-btn{flex:1;padding:8px;background:#111;border:2px solid #222;border-radius:10px;color:#888;cursor:pointer;font-size:12px}
+.nav-btn.active{border-color:#6366f1;color:white}
+.quiz-q{font-size:16px;font-weight:bold;margin-bottom:16px;line-height:1.4}
+.quiz-opts{display:flex;flex-direction:column;gap:8px}
+.opt-btn{padding:12px;background:#1a1a1a;border:2px solid #333;border-radius:10px;color:white;cursor:pointer;text-align:left;font-size:14px}
+.opt-btn.correct{border-color:#22c55e;background:#052e16}
+.opt-btn.wrong{border-color:#ef4444;background:#2d0000}
+.score{font-size:32px;font-weight:bold;color:#6366f1;text-align:center}
+.lb-item{display:flex;align-items:center;gap:12px;padding:12px;background:#111;border-radius:12px;margin-bottom:8px}
+.lb-rank{font-size:20px;font-weight:bold;color:#f59e0b;width:30px}
+.lb-name{flex:1;font-size:14px}
+.lb-pts{color:#6366f1;font-weight:bold}
+.badge{display:inline-block;padding:6px 12px;border-radius:20px;font-size:12px;margin:4px;background:#1a1a1a;border:1px solid #333}
+.badge.earned{border-color:#f59e0b;color:#f59e0b}
+.progress{background:#1a1a1a;border-radius:10px;height:8px;width:100%;margin:8px 0}
+.progress-bar{background:#6366f1;height:8px;border-radius:10px;transition:width 0.3s}
+.tag{font-size:11px;color:#6366f1;background:#1a1a2e;padding:3px 8px;border-radius:10px;margin-bottom:12px;display:inline-block}
 </style>
 </head>
 <body>
-<h1>✨ Proof of Vibe</h1>
-<p class="sub">What's your vibe today on Base?</p>
+
+<!-- VIBE SCREEN -->
+<div class="screen active" id="screen-vibe">
+<h1>✨ Base Vibe</h1>
+<p class="sub">What's your vibe today?</p>
+<div class="nav">
+<button class="nav-btn active" onclick="showScreen('screen-vibe')">😎 Vibe</button>
+<button class="nav-btn" onclick="showScreen('screen-quiz')">🧠 Quiz</button>
+<button class="nav-btn" onclick="showScreen('screen-lb')">🏆 Board</button>
+<button class="nav-btn" onclick="showScreen('screen-profile')">👤 Me</button>
+</div>
 <div class="vibes">
-<button class="vibe-btn" onclick="selectVibe('🚀','PUMPED','Ready to moon!')">🚀<span>PUMPED</span></button>
-<button class="vibe-btn" onclick="selectVibe('😎','CHILL','Just vibing on Base')">😎<span>CHILL</span></button>
-<button class="vibe-btn" onclick="selectVibe('💪','GRIND','Building every day')">💪<span>GRIND</span></button>
-<button class="vibe-btn" onclick="selectVibe('🤩','WAGMI','We all gonna make it')">🤩<span>WAGMI</span></button>
-<button class="vibe-btn" onclick="selectVibe('😴','TIRED','Need more coffee')">😴<span>TIRED</span></button>
-<button class="vibe-btn" onclick="selectVibe('🔥','DEGEN','Full degen mode')">🔥<span>DEGEN</span></button>
+<button class="vibe-btn" onclick="selectVibe('🚀','PUMPED')">🚀<span>PUMPED</span></button>
+<button class="vibe-btn" onclick="selectVibe('😎','CHILL')">😎<span>CHILL</span></button>
+<button class="vibe-btn" onclick="selectVibe('💪','GRIND')">💪<span>GRIND</span></button>
+<button class="vibe-btn" onclick="selectVibe('🤩','WAGMI')">🤩<span>WAGMI</span></button>
+<button class="vibe-btn" onclick="selectVibe('😴','TIRED')">😴<span>TIRED</span></button>
+<button class="vibe-btn" onclick="selectVibe('🔥','DEGEN')">🔥<span>DEGEN</span></button>
+<button class="vibe-btn" onclick="selectVibe('😠','ANGRY')">😠<span>ANGRY</span></button>
+<button class="vibe-btn" onclick="selectVibe('😢','CRYING')">😢<span>CRYING</span></button>
+<button class="vibe-btn" onclick="selectVibe('😊','HAPPY')">😊<span>HAPPY</span></button>
 </div>
-<div class="result" id="result">
-<h2 id="vibe-emoji"></h2>
-<h2 id="vibe-name"></h2>
-<p id="vibe-msg"></p>
-<p style="margin-top:8px;font-size:12px;color:#555">Base • Today</p>
-<button class="share-btn">Share your Vibe 🚀</button>
+<div class="card" id="vibe-result" style="display:none;margin-top:16px;text-align:center">
+<div style="font-size:40px" id="res-emoji"></div>
+<div style="font-size:20px;font-weight:bold;margin:8px 0" id="res-name"></div>
+<div style="color:#888;font-size:13px">Base • Today</div>
+<button class="btn" onclick="checkIn()">✅ Check In & Start Streak</button>
 </div>
+<div class="card" id="checkin-done" style="display:none;text-align:center">
+<div style="font-size:32px">🔥</div>
+<div style="font-weight:bold;margin:8px 0">Checked In!</div>
+<div class="streak-num" id="streak-count">0</div>
+<div class="streak-label">Day Streak</div>
+<button class="btn" onclick="showScreen('screen-quiz')">Take Today's Quiz 🧠</button>
+</div>
+</div>
+
+<!-- QUIZ SCREEN -->
+<div class="screen" id="screen-quiz">
+<h1>🧠 Base Quiz</h1>
+<p class="sub">10 questions about Base ecosystem</p>
+<div class="nav">
+<button class="nav-btn" onclick="showScreen('screen-vibe')">😎 Vibe</button>
+<button class="nav-btn active" onclick="showScreen('screen-quiz')">🧠 Quiz</button>
+<button class="nav-btn" onclick="showScreen('screen-lb')">🏆 Board</button>
+<button class="nav-btn" onclick="showScreen('screen-profile')">👤 Me</button>
+</div>
+<div class="card" style="width:100%;max-width:360px">
+<div class="tag">Question <span id="q-num">1</span>/10</div>
+<div class="progress"><div class="progress-bar" id="q-progress" style="width:10%"></div></div>
+<div class="quiz-q" id="q-text"></div>
+<div class="quiz-opts" id="q-opts"></div>
+</div>
+<div class="card" id="quiz-done" style="display:none;text-align:center">
+<div style="font-size:32px">🎉</div>
+<div style="font-weight:bold;margin:8px 0">Quiz Complete!</div>
+<div class="score" id="final-score"></div>
+<div style="color:#888;font-size:13px;margin-top:4px">points earned</div>
+<button class="btn" onclick="showScreen('screen-lb')">View Leaderboard 🏆</button>
+</div>
+</div>
+
+<!-- LEADERBOARD SCREEN -->
+<div class="screen" id="screen-lb">
+<h1>🏆 Leaderboard</h1>
+<p class="sub">Top Base Vibers this week</p>
+<div class="nav">
+<button class="nav-btn" onclick="showScreen('screen-vibe')">😎 Vibe</button>
+<button class="nav-btn" onclick="showScreen('screen-quiz')">🧠 Quiz</button>
+<button class="nav-btn active" onclick="showScreen('screen-lb')">🏆 Board</button>
+<button class="nav-btn" onclick="showScreen('screen-profile')">👤 Me</button>
+</div>
+<div style="width:100%;max-width:360px">
+<div class="lb-item"><div class="lb-rank">🥇</div><div class="lb-name">basebuilder.eth</div><div class="lb-pts">980 pts</div></div>
+<div class="lb-item"><div class="lb-rank">🥈</div><div class="lb-name">cryptovibe.eth</div><div class="lb-pts">870 pts</div></div>
+<div class="lb-item"><div class="lb-rank">🥉</div><div class="lb-name">onchainmaxi.eth</div><div class="lb-pts">760 pts</div></div>
+<div class="lb-item"><div class="lb-rank">4</div><div class="lb-name">wagmifrens.eth</div><div class="lb-pts">650 pts</div></div>
+<div class="lb-item"><div class="lb-rank">5</div><div class="lb-name">degenlife.eth</div><div class="lb-pts">540 pts</div></div>
+<div class="lb-item" style="border:2px solid #6366f1"><div class="lb-rank">?</div><div class="lb-name">You</div><div class="lb-pts" id="my-pts">0 pts</div></div>
+</div>
+</div>
+
+<!-- PROFILE SCREEN -->
+<div class="screen" id="screen-profile">
+<h1>👤 My Profile</h1>
+<p class="sub">Your Base Vibe stats</p>
+<div class="nav">
+<button class="nav-btn" onclick="showScreen('screen-vibe')">😎 Vibe</button>
+<button class="nav-btn" onclick="showScreen('screen-quiz')">🧠 Quiz</button>
+<button class="nav-btn" onclick="showScreen('screen-lb')">🏆 Board</button>
+<button class="nav-btn active" onclick="showScreen('screen-profile')">👤 Me</button>
+</div>
+<div class="card" style="text-align:center;width:100%;max-width:360px">
+<div style="font-size:40px">😎</div>
+<div style="font-weight:bold;font-size:18px;margin:8px 0">Base Vibe Player</div>
+<div style="display:flex;justify-content:space-around;margin-top:12px">
+<div><div class="streak-num" style="font-size:28px" id="profile-streak">0</div><div class="streak-label">Streak</div></div>
+<div><div class="streak-num" style="font-size:28px" id="profile-pts">0</div><div class="streak-label">Points</div></div>
+<div><div class="streak-num" style="font-size:28px" id="profile-quizzes">0</div><div class="streak-label">Quizzes</div></div>
+</div>
+</div>
+<div class="card" style="width:100%;max-width:360px">
+<div style="font-weight:bold;margin-bottom:12px">🎖️ Badges</div>
+<div id="badges-container">
+<span class="badge">🔥 7 Day Streak</span>
+<span class="badge">🧠 Quiz Master</span>
+<span class="badge">👑 OG Vibe</span>
+<span class="badge">⚡ Base Native</span>
+</div>
+</div>
+<div class="card" style="width:100%;max-width:360px">
+<div style="font-weight:bold;margin-bottom:12px">📊 Vibe History</div>
+<div id="vibe-history" style="color:#888;font-size:13px">No vibes yet. Start your daily check-in!</div>
+</div>
+</div>
+
 <script>
-function selectVibe(emoji,name,msg){
-document.getElementById('vibe-emoji').innerText=emoji;
-document.getElementById('vibe-name').innerText=name;
-document.getElementById('vibe-msg').innerText=msg;
-document.getElementById('result').style.display='block';
-}
-</script>
-</body>
-  </html>
+var streak = parseInt(localStorage.getItem('streak')||'0');
+var points = parseInt(localStorage.getItem('points')||'0');
+var quizzes = parseInt(localStorage.getItem('quizzes')||'0');
+var lastCheckin = localStorage.getItem('lastCheckin')||'';
+var vibeHistory = JSON.parse(localStorage.getItem('vibeHistory')||'[]');
+var currentQ = 0;
+var quizScore = 0;
+var answered = false;
+
+var questions = [
+{q:"What is Base?",opts:["A Bitcoin Layer 2","An Ethereum Layer 2 by Coinbase","A new blockchain","A DeFi protocol"],a:1},
+{q:"Who created Base?",opts:["Ethereum Foundation","Binance","Coinbase","Polygon"],a:2},
+{q:"What tech stack is Base built on?",opts:["ZK Rollup","OP Stack","Arbitrum","Polygon CDK"],a:1},
+{q:"What is the native gas token on Base?",opts:["BASE","USDC","ETH","OP"],a:2},
+{q:"When did Base mainnet launch?",opts:["2021","2022","2023","2024"],a:2},
+{q:"What is OnchainKit?",opts:["A Base wallet","A toolkit for building onchain apps","A Base token","A DeF
