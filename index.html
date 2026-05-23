@@ -4,11 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Base Vibe</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#0a0a0a;color:white;font-family:Arial,sans-serif;min-height:100vh;padding:20px}
-.screen{display:none}
-.screen.active{display:block}
 h1{font-size:26px;margin-bottom:6px;text-align:center}
 .sub{color:#888;margin-bottom:24px;text-align:center;font-size:14px}
 .vibes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;width:100%;max-width:360px;margin:0 auto}
@@ -16,6 +15,7 @@ h1{font-size:26px;margin-bottom:6px;text-align:center}
 .vibe-btn span{display:block;font-size:11px;color:#aaa;margin-top:4px}
 .card{background:#111;border-radius:16px;border:2px solid #6366f1;padding:20px;width:100%;max-width:360px;margin:16px auto}
 .btn{padding:12px 24px;background:#6366f1;border:none;border-radius:10px;color:white;font-size:15px;cursor:pointer;width:100%;margin-top:10px}
+.btn.green{background:#22c55e}
 .streak-num{font-size:48px;font-weight:bold;color:#f59e0b;text-align:center}
 .streak-label{color:#888;text-align:center;font-size:13px}
 .nav{display:flex;gap:8px;margin:0 auto 20px auto;width:100%;max-width:360px}
@@ -35,10 +35,14 @@ h1{font-size:26px;margin-bottom:6px;text-align:center}
 .badge.earned{border-color:#f59e0b;color:#f59e0b}
 .progress{background:#1a1a1a;border-radius:10px;height:8px;width:100%;margin:8px 0}
 .progress-bar{background:#6366f1;height:8px;border-radius:10px}
+.wallet-bar{display:flex;align-items:center;justify-content:space-between;background:#111;border-radius:12px;padding:10px 14px;max-width:360px;margin:0 auto 16px auto;border:1px solid #222}
+.wallet-addr{font-size:12px;color:#6366f1}
+.name-input{width:100%;padding:14px;background:#1a1a1a;border:2px solid #333;border-radius:12px;color:white;font-size:16px;margin-top:10px;outline:none}
+.name-input:focus{border-color:#6366f1}
+.welcome-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:20px}
 </style>
 </head>
 <body>
-
 <div id="app"></div>
 
 <script>
@@ -52,6 +56,9 @@ var quizScore=0;
 var answered=false;
 var selectedVibe={emoji:'',name:''};
 var quizDone=localStorage.getItem('quizDone')||'';
+var walletAddress=localStorage.getItem('walletAddress')||'';
+var username=localStorage.getItem('username')||'';
+var currentTab='vibe';
 
 var questions=[
 {q:"What is Base?",opts:["A Bitcoin Layer 2","An Ethereum Layer 2 by Coinbase","A new blockchain","A DeFi protocol"],a:1},
@@ -66,19 +73,128 @@ var questions=[
 {q:"What is Farcaster?",opts:["A Base token","A decentralized social protocol","A DeFi app","A Base wallet"],a:1}
 ];
 
+function shortAddr(addr){return addr?addr.slice(0,6)+'...'+addr.slice(-4):'';}
+
+async function connectWallet(){
+if(typeof window.ethereum==='undefined'){
+alert('No wallet found! Please open this app inside Coinbase Wallet browser.');
+return;
+}
+try{
+var accounts=await window.ethereum.request({method:'eth_requestAccounts'});
+walletAddress=accounts[0];
+localStorage.setItem('walletAddress',walletAddress);
+try{
+await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x2105'}]});
+}catch(e){
+await window.ethereum.request({method:'wallet_addEthereumChain',params:[{chainId:'0x2105',chainName:'Base',nativeCurrency:{name:'Ether',symbol:'ETH',decimals:18},rpcUrls:['https://mainnet.base.org'],blockExplorerUrls:['https://basescan.org']}]});
+}
+renderSetupName();
+}catch(e){alert('Could not connect: '+e.message);}
+}
+
+function renderSetupName(){
+var html='<div class="welcome-screen">';
+html+='<div style="font-size:60px;margin-bottom:16px">✨</div>';
+html+='<h1>Welcome to Base Vibe!</h1>';
+html+='<p class="sub">Wallet connected! Now set your username</p>';
+html+='<div class="card">';
+html+='<div style="color:#888;font-size:13px;margin-bottom:8px">Wallet: '+shortAddr(walletAddress)+'</div>';
+html+='<input class="name-input" id="username-input" type="text" placeholder="Enter your name or ENS..." maxlength="20">';
+html+='<p style="color:#555;font-size:11px;margin-top:8px">This name will show on the leaderboard</p>';
+html+='<button class="btn" onclick="saveUsername()">Continue →</button>';
+html+='</div>';
+html+='</div>';
+document.getElementById('app').innerHTML=html;
+}
+
+function saveUsername(){
+var input=document.getElementById('username-input').value.trim();
+if(!input){alert('Please enter a name!');return;}
+username=input;
+localStorage.setItem('username',username);
+render('vibe');
+}
+
+function disconnectWallet(){
+walletAddress='';
+username='';
+localStorage.removeItem('walletAddress');
+localStorage.removeItem('username');
+render('vibe');
+}
+
+async function checkInTransaction(){
+if(!walletAddress){alert('Connect wallet first!');return;}
+try{
+var provider=new ethers.BrowserProvider(window.ethereum);
+var signer=await provider.getSigner();
+var tx=await signer.sendTransaction({
+to:'0x000000000000000000000000000000000000dEaD',
+value:ethers.parseEther('0.0001'),
+data:ethers.hexlify(ethers.toUtf8Bytes('BaseVibe:checkin'))
+});
+alert('Transaction sent! Confirming on Base...');
+await tx.wait();
+doCheckIn();
+}catch(e){alert('Transaction failed: '+e.message);}
+}
+
+function doCheckIn(){
+var today=new Date().toDateString();
+var yesterday=new Date(Date.now()-86400000).toDateString();
+if(lastCheckin===today){alert('Already checked in today!');return;}
+if(lastCheckin===yesterday)streak++;
+else streak=1;
+lastCheckin=today;
+points+=10;
+localStorage.setItem('streak',streak);
+localStorage.setItem('points',points);
+localStorage.setItem('lastCheckin',lastCheckin);
+render('vibe');
+}
+
 function nav(tab){
+currentTab=tab;
 var tabs=['vibe','quiz','lb','profile'];
 var html='<div class="nav">';
 tabs.forEach(function(t){
 var icons={vibe:'😎 Vibe',quiz:'🧠 Quiz',lb:'🏆 Board',profile:'👤 Me'};
-html+='<button class="nav-btn'+(t===tab?' active':'')+'" onclick="render(\''+t+'\')" >'+icons[t]+'</button>';
+html+='<button class="nav-btn'+(t===tab?' active':'')+'" onclick="render(\''+t+'\')">'+icons[t]+'</button>';
 });
-html+='</div>';
-return html;
+return html+'</div>';
+}
+
+function walletBar(){
+if(!walletAddress){
+return '<div style="max-width:360px;margin:0 auto 16px auto"><button class="btn" onclick="connectWallet()">🔗 Connect Wallet</button></div>';
+}
+var displayName=username||shortAddr(walletAddress);
+return '<div class="wallet-bar"><span class="wallet-addr">✅ '+displayName+'</span><button style="font-size:11px;color:#ef4444;background:none;border:none;cursor:pointer" onclick="disconnectWallet()">Disconnect</button></div>';
 }
 
 function render(tab){
+currentTab=tab;
 var html='<h1>✨ Base Vibe</h1><p class="sub">Daily check-in on Base</p>';
+
+if(!walletAddress){
+html+='<div class="welcome-screen" style="min-height:80vh">';
+html+='<div style="font-size:60px;margin-bottom:16px">✨</div>';
+html+='<h1>Base Vibe</h1>';
+html+='<p class="sub">Daily mood check-in on Base blockchain</p>';
+html+='<div class="card" style="text-align:center">';
+html+='<div style="font-size:32px;margin-bottom:12px">🔗</div>';
+html+='<div style="font-weight:bold;margin-bottom:8px">Connect Your Wallet</div>';
+html+='<div style="color:#888;font-size:13px;margin-bottom:16px">Connect your Base wallet to start your daily streak and earn points!</div>';
+html+='<button class="btn" onclick="connectWallet()">🔗 Connect Wallet</button>';
+html+='</div>';
+html+='<div style="margin-top:20px;text-align:center;color:#555;font-size:12px">Open in Coinbase Wallet for best experience</div>';
+html+='</div>';
+document.getElementById('app').innerHTML=html;
+return;
+}
+
+html+=walletBar();
 html+=nav(tab);
 
 if(tab==='vibe'){
@@ -88,30 +204,37 @@ if(!checkedIn){
 html+='<p class="sub">What\'s your vibe today?</p>';
 html+='<div class="vibes">';
 var vibes=[['🚀','PUMPED'],['😎','CHILL'],['💪','GRIND'],['🤩','WAGMI'],['😴','TIRED'],['🔥','DEGEN'],['😠','ANGRY'],['😢','CRYING'],['😊','HAPPY']];
-vibes.forEach(function(v){
-html+='<button class="vibe-btn" onclick="pickVibe(\''+v[0]+'\',\''+v[1]+'\')">'+v[0]+'<span>'+v[1]+'</span></button>';
-});
+vibes.forEach(function(v){html+='<button class="vibe-btn" onclick="pickVibe(\''+v[0]+'\',\''+v[1]+'\')">'+v[0]+'<span>'+v[1]+'</span></button>';});
 html+='</div>';
 if(selectedVibe.name){
-html+='<div class="card" style="text-align:center"><div style="font-size:40px">'+selectedVibe.emoji+'</div><div style="font-size:20px;font-weight:bold;margin:8px 0">'+selectedVibe.name+'</div><div style="color:#888;font-size:13px">Base • Today</div><button class="btn" onclick="checkIn()">✅ Check In & Start Streak</button></div>';
+html+='<div class="card" style="text-align:center">';
+html+='<div style="font-size:40px">'+selectedVibe.emoji+'</div>';
+html+='<div style="font-size:20px;font-weight:bold;margin:8px 0">'+selectedVibe.name+'</div>';
+html+='<div style="color:#888;font-size:13px;margin-bottom:4px">Base • Today</div>';
+html+='<button class="btn green" onclick="checkInTransaction()">✅ Check In on Base (0.0001 ETH)</button>';
+html+='</div>';
 }
 }else{
-html+='<div class="card" style="text-align:center"><div style="font-size:32px">🔥</div><div style="font-weight:bold;margin:8px 0">Already Checked In Today!</div><div class="streak-num">'+streak+'</div><div class="streak-label">Day Streak</div><button class="btn" onclick="render(\'quiz\')">Take Today\'s Quiz 🧠</button></div>';
+html+='<div class="card" style="text-align:center">';
+html+='<div style="font-size:32px">🔥</div>';
+html+='<div style="font-weight:bold;margin:8px 0">Checked In Today!</div>';
+html+='<div class="streak-num">'+streak+'</div>';
+html+='<div class="streak-label">Day Streak 🔥</div>';
+html+='<button class="btn" onclick="render(\'quiz\')">Take Today\'s Quiz 🧠</button>';
+html+='</div>';
 }
 }
 
 else if(tab==='quiz'){
 var today=new Date().toDateString();
 if(quizDone===today){
-html+='<div class="card" style="text-align:center"><div style="font-size:32px">✅</div><div style="font-weight:bold;margin:8px 0">Quiz done for today!</div><div style="color:#888">Come back tomorrow for new questions</div><div class="score">'+points+' pts total</div><button class="btn" onclick="render(\'lb\')">View Leaderboard 🏆</button></div>';
+html+='<div class="card" style="text-align:center"><div style="font-size:32px">✅</div><div style="font-weight:bold;margin:8px 0">Quiz done for today!</div><div style="color:#888">Come back tomorrow!</div><div class="score">'+points+' pts total</div><button class="btn" onclick="render(\'lb\')">View Leaderboard 🏆</button></div>';
 }else if(currentQ>=questions.length){
 html+='<div class="card" style="text-align:center"><div style="font-size:32px">🎉</div><div style="font-weight:bold;margin:8px 0">Quiz Complete!</div><div class="score">+'+quizScore+' pts</div><button class="btn" onclick="render(\'lb\')">View Leaderboard 🏆</button></div>';
 }else{
 var q=questions[currentQ];
 html+='<div class="card"><div style="color:#6366f1;font-size:12px;margin-bottom:8px">Question '+(currentQ+1)+'/10</div><div class="progress"><div class="progress-bar" style="width:'+((currentQ+1)*10)+'%"></div></div><div class="quiz-q">'+q.q+'</div><div class="quiz-opts">';
-q.opts.forEach(function(o,i){
-html+='<button class="opt-btn" id="opt'+i+'" onclick="answerQ('+i+')">'+o+'</button>';
-});
+q.opts.forEach(function(o,i){html+='<button class="opt-btn" id="opt'+i+'" onclick="answerQ('+i+')">'+o+'</button>';});
 html+='</div></div>';
 }
 }
@@ -119,15 +242,15 @@ html+='</div></div>';
 else if(tab==='lb'){
 html+='<div style="max-width:360px;margin:0 auto">';
 var board=[['🥇','basebuilder.eth',980],['🥈','cryptovibe.eth',870],['🥉','onchainmaxi.eth',760],['4','wagmifrens.eth',650],['5','degenlife.eth',540]];
-board.forEach(function(b){
-html+='<div class="lb-item"><div class="lb-rank">'+b[0]+'</div><div class="lb-name">'+b[1]+'</div><div class="lb-pts">'+b[2]+' pts</div></div>';
-});
-html+='<div class="lb-item" style="border:2px solid #6366f1"><div class="lb-rank">?</div><div class="lb-name">You</div><div class="lb-pts">'+points+' pts</div></div>';
+board.forEach(function(b){html+='<div class="lb-item"><div class="lb-rank">'+b[0]+'</div><div class="lb-name">'+b[1]+'</div><div class="lb-pts">'+b[2]+' pts</div></div>';});
+var myName=username||shortAddr(walletAddress);
+html+='<div class="lb-item" style="border:2px solid #6366f1"><div class="lb-rank">?</div><div class="lb-name">'+myName+' (You)</div><div class="lb-pts">'+points+' pts</div></div>';
 html+='</div>';
 }
 
 else if(tab==='profile'){
-html+='<div class="card" style="text-align:center"><div style="font-size:40px">😎</div><div style="font-weight:bold;font-size:18px;margin:8px 0">Base Vibe Player</div><div style="display:flex;justify-content:space-around;margin-top:12px"><div><div class="streak-num" style="font-size:28px">'+streak+'</div><div class="streak-label">Streak</div></div><div><div class="streak-num" style="font-size:28px">'+points+'</div><div class="streak-label">Points</div></div><div><div class="streak-num" style="font-size:28px">'+quizzes+'</div><div class="streak-label">Quizzes</div></div></div></div>';
+var myName=username||shortAddr(walletAddress);
+html+='<div class="card" style="text-align:center"><div style="font-size:40px">😎</div><div style="font-weight:bold;font-size:18px;margin:8px 0">'+myName+'</div><div style="color:#555;font-size:12px;margin-bottom:12px">'+shortAddr(walletAddress)+'</div><div style="display:flex;justify-content:space-around;margin-top:12px"><div><div class="streak-num" style="font-size:28px">'+streak+'</div><div class="streak-label">Streak</div></div><div><div class="streak-num" style="font-size:28px">'+points+'</div><div class="streak-label">Points</div></div><div><div class="streak-num" style="font-size:28px">'+quizzes+'</div><div class="streak-label">Quizzes</div></div></div></div>';
 html+='<div class="card"><div style="font-weight:bold;margin-bottom:12px">🎖️ Badges</div>';
 var badges=[{icon:'👑',name:'OG Vibe',earned:true},{icon:'🔥',name:'7 Day Streak',earned:streak>=7},{icon:'⚡',name:'Base Native',earned:streak>=30},{icon:'🧠',name:'Quiz Master',earned:quizzes>=5},{icon:'💯',name:'Perfect Score',earned:quizScore>=100}];
 badges.forEach(function(b){html+='<span class="badge'+(b.earned?' earned':'')+'">'+b.icon+' '+b.name+'</span>';});
@@ -150,20 +273,6 @@ localStorage.setItem('vibeHistory',JSON.stringify(vibeHistory));
 render('vibe');
 }
 
-function checkIn(){
-var today=new Date().toDateString();
-var yesterday=new Date(Date.now()-86400000).toDateString();
-if(lastCheckin===today){alert('Already checked in today!');return;}
-if(lastCheckin===yesterday)streak++;
-else streak=1;
-lastCheckin=today;
-points+=10;
-localStorage.setItem('streak',streak);
-localStorage.setItem('points',points);
-localStorage.setItem('lastCheckin',lastCheckin);
-render('vibe');
-}
-
 function answerQ(i){
 if(answered)return;
 answered=true;
@@ -172,8 +281,7 @@ var opts=document.querySelectorAll('.opt-btn');
 if(i===q.a){opts[i].classList.add('correct');quizScore+=10;}
 else{opts[i].classList.add('wrong');opts[q.a].classList.add('correct');}
 setTimeout(function(){
-currentQ++;
-answered=false;
+currentQ++;answered=false;
 if(currentQ>=questions.length){
 points+=quizScore;quizzes++;
 var today=new Date().toDateString();
