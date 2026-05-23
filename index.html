@@ -7,24 +7,23 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#0a0a0a;color:white;font-family:Arial,sans-serif;min-height:100vh;padding:20px}
-.screen{display:none;flex-direction:column;align-items:center;min-height:100vh;padding:20px}
-.screen.active{display:flex}
+.screen{display:none}
+.screen.active{display:block}
 h1{font-size:26px;margin-bottom:6px;text-align:center}
 .sub{color:#888;margin-bottom:24px;text-align:center;font-size:14px}
-.vibes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;width:100%;max-width:360px}
+.vibes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;width:100%;max-width:360px;margin:0 auto}
 .vibe-btn{padding:16px 8px;border-radius:14px;border:2px solid #222;background:#111;cursor:pointer;font-size:22px;color:white;width:100%}
 .vibe-btn span{display:block;font-size:11px;color:#aaa;margin-top:4px}
-.card{background:#111;border-radius:16px;border:2px solid #6366f1;padding:20px;width:100%;max-width:360px;margin-bottom:16px}
+.card{background:#111;border-radius:16px;border:2px solid #6366f1;padding:20px;width:100%;max-width:360px;margin:16px auto}
 .btn{padding:12px 24px;background:#6366f1;border:none;border-radius:10px;color:white;font-size:15px;cursor:pointer;width:100%;margin-top:10px}
-.btn.outline{background:transparent;border:2px solid #6366f1;margin-top:8px}
 .streak-num{font-size:48px;font-weight:bold;color:#f59e0b;text-align:center}
 .streak-label{color:#888;text-align:center;font-size:13px}
-.nav{display:flex;gap:8px;margin-bottom:20px;width:100%;max-width:360px}
-.nav-btn{flex:1;padding:8px;background:#111;border:2px solid #222;border-radius:10px;color:#888;cursor:pointer;font-size:12px}
+.nav{display:flex;gap:8px;margin:0 auto 20px auto;width:100%;max-width:360px}
+.nav-btn{flex:1;padding:8px;background:#111;border:2px solid #222;border-radius:10px;color:#888;font-size:12px}
 .nav-btn.active{border-color:#6366f1;color:white}
 .quiz-q{font-size:16px;font-weight:bold;margin-bottom:16px;line-height:1.4}
 .quiz-opts{display:flex;flex-direction:column;gap:8px}
-.opt-btn{padding:12px;background:#1a1a1a;border:2px solid #333;border-radius:10px;color:white;cursor:pointer;text-align:left;font-size:14px}
+.opt-btn{padding:12px;background:#1a1a1a;border:2px solid #333;border-radius:10px;color:white;text-align:left;font-size:14px;width:100%}
 .opt-btn.correct{border-color:#22c55e;background:#052e16}
 .opt-btn.wrong{border-color:#ef4444;background:#2d0000}
 .score{font-size:32px;font-weight:bold;color:#6366f1;text-align:center}
@@ -35,141 +34,159 @@ h1{font-size:26px;margin-bottom:6px;text-align:center}
 .badge{display:inline-block;padding:6px 12px;border-radius:20px;font-size:12px;margin:4px;background:#1a1a1a;border:1px solid #333}
 .badge.earned{border-color:#f59e0b;color:#f59e0b}
 .progress{background:#1a1a1a;border-radius:10px;height:8px;width:100%;margin:8px 0}
-.progress-bar{background:#6366f1;height:8px;border-radius:10px;transition:width 0.3s}
-.tag{font-size:11px;color:#6366f1;background:#1a1a2e;padding:3px 8px;border-radius:10px;margin-bottom:12px;display:inline-block}
+.progress-bar{background:#6366f1;height:8px;border-radius:10px}
 </style>
 </head>
 <body>
 
-<!-- VIBE SCREEN -->
-<div class="screen active" id="screen-vibe">
-<h1>✨ Base Vibe</h1>
-<p class="sub">What's your vibe today?</p>
-<div class="nav">
-<button class="nav-btn active" onclick="showScreen('screen-vibe')">😎 Vibe</button>
-<button class="nav-btn" onclick="showScreen('screen-quiz')">🧠 Quiz</button>
-<button class="nav-btn" onclick="showScreen('screen-lb')">🏆 Board</button>
-<button class="nav-btn" onclick="showScreen('screen-profile')">👤 Me</button>
-</div>
-<div class="vibes">
-<button class="vibe-btn" onclick="selectVibe('🚀','PUMPED')">🚀<span>PUMPED</span></button>
-<button class="vibe-btn" onclick="selectVibe('😎','CHILL')">😎<span>CHILL</span></button>
-<button class="vibe-btn" onclick="selectVibe('💪','GRIND')">💪<span>GRIND</span></button>
-<button class="vibe-btn" onclick="selectVibe('🤩','WAGMI')">🤩<span>WAGMI</span></button>
-<button class="vibe-btn" onclick="selectVibe('😴','TIRED')">😴<span>TIRED</span></button>
-<button class="vibe-btn" onclick="selectVibe('🔥','DEGEN')">🔥<span>DEGEN</span></button>
-<button class="vibe-btn" onclick="selectVibe('😠','ANGRY')">😠<span>ANGRY</span></button>
-<button class="vibe-btn" onclick="selectVibe('😢','CRYING')">😢<span>CRYING</span></button>
-<button class="vibe-btn" onclick="selectVibe('😊','HAPPY')">😊<span>HAPPY</span></button>
-</div>
-<div class="card" id="vibe-result" style="display:none;margin-top:16px;text-align:center">
-<div style="font-size:40px" id="res-emoji"></div>
-<div style="font-size:20px;font-weight:bold;margin:8px 0" id="res-name"></div>
-<div style="color:#888;font-size:13px">Base • Today</div>
-<button class="btn" onclick="checkIn()">✅ Check In & Start Streak</button>
-</div>
-<div class="card" id="checkin-done" style="display:none;text-align:center">
-<div style="font-size:32px">🔥</div>
-<div style="font-weight:bold;margin:8px 0">Checked In!</div>
-<div class="streak-num" id="streak-count">0</div>
-<div class="streak-label">Day Streak</div>
-<button class="btn" onclick="showScreen('screen-quiz')">Take Today's Quiz 🧠</button>
-</div>
-</div>
-
-<!-- QUIZ SCREEN -->
-<div class="screen" id="screen-quiz">
-<h1>🧠 Base Quiz</h1>
-<p class="sub">10 questions about Base ecosystem</p>
-<div class="nav">
-<button class="nav-btn" onclick="showScreen('screen-vibe')">😎 Vibe</button>
-<button class="nav-btn active" onclick="showScreen('screen-quiz')">🧠 Quiz</button>
-<button class="nav-btn" onclick="showScreen('screen-lb')">🏆 Board</button>
-<button class="nav-btn" onclick="showScreen('screen-profile')">👤 Me</button>
-</div>
-<div class="card" style="width:100%;max-width:360px">
-<div class="tag">Question <span id="q-num">1</span>/10</div>
-<div class="progress"><div class="progress-bar" id="q-progress" style="width:10%"></div></div>
-<div class="quiz-q" id="q-text"></div>
-<div class="quiz-opts" id="q-opts"></div>
-</div>
-<div class="card" id="quiz-done" style="display:none;text-align:center">
-<div style="font-size:32px">🎉</div>
-<div style="font-weight:bold;margin:8px 0">Quiz Complete!</div>
-<div class="score" id="final-score"></div>
-<div style="color:#888;font-size:13px;margin-top:4px">points earned</div>
-<button class="btn" onclick="showScreen('screen-lb')">View Leaderboard 🏆</button>
-</div>
-</div>
-
-<!-- LEADERBOARD SCREEN -->
-<div class="screen" id="screen-lb">
-<h1>🏆 Leaderboard</h1>
-<p class="sub">Top Base Vibers this week</p>
-<div class="nav">
-<button class="nav-btn" onclick="showScreen('screen-vibe')">😎 Vibe</button>
-<button class="nav-btn" onclick="showScreen('screen-quiz')">🧠 Quiz</button>
-<button class="nav-btn active" onclick="showScreen('screen-lb')">🏆 Board</button>
-<button class="nav-btn" onclick="showScreen('screen-profile')">👤 Me</button>
-</div>
-<div style="width:100%;max-width:360px">
-<div class="lb-item"><div class="lb-rank">🥇</div><div class="lb-name">basebuilder.eth</div><div class="lb-pts">980 pts</div></div>
-<div class="lb-item"><div class="lb-rank">🥈</div><div class="lb-name">cryptovibe.eth</div><div class="lb-pts">870 pts</div></div>
-<div class="lb-item"><div class="lb-rank">🥉</div><div class="lb-name">onchainmaxi.eth</div><div class="lb-pts">760 pts</div></div>
-<div class="lb-item"><div class="lb-rank">4</div><div class="lb-name">wagmifrens.eth</div><div class="lb-pts">650 pts</div></div>
-<div class="lb-item"><div class="lb-rank">5</div><div class="lb-name">degenlife.eth</div><div class="lb-pts">540 pts</div></div>
-<div class="lb-item" style="border:2px solid #6366f1"><div class="lb-rank">?</div><div class="lb-name">You</div><div class="lb-pts" id="my-pts">0 pts</div></div>
-</div>
-</div>
-
-<!-- PROFILE SCREEN -->
-<div class="screen" id="screen-profile">
-<h1>👤 My Profile</h1>
-<p class="sub">Your Base Vibe stats</p>
-<div class="nav">
-<button class="nav-btn" onclick="showScreen('screen-vibe')">😎 Vibe</button>
-<button class="nav-btn" onclick="showScreen('screen-quiz')">🧠 Quiz</button>
-<button class="nav-btn" onclick="showScreen('screen-lb')">🏆 Board</button>
-<button class="nav-btn active" onclick="showScreen('screen-profile')">👤 Me</button>
-</div>
-<div class="card" style="text-align:center;width:100%;max-width:360px">
-<div style="font-size:40px">😎</div>
-<div style="font-weight:bold;font-size:18px;margin:8px 0">Base Vibe Player</div>
-<div style="display:flex;justify-content:space-around;margin-top:12px">
-<div><div class="streak-num" style="font-size:28px" id="profile-streak">0</div><div class="streak-label">Streak</div></div>
-<div><div class="streak-num" style="font-size:28px" id="profile-pts">0</div><div class="streak-label">Points</div></div>
-<div><div class="streak-num" style="font-size:28px" id="profile-quizzes">0</div><div class="streak-label">Quizzes</div></div>
-</div>
-</div>
-<div class="card" style="width:100%;max-width:360px">
-<div style="font-weight:bold;margin-bottom:12px">🎖️ Badges</div>
-<div id="badges-container">
-<span class="badge">🔥 7 Day Streak</span>
-<span class="badge">🧠 Quiz Master</span>
-<span class="badge">👑 OG Vibe</span>
-<span class="badge">⚡ Base Native</span>
-</div>
-</div>
-<div class="card" style="width:100%;max-width:360px">
-<div style="font-weight:bold;margin-bottom:12px">📊 Vibe History</div>
-<div id="vibe-history" style="color:#888;font-size:13px">No vibes yet. Start your daily check-in!</div>
-</div>
-</div>
+<div id="app"></div>
 
 <script>
-var streak = parseInt(localStorage.getItem('streak')||'0');
-var points = parseInt(localStorage.getItem('points')||'0');
-var quizzes = parseInt(localStorage.getItem('quizzes')||'0');
-var lastCheckin = localStorage.getItem('lastCheckin')||'';
-var vibeHistory = JSON.parse(localStorage.getItem('vibeHistory')||'[]');
-var currentQ = 0;
-var quizScore = 0;
-var answered = false;
+var streak=parseInt(localStorage.getItem('streak')||'0');
+var points=parseInt(localStorage.getItem('points')||'0');
+var quizzes=parseInt(localStorage.getItem('quizzes')||'0');
+var lastCheckin=localStorage.getItem('lastCheckin')||'';
+var vibeHistory=JSON.parse(localStorage.getItem('vibeHistory')||'[]');
+var currentQ=0;
+var quizScore=0;
+var answered=false;
+var selectedVibe={emoji:'',name:''};
+var quizDone=localStorage.getItem('quizDone')||'';
 
-var questions = [
+var questions=[
 {q:"What is Base?",opts:["A Bitcoin Layer 2","An Ethereum Layer 2 by Coinbase","A new blockchain","A DeFi protocol"],a:1},
 {q:"Who created Base?",opts:["Ethereum Foundation","Binance","Coinbase","Polygon"],a:2},
 {q:"What tech stack is Base built on?",opts:["ZK Rollup","OP Stack","Arbitrum","Polygon CDK"],a:1},
 {q:"What is the native gas token on Base?",opts:["BASE","USDC","ETH","OP"],a:2},
 {q:"When did Base mainnet launch?",opts:["2021","2022","2023","2024"],a:2},
-{q:"What is OnchainKit?",opts:["A Base wallet","A toolkit for building onchain apps","A Base token","A DeF
+{q:"What is OnchainKit?",opts:["A Base wallet","A toolkit for building onchain apps","A Base token","A DeFi protocol"],a:1},
+{q:"What is MiniKit used for?",opts:["Mining crypto","Building mini apps on Base","Sending NFTs","Trading tokens"],a:1},
+{q:"Base is part of which vision?",opts:["Ethereum 2.0","The Superchain","Web3 Alliance","DeFi Summer"],a:1},
+{q:"What does 'onchain' mean in Base context?",opts:["Stored on servers","Data recorded on blockchain","Encrypted data","Offline storage"],a:1},
+{q:"What is Farcaster?",opts:["A Base token","A decentralized social protocol","A DeFi app","A Base wallet"],a:1}
+];
+
+function nav(tab){
+var tabs=['vibe','quiz','lb','profile'];
+var html='<div class="nav">';
+tabs.forEach(function(t){
+var icons={vibe:'😎 Vibe',quiz:'🧠 Quiz',lb:'🏆 Board',profile:'👤 Me'};
+html+='<button class="nav-btn'+(t===tab?' active':'')+'" onclick="render(\''+t+'\')" >'+icons[t]+'</button>';
+});
+html+='</div>';
+return html;
+}
+
+function render(tab){
+var html='<h1>✨ Base Vibe</h1><p class="sub">Daily check-in on Base</p>';
+html+=nav(tab);
+
+if(tab==='vibe'){
+var today=new Date().toDateString();
+var checkedIn=lastCheckin===today;
+if(!checkedIn){
+html+='<p class="sub">What\'s your vibe today?</p>';
+html+='<div class="vibes">';
+var vibes=[['🚀','PUMPED'],['😎','CHILL'],['💪','GRIND'],['🤩','WAGMI'],['😴','TIRED'],['🔥','DEGEN'],['😠','ANGRY'],['😢','CRYING'],['😊','HAPPY']];
+vibes.forEach(function(v){
+html+='<button class="vibe-btn" onclick="pickVibe(\''+v[0]+'\',\''+v[1]+'\')">'+v[0]+'<span>'+v[1]+'</span></button>';
+});
+html+='</div>';
+if(selectedVibe.name){
+html+='<div class="card" style="text-align:center"><div style="font-size:40px">'+selectedVibe.emoji+'</div><div style="font-size:20px;font-weight:bold;margin:8px 0">'+selectedVibe.name+'</div><div style="color:#888;font-size:13px">Base • Today</div><button class="btn" onclick="checkIn()">✅ Check In & Start Streak</button></div>';
+}
+}else{
+html+='<div class="card" style="text-align:center"><div style="font-size:32px">🔥</div><div style="font-weight:bold;margin:8px 0">Already Checked In Today!</div><div class="streak-num">'+streak+'</div><div class="streak-label">Day Streak</div><button class="btn" onclick="render(\'quiz\')">Take Today\'s Quiz 🧠</button></div>';
+}
+}
+
+else if(tab==='quiz'){
+var today=new Date().toDateString();
+if(quizDone===today){
+html+='<div class="card" style="text-align:center"><div style="font-size:32px">✅</div><div style="font-weight:bold;margin:8px 0">Quiz done for today!</div><div style="color:#888">Come back tomorrow for new questions</div><div class="score">'+points+' pts total</div><button class="btn" onclick="render(\'lb\')">View Leaderboard 🏆</button></div>';
+}else if(currentQ>=questions.length){
+html+='<div class="card" style="text-align:center"><div style="font-size:32px">🎉</div><div style="font-weight:bold;margin:8px 0">Quiz Complete!</div><div class="score">+'+quizScore+' pts</div><button class="btn" onclick="render(\'lb\')">View Leaderboard 🏆</button></div>';
+}else{
+var q=questions[currentQ];
+html+='<div class="card"><div style="color:#6366f1;font-size:12px;margin-bottom:8px">Question '+(currentQ+1)+'/10</div><div class="progress"><div class="progress-bar" style="width:'+((currentQ+1)*10)+'%"></div></div><div class="quiz-q">'+q.q+'</div><div class="quiz-opts">';
+q.opts.forEach(function(o,i){
+html+='<button class="opt-btn" id="opt'+i+'" onclick="answerQ('+i+')">'+o+'</button>';
+});
+html+='</div></div>';
+}
+}
+
+else if(tab==='lb'){
+html+='<div style="max-width:360px;margin:0 auto">';
+var board=[['🥇','basebuilder.eth',980],['🥈','cryptovibe.eth',870],['🥉','onchainmaxi.eth',760],['4','wagmifrens.eth',650],['5','degenlife.eth',540]];
+board.forEach(function(b){
+html+='<div class="lb-item"><div class="lb-rank">'+b[0]+'</div><div class="lb-name">'+b[1]+'</div><div class="lb-pts">'+b[2]+' pts</div></div>';
+});
+html+='<div class="lb-item" style="border:2px solid #6366f1"><div class="lb-rank">?</div><div class="lb-name">You</div><div class="lb-pts">'+points+' pts</div></div>';
+html+='</div>';
+}
+
+else if(tab==='profile'){
+html+='<div class="card" style="text-align:center"><div style="font-size:40px">😎</div><div style="font-weight:bold;font-size:18px;margin:8px 0">Base Vibe Player</div><div style="display:flex;justify-content:space-around;margin-top:12px"><div><div class="streak-num" style="font-size:28px">'+streak+'</div><div class="streak-label">Streak</div></div><div><div class="streak-num" style="font-size:28px">'+points+'</div><div class="streak-label">Points</div></div><div><div class="streak-num" style="font-size:28px">'+quizzes+'</div><div class="streak-label">Quizzes</div></div></div></div>';
+html+='<div class="card"><div style="font-weight:bold;margin-bottom:12px">🎖️ Badges</div>';
+var badges=[{icon:'👑',name:'OG Vibe',earned:true},{icon:'🔥',name:'7 Day Streak',earned:streak>=7},{icon:'⚡',name:'Base Native',earned:streak>=30},{icon:'🧠',name:'Quiz Master',earned:quizzes>=5},{icon:'💯',name:'Perfect Score',earned:quizScore>=100}];
+badges.forEach(function(b){html+='<span class="badge'+(b.earned?' earned':'')+'">'+b.icon+' '+b.name+'</span>';});
+html+='</div>';
+html+='<div class="card"><div style="font-weight:bold;margin-bottom:12px">📊 Vibe History</div>';
+if(vibeHistory.length===0){html+='<div style="color:#888;font-size:13px">No vibes yet!</div>';}
+else{vibeHistory.slice(0,7).forEach(function(v){html+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #222"><span>'+v.emoji+' '+v.name+'</span><span style="color:#555;font-size:12px">'+v.date+'</span></div>';});}
+html+='</div>';
+}
+
+document.getElementById('app').innerHTML=html;
+}
+
+function pickVibe(emoji,name){
+selectedVibe={emoji:emoji,name:name};
+var today=new Date().toDateString();
+vibeHistory.unshift({date:today,emoji:emoji,name:name});
+if(vibeHistory.length>30)vibeHistory=vibeHistory.slice(0,30);
+localStorage.setItem('vibeHistory',JSON.stringify(vibeHistory));
+render('vibe');
+}
+
+function checkIn(){
+var today=new Date().toDateString();
+var yesterday=new Date(Date.now()-86400000).toDateString();
+if(lastCheckin===today){alert('Already checked in today!');return;}
+if(lastCheckin===yesterday)streak++;
+else streak=1;
+lastCheckin=today;
+points+=10;
+localStorage.setItem('streak',streak);
+localStorage.setItem('points',points);
+localStorage.setItem('lastCheckin',lastCheckin);
+render('vibe');
+}
+
+function answerQ(i){
+if(answered)return;
+answered=true;
+var q=questions[currentQ];
+var opts=document.querySelectorAll('.opt-btn');
+if(i===q.a){opts[i].classList.add('correct');quizScore+=10;}
+else{opts[i].classList.add('wrong');opts[q.a].classList.add('correct');}
+setTimeout(function(){
+currentQ++;
+answered=false;
+if(currentQ>=questions.length){
+points+=quizScore;quizzes++;
+var today=new Date().toDateString();
+quizDone=today;
+localStorage.setItem('points',points);
+localStorage.setItem('quizzes',quizzes);
+localStorage.setItem('quizDone',today);
+}
+render('quiz');
+},1200);
+}
+
+render('vibe');
+</script>
+</body>
+</html>
