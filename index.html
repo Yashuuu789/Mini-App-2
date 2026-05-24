@@ -21,8 +21,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:0.4}
 .bg-glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(0,82,255,0.1) 0%,transparent 65%);pointer-events:none;z-index:0}
 #app{position:relative;z-index:1;padding-bottom:80px}
-
-/* SPLASH */
 #splash{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9998;transition:opacity 0.5s ease}
 #splash.hide{opacity:0;pointer-events:none}
 .splash-logo{width:90px;height:90px;border-radius:24px;background:var(--blue);display:flex;align-items:center;justify-content:center;box-shadow:0 0 60px rgba(0,82,255,0.6);animation:splashPulse 1.5s ease-in-out infinite;margin-bottom:20px}
@@ -33,12 +31,8 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .splash-bar{width:120px;height:3px;background:var(--s3);border-radius:3px;margin-top:28px;overflow:hidden}
 .splash-bar-fill{height:100%;background:var(--blue);border-radius:3px;animation:splashLoad 1.8s ease forwards}
 @keyframes splashLoad{0%{width:0%}100%{width:100%}}
-
-/* OFFLINE BANNER */
 .offline-banner{background:rgba(255,61,107,0.1);border-bottom:1px solid rgba(255,61,107,0.2);padding:8px 16px;text-align:center;font-size:11px;font-weight:600;color:var(--red);font-family:var(--mono);display:none}
 .offline-banner.show{display:block}
-
-/* TOPBAR */
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;position:sticky;top:0;background:rgba(2,5,16,0.92);backdrop-filter:blur(24px);z-index:100;border-bottom:1px solid var(--border)}
 .logo{display:flex;align-items:center;gap:9px}
 .logo-sq{width:34px;height:34px;border-radius:9px;background:var(--blue);display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(0,82,255,0.5);flex-shrink:0}
@@ -46,8 +40,6 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .logo-name span{color:#6B9FFF}
 .w-chip{display:flex;align-items:center;gap:7px;background:var(--s2);border:1px solid var(--border-hi);border-radius:99px;padding:7px 13px;font-size:12px;font-weight:600;color:#6B9FFF;cursor:pointer;font-family:var(--mono);border:none}
 .w-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;box-shadow:0 0 6px var(--green)}
-
-/* NAV */
 .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(8,13,28,0.97);backdrop-filter:blur(24px);border-top:1px solid var(--border);display:flex;z-index:100;padding:8px 0 max(12px,env(safe-area-inset-bottom))}
 .ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 0;cursor:pointer;border:none;background:none;color:var(--muted);font-family:var(--font);transition:color 0.2s}
 .ni.active{color:var(--blue2)}
@@ -55,39 +47,27 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .ni-ico svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:filter 0.2s}
 .ni.active .ni-ico svg{filter:drop-shadow(0 0 5px #4D8EFF)}
 .ni-lbl{font-size:9px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase}
-
-/* PAGE */
 .page{padding:18px}
-
-/* CARDS */
 .card{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:18px;margin-bottom:12px;position:relative;overflow:hidden}
 .card.hi{border-color:var(--border-hi);box-shadow:0 0 28px rgba(0,82,255,0.12)}
 .card.gold{border-color:rgba(255,187,0,0.3);box-shadow:0 0 24px rgba(255,187,0,0.07)}
 .card.purple{border-color:rgba(162,89,255,0.3);box-shadow:0 0 24px rgba(162,89,255,0.08)}
-
-/* XP BAR */
 .xp-bar-wrap{margin-top:14px}
 .xp-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 .xp-level{font-size:12px;font-weight:700;color:var(--gold);font-family:var(--mono);display:flex;align-items:center;gap:4px}
 .xp-pts{font-size:11px;color:var(--muted);font-family:var(--mono)}
 .xp-track{height:6px;background:var(--s3);border-radius:6px;overflow:hidden}
 .xp-fill{height:100%;border-radius:6px;transition:width 0.8s cubic-bezier(0.34,1.56,0.64,1)}
-
-/* STREAK */
 .streak-hero{text-align:center;padding:20px 16px 14px}
 .fire-wrap{position:relative;display:inline-flex;align-items:center;gap:10px;margin-bottom:6px}
 .fire-num{font-size:72px;font-weight:900;line-height:1;letter-spacing:-4px;color:var(--gold);text-shadow:0 0 40px rgba(255,187,0,0.4)}
 .fire-icon{width:32px;height:32px;flex-shrink:0;animation:fireWiggle 1.4s ease-in-out infinite}
 @keyframes fireWiggle{0%,100%{transform:rotate(-8deg) scale(1)}50%{transform:rotate(8deg) scale(1.15)}}
 .streak-sub{color:var(--muted2);font-size:13px;font-weight:500;margin-top:2px;font-family:var(--mono)}
-
-/* STATS ROW */
 .srow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:12px}
 .sc{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:13px 8px;text-align:center}
 .sc-n{font-size:24px;font-weight:800;color:var(--blue2);line-height:1;display:block;margin-bottom:3px}
 .sc-l{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block}
-
-/* VIBE GRID */
 .vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:13px}
 .vb{background:var(--s1);border:1.5px solid var(--border);border-radius:16px;padding:14px 6px 12px;cursor:pointer;text-align:center;transition:all 0.16s;font-family:var(--font)}
 .vb:active{transform:scale(0.93)}
@@ -96,14 +76,10 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .vi svg{width:26px;height:26px}
 .vn{font-size:9px;font-weight:700;letter-spacing:0.8px;color:var(--muted);text-transform:uppercase;display:block}
 .vb.sel .vn{color:var(--blue2)}
-
-/* CHECKIN CONFIRM */
 .cin{background:linear-gradient(135deg,rgba(0,82,255,0.1),rgba(0,240,160,0.04));border:1.5px solid var(--border-hi);border-radius:16px;padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:13px}
 .cin-ico{width:42px;height:42px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 .cv{font-size:16px;font-weight:800;display:block}
 .cs{font-size:11px;font-weight:400;color:var(--muted);margin-top:3px;display:block;font-family:var(--mono)}
-
-/* BUTTONS */
 .btn{width:100%;padding:15px;border:none;border-radius:14px;color:white;font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer;transition:all 0.16s;display:flex;align-items:center;justify-content:center;gap:8px}
 .btn:active{transform:scale(0.97)}
 .btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
@@ -112,18 +88,12 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .btn-purple{background:linear-gradient(135deg,#7B2FF7,#A259FF);box-shadow:0 4px 16px rgba(162,89,255,0.3)}
 .btn-red{background:rgba(255,61,107,0.15);border:1px solid rgba(255,61,107,0.3);color:var(--red);margin-top:9px}
 .btn:disabled{opacity:0.35;cursor:not-allowed;transform:none}
-
-/* CHECKED BANNER */
 .cban{background:linear-gradient(135deg,rgba(0,240,160,0.07),rgba(0,82,255,0.05));border:1px solid rgba(0,240,160,0.18);border-radius:16px;padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:13px}
 .cbi{width:38px;height:38px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 .cbt{font-size:15px;font-weight:800;color:var(--green);display:block}
 .cbs{font-size:11px;color:var(--muted);margin-top:3px;display:block;font-family:var(--mono)}
-
-/* COMBO FLASH */
 .combo-flash{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:28px;font-weight:900;color:var(--gold);text-shadow:0 0 30px rgba(255,187,0,0.8);z-index:500;pointer-events:none;animation:comboAnim 0.9s ease forwards;font-family:var(--mono)}
 @keyframes comboAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(0.6)}30%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}70%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-60%) scale(0.9)}}
-
-/* QUIZ */
 .qhdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .qcnt{font-size:12px;font-weight:600;color:var(--muted);font-family:var(--mono)}
 .qpts{font-size:13px;font-weight:700;color:var(--gold);font-family:var(--mono)}
@@ -143,8 +113,6 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .ob.wrong{border-color:var(--red);background:rgba(255,61,107,0.07)}
 .ob.wrong .ol{background:var(--red);color:#fff}
 .fact-box{margin-top:12px;padding:12px 14px;background:rgba(0,82,255,0.08);border:1px solid rgba(0,82,255,0.2);border-radius:10px;font-size:12px;font-weight:500;color:var(--muted2);line-height:1.6;font-family:var(--mono);display:none}
-
-/* QUIZ RESULT */
 .qres{text-align:center;padding:8px}
 .qres-ico{display:flex;align-items:center;justify-content:center;margin-bottom:12px}
 .qres-ico svg{width:54px;height:54px}
@@ -157,8 +125,6 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .confetti-wrap{position:fixed;inset:0;pointer-events:none;z-index:400;overflow:hidden}
 .confetti{position:absolute;width:8px;height:8px;border-radius:2px;animation:cfall linear forwards}
 @keyframes cfall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
-
-/* LEADERBOARD */
 .lbi{display:flex;align-items:center;gap:11px;padding:13px 15px;background:var(--s1);border:1px solid var(--border);border-radius:14px;margin-bottom:8px}
 .lbi.me{border-color:var(--border-hi);background:linear-gradient(135deg,rgba(0,82,255,0.08),rgba(0,82,255,0.02))}
 .lbr{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;background:var(--s2);color:var(--muted);font-family:var(--mono)}
@@ -168,9 +134,6 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .lbp{font-size:16px;font-weight:800;color:var(--blue2);display:block;text-align:right}
 .lbs{font-size:10px;color:var(--muted);text-align:right;font-family:var(--mono);display:block}
 .lb-empty{text-align:center;padding:32px 20px;background:var(--s1);border:1px solid var(--border);border-radius:16px;margin-bottom:8px}
-.lb-empty svg{width:36px;height:36px;stroke:var(--muted);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;margin-bottom:12px}
-
-/* BADGES */
 .bgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .bc{background:var(--s1);border:1.5px solid var(--border);border-radius:14px;padding:15px 11px;text-align:center;opacity:0.3;transition:all 0.2s;position:relative}
 .bc.earned{opacity:1;border-color:rgba(255,187,0,0.3);background:linear-gradient(135deg,rgba(255,187,0,0.06),rgba(255,187,0,0.01));box-shadow:0 0 18px rgba(255,187,0,0.07)}
@@ -178,8 +141,6 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .bi svg{width:28px;height:28px}
 .bn{font-size:12px;font-weight:700;display:block;margin-bottom:2px}
 .br{font-size:10px;font-weight:500;color:var(--muted);display:block}
-
-/* REFER */
 .ref-link-box{background:var(--s2);border:1px solid rgba(162,89,255,0.3);border-radius:12px;padding:12px 14px;font-family:var(--mono);font-size:12px;color:#A259FF;word-break:break-all;margin-bottom:12px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px}
 .ref-link-box span{flex:1;word-break:break-all}
 .ref-rewards{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px}
@@ -190,7 +151,6 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .rr-lbl{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-top:3px}
 .ref-count-row{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:var(--s2);border:1px solid var(--border);border-radius:12px;margin-bottom:9px}
 .ref-count-lbl{font-size:13px;font-weight:600;display:flex;align-items:center;gap:7px}
-.ref-count-lbl svg{width:15px;height:15px;stroke:var(--muted);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .ref-count-num{font-size:18px;font-weight:800;color:var(--purple)}
 .ref-history{background:var(--s1);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:12px}
 .rh-head{padding:14px 16px;border-bottom:1px solid var(--border);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
@@ -199,16 +159,12 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .rh-name{font-size:13px;font-weight:600}
 .rh-addr{font-size:10px;color:var(--muted);font-family:var(--mono);display:block;margin-top:1px}
 .rh-pts{font-size:13px;font-weight:700;color:var(--green)}
-
-/* PROFILE */
 .phdr{text-align:center;padding:18px 20px 10px}
 .pav{width:70px;height:70px;border-radius:18px;background:linear-gradient(135deg,var(--blue),#6B9FFF);display:flex;align-items:center;justify-content:center;margin:0 auto 11px;box-shadow:0 0 24px rgba(0,82,255,0.4)}
 .pav svg{width:38px;height:38px}
 .pname{font-size:21px;font-weight:800;letter-spacing:-0.3px;display:block}
 .paddr{font-size:11px;color:var(--muted);margin-top:3px;display:block;font-family:var(--mono)}
 .level-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(255,187,0,0.1);border:1px solid rgba(255,187,0,0.25);border-radius:99px;padding:4px 12px;font-size:12px;font-weight:700;color:var(--gold);margin-top:8px}
-
-/* HISTORY */
 .hr{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
 .hr:last-child{border-bottom:none}
 .hrl{display:flex;align-items:center;gap:10px}
@@ -216,8 +172,6 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .hre svg{width:18px;height:18px}
 .hrn{font-size:13px;font-weight:600;display:block}
 .hrd{font-size:10px;color:var(--muted);font-family:var(--mono);display:block}
-
-/* CONNECT */
 .cnx{min-height:calc(100vh - 60px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center}
 .cnx-logo{width:80px;height:80px;border-radius:22px;background:var(--blue);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 0 40px rgba(0,82,255,0.5);animation:logoPulse 2.5s ease-in-out infinite}
 @keyframes logoPulse{0%,100%{box-shadow:0 0 40px rgba(0,82,255,0.5)}50%{box-shadow:0 0 60px rgba(0,82,255,0.7),0 0 100px rgba(0,82,255,0.2)}}
@@ -227,25 +181,18 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .feat-ico svg{width:20px;height:20px;stroke:var(--blue2);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .feat-t{font-size:13px;font-weight:600;display:block}
 .feat-s{font-size:11px;color:var(--muted);display:block}
-
-/* NAME SETUP */
 .nsu{min-height:calc(100vh - 60px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;width:100%}
 .txtin{width:100%;padding:15px;background:var(--s2);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-family:var(--font);font-size:16px;font-weight:600;outline:none;transition:border 0.2s;margin-bottom:9px}
 .txtin:focus{border-color:var(--blue2)}
 .txtin::placeholder{color:var(--muted);font-weight:400}
-
-/* TOAST */
 .toast{position:fixed;bottom:95px;left:50%;transform:translateX(-50%);background:var(--s2);border:1px solid var(--border-hi);border-radius:12px;padding:11px 18px;font-size:13px;font-weight:600;z-index:300;animation:tIn 0.3s ease,tOut 0.3s ease 2.2s forwards;white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,0.5)}
 @keyframes tIn{from{opacity:0;transform:translateX(-50%) translateY(14px)}}
 @keyframes tOut{to{opacity:0;transform:translateX(-50%) translateY(-8px)}}
-
-/* MISC */
 .tag{display:inline-flex;align-items:center;gap:5px;background:rgba(0,82,255,0.09);border:1px solid rgba(0,82,255,0.2);border-radius:99px;padding:4px 11px;font-size:11px;font-weight:600;color:#6B9FFF;margin-bottom:13px}
 .tag-dot{width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0}
 .slbl{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:11px;display:block}
 .streak-freeze{background:linear-gradient(135deg,rgba(255,187,0,0.08),rgba(255,150,0,0.04));border:1px solid rgba(255,187,0,0.2);border-radius:14px;padding:14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .sf-title{font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px}
-.sf-title svg{width:15px;height:15px;stroke:var(--gold);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .sf-sub{font-size:11px;color:var(--muted);display:block;margin-top:3px}
 .sf-btn{padding:8px 14px;background:rgba(255,187,0,0.15);border:1px solid rgba(255,187,0,0.3);border-radius:9px;color:var(--gold);font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
 .challenge-card{background:linear-gradient(135deg,rgba(0,82,255,0.09),rgba(162,89,255,0.06));border:1px solid var(--border-hi);border-radius:16px;padding:16px;margin-top:12px}
@@ -254,12 +201,18 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .fu{animation:fadeUp 0.3s ease forwards}
 .spin-sm{width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* CUSTOM DISCONNECT MODAL - FIX #3 */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;display:flex;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
+.modal-sheet{background:var(--s1);border:1px solid var(--border);border-radius:20px 20px 0 0;padding:24px 20px 36px;width:100%;max-width:430px;animation:slideUp 0.25s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-title{font-size:18px;font-weight:800;margin-bottom:8px;display:block}
+.modal-sub{font-size:13px;color:var(--muted);font-family:var(--mono);display:block;margin-bottom:20px}
+.modal-btn-row{display:flex;flex-direction:column;gap:9px}
 </style>
 </head>
 <body>
 <div class="bg-glow"></div>
-
-<!-- SPLASH SCREEN -->
 <div id="splash">
   <div class="splash-logo">
     <svg width="54" height="54" viewBox="0 0 32 32" fill="none"><text x="5" y="25" font-family="Outfit,sans-serif" font-weight="900" font-size="26" fill="white">B</text></svg>
@@ -268,16 +221,16 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
   <div class="splash-sub">Daily streaks · Onchain quizzes</div>
   <div class="splash-bar"><div class="splash-bar-fill"></div></div>
 </div>
-
 <div class="offline-banner" id="offlineBanner">No internet connection — running in offline mode</div>
 <div id="app"></div>
 
 <script>
-// ── CONFIG ────────────────────────────────────
+// ── CONFIG ─────────────────────────────────────
+// FIX #1: Updated to correct anon key
 var SUPABASE_URL = 'https://wpuhwlramnnszophkpih.supabase.co';
-var SUPABASE_KEY = 'sb_publishable_XbcSSx8vMKMci341SxmYHg_jMeNVErw';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwdWh3bHJhbW5uc3pvcGhrcGloIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NTY0NDYsImV4cCI6MjA5NTEzMjQ0Nn0.qIGwJWafSlf76jNlb36747E2QBstKFZ7RZ3pnorG8PE';
 
-// ── SUPABASE API ──────────────────────────────
+// ── SUPABASE API ───────────────────────────────
 async function sbGet(wallet) {
   try {
     var r = await fetch(SUPABASE_URL+'/rest/v1/users?wallet=eq.'+encodeURIComponent(wallet)+'&limit=1', {
@@ -394,7 +347,6 @@ var BADGES = [
   {ico:'network',n:'Network King',r:'Refer 5 friends',earned:function(){return S.referrals.length>=5}},
 ];
 
-// ── DAILY QUESTION ROTATION ───────────────────
 function getDailyQuestions() {
   var today = new Date();
   var seed = today.getFullYear() * 10000 + (today.getMonth()+1) * 100 + today.getDate();
@@ -410,7 +362,6 @@ function getDailyQuestions() {
 
 var QUESTIONS = getDailyQuestions();
 
-// ── SVG ICONS ─────────────────────────────────
 var ICO = {
   fire:'<svg viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 6 8 6 13a6 6 0 0 0 12 0c0-3-2-6-2-6s-1 3-3 4c-1-2-1-6-1-9z" stroke="#FFBB00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 17a2 2 0 0 0 2-2c0-1-.8-2-.8-2s-.4 1.2-1.2 1.5C11.5 14.5 11 13 11 13s-1 1-1 2a2 2 0 0 0 2 2z" fill="#FFBB00"/></svg>',
   vibe:'<svg viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>',
@@ -452,7 +403,6 @@ function icoSvg(name, color, size) {
   return s.replace('<svg', '<svg width="'+size+'" height="'+size+'" stroke="'+stroke+'" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"');
 }
 
-// ── STATE ─────────────────────────────────────
 var S = {
   streak: parseInt(localStorage.getItem('streak')||'0'),
   points: parseInt(localStorage.getItem('points')||'0'),
@@ -505,7 +455,6 @@ async function saveRemote() {
   });
 }
 
-// ── HELPERS ───────────────────────────────────
 function sa(a){return a ? a.slice(0,6)+'…'+a.slice(-4) : '';}
 function today(){return new Date().toDateString();}
 function yesterday(){return new Date(Date.now()-86400000).toDateString();}
@@ -561,7 +510,6 @@ function logoMark(size) {
   return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 32 32" fill="none"><text x="5" y="25" font-family="Outfit,sans-serif" font-weight="900" font-size="26" fill="white">B</text></svg>';
 }
 
-// ── ONLINE/OFFLINE ────────────────────────────
 window.addEventListener('online', function() {
   S.isOnline = true;
   document.getElementById('offlineBanner').classList.remove('show');
@@ -573,9 +521,9 @@ window.addEventListener('offline', function() {
 });
 if (!navigator.onLine) {
   document.getElementById('offlineBanner').classList.add('show');
-}
-
-// ── WALLET ────────────────────────────────────
+                         }
+  
+  // ── WALLET ────────────────────────────────────
 async function connectWallet() {
   if (typeof window.ethereum === 'undefined') { toast('Open in Coinbase Wallet!'); return; }
   try {
@@ -585,15 +533,12 @@ async function connectWallet() {
     S.wallet = acc[0];
     localStorage.setItem('walletAddress', S.wallet);
     if (!S.referCode) { S.referCode = genCode(S.wallet); saveLocal(['referCode']); }
-
-    // Check URL referral
     var urlParams = new URLSearchParams(window.location.search);
     var ref = urlParams.get('ref');
     if (ref && ref !== S.referCode && !S.referredBy) {
       S.referredBy = ref;
       S.points += 50;
       saveLocal(['referredBy','points']);
-      // Credit referrer
       if (S.isOnline) {
         var referrer = await sbGetUserByCode(ref);
         if (referrer) {
@@ -611,8 +556,6 @@ async function connectWallet() {
         }
       }
     }
-
-    // Load existing data from Supabase
     if (S.isOnline) {
       var existing = await sbGet(S.wallet);
       if (existing) {
@@ -632,19 +575,40 @@ async function connectWallet() {
         saveLocal(['streak','points','quizzes','totalCorrect','lastCheckin','vibeHistory','quizDone','referCode','referredBy','referralPts','freezeUsed','referrals','username']);
       }
     }
-
     if (!S.username) { renderNameSetup(); }
     else { render(); }
   } catch(e) { toast('Connection failed'); render(); }
 }
 
-function disconnectWallet() {
-  // Clear all state
+// FIX #3: Custom disconnect modal (no confirm() — doesn't work in Coinbase Wallet)
+function confirmDisconnect() {
+  var overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.id = 'disconnectModal';
+  overlay.innerHTML =
+    '<div class="modal-sheet">' +
+      '<span class="modal-title">Disconnect Wallet?</span>' +
+      '<span class="modal-sub">Your progress is saved to the database. You can reconnect anytime.</span>' +
+      '<div class="modal-btn-row">' +
+        '<button class="btn btn-red" onclick="doDisconnect()" style="margin-top:0">' + icoSvg('logout','var(--red)',18) + ' Disconnect</button>' +
+        '<button class="btn btn-ghost" onclick="closeDisconnectModal()" style="margin-top:0">Cancel</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', function(e){ if(e.target===overlay) closeDisconnectModal(); });
+}
+
+function closeDisconnectModal() {
+  var m = document.getElementById('disconnectModal');
+  if(m) m.remove();
+}
+
+function doDisconnect() {
+  closeDisconnectModal();
   S.wallet=''; S.username=''; S.streak=0; S.points=0; S.quizzes=0;
   S.totalCorrect=0; S.lastCheckin=''; S.vibeHistory=[]; S.quizDone='';
   S.referCode=''; S.referredBy=''; S.referrals=[]; S.referralPts=0;
   S.freezeUsed=0; S.tab='vibe'; S.selVibe=null; S.qActive=false;
-  // Clear localStorage
   ['walletAddress','username','streak','points','quizzes','totalCorrect',
    'lastCheckin','vibeHistory','quizDone','referCode','referredBy',
    'referrals','referralPts','freezeUsed','perfectQuiz'].forEach(function(k){
@@ -724,7 +688,6 @@ function useFreeze() {
   render();
 }
 
-// ── REFERRAL ──────────────────────────────────
 function getReferLink(){return 'https://mini-app-2-delta.vercel.app?ref='+S.referCode;}
 
 function copyReferLink(){
@@ -740,7 +703,6 @@ function shareReferLink(){
   else{navigator.clipboard.writeText(text).then(function(){toast('Link copied!');});}
 }
 
-// ── UI HELPERS ────────────────────────────────
 function topbar(){
   var w = S.wallet
     ? '<div class="w-chip"><div class="w-dot"></div>'+(S.username||sa(S.wallet))+'</div>'
@@ -766,7 +728,6 @@ function bnav(){
 
 function goTab(t){S.tab=t;S.qActive=false;render();}
 
-// ── RENDER ────────────────────────────────────
 function render(){
   if(!S.wallet){renderConnect();return;}
   var h=topbar()+'<div id="pg" class="fu">';
@@ -778,7 +739,6 @@ function render(){
   document.getElementById('app').innerHTML=h;
 }
 
-// ── CONNECT SCREEN ────────────────────────────
 function renderConnect(){
   var h=topbar()+'<div class="cnx fu">';
   h+='<div class="cnx-logo">'+logoMark(50)+'</div>';
@@ -800,7 +760,6 @@ function renderConnect(){
   document.getElementById('app').innerHTML=h;
 }
 
-// ── NAME SETUP ────────────────────────────────
 function renderNameSetup(){
   var h=topbar()+'<div class="nsu fu">';
   h+='<div style="text-align:center;margin-bottom:28px">';
@@ -825,15 +784,12 @@ async function saveUsername(){
   render();
 }
 
-// ── VIBE TAB ──────────────────────────────────
 function renderVibe(){
   var td=today(); var ci=S.lastCheckin===td;
   var lv=getLevel(); var totalPts=S.points+S.referralPts;
   var lvPct=Math.min(100,Math.max(0,Math.round(((totalPts-(lv.next/4))/(lv.next-(lv.next/4)))*100)));
   var h='<div class="page">';
   h+='<div class="tag"><div class="tag-dot"></div>Base Network · Live</div>';
-
-  // Streak card
   h+='<div class="card hi">';
   h+='<div class="streak-hero">';
   h+='<div class="fire-wrap"><span class="fire-num">'+S.streak+'</span>';
@@ -844,14 +800,11 @@ function renderVibe(){
   h+='<span class="xp-pts">'+totalPts+' / '+lv.next+' pts</span></div>';
   h+='<div class="xp-track"><div class="xp-fill" style="width:'+lvPct+'%;background:linear-gradient(90deg,'+lv.color+','+lv.color+'aa)"></div></div></div>';
   h+='</div>';
-
-  // Stats
   h+='<div class="srow">';
   h+='<div class="sc"><span class="sc-n">'+S.streak+'</span><span class="sc-l">Streak</span></div>';
   h+='<div class="sc"><span class="sc-n">'+totalPts+'</span><span class="sc-l">Points</span></div>';
   h+='<div class="sc"><span class="sc-n">'+S.quizzes+'</span><span class="sc-l">Quizzes</span></div>';
   h+='</div>';
-
   if(ci){
     var lv2=S.vibeHistory[0];
     var chkSvg=icoSvg('check','var(--green)',32);
@@ -895,11 +848,9 @@ function selVibe(i){
   if(pg){pg.innerHTML=renderVibe();}
 }
 
-// ── QUIZ TAB ──────────────────────────────────
 function renderQuiz(){
   var td=today(); var done=S.quizDone===td;
   var h='<div class="page">';
-
   if(done && !S.qActive){
     h+='<div class="card" style="text-align:center;padding:28px 18px">';
     h+='<div style="width:64px;height:64px;border-radius:18px;background:rgba(0,240,160,0.08);border:1px solid rgba(0,240,160,0.2);display:flex;align-items:center;justify-content:center;margin:0 auto 14px">'+icoSvg('check','var(--green)',38)+'</div>';
@@ -961,20 +912,16 @@ function renderQuiz(){
   return h;
 }
 
-// ── LEADERBOARD ───────────────────────────────
 async function renderLBAsync(){
   var pg=document.getElementById('pg');
   if(!pg) return;
-
   var mn=S.username||sa(S.wallet);
   var totalPts=S.points+S.referralPts;
   var fireSvg=icoSvg('fire','#FFBB00',11);
-
   var h='<div class="page">';
   h+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">';
   h+='<span style="font-size:18px;font-weight:800">Leaderboard</span>';
   h+='<span style="font-size:11px;color:var(--muted);font-family:var(--mono)">All-time</span></div>';
-
   if(!S.isOnline){
     h+='<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;font-family:var(--mono)">Offline — connect to see leaderboard</div>';
   } else {
@@ -998,7 +945,6 @@ async function renderLBAsync(){
         h+='<div><span class="lbp">'+(u.points||0)+'</span><span class="lbs">pts</span></div>';
         h+='</div>';
       });
-      // Make sure user is shown if not in top 20
       var inList = users.some(function(u){return u.wallet && u.wallet.toLowerCase()===S.wallet.toLowerCase();});
       if(!inList){
         h+='<div class="lbi me">';
@@ -1009,14 +955,12 @@ async function renderLBAsync(){
       }
     }
   }
-
   h+='<div class="challenge-card">';
   h+='<span style="font-size:14px;font-weight:800;display:block;margin-bottom:4px">Challenge a Friend</span>';
   h+='<span style="font-size:12px;color:var(--muted);font-family:var(--mono);display:block;margin-bottom:12px">Share your '+S.streak+'-day streak</span>';
   h+='<button class="btn btn-purple" onclick="shareReferLink()">'+icoSvg('share','white',18)+' Share Challenge</button>';
   h+='</div>';
   h+='</div>';
-
   pg.innerHTML=h;
 }
 
@@ -1026,7 +970,7 @@ function renderLB(){
   return h;
 }
 
-// ── ME TAB ────────────────────────────────────
+// FIX #2: Refer & Earn comes BEFORE Vibe History
 function renderMe(){
   var mn=S.username||sa(S.wallet);
   var lv=getLevel(); var totalPts=S.points+S.referralPts;
@@ -1062,20 +1006,7 @@ function renderMe(){
   });
   h+='</div></div>';
 
-  // Vibe history
-  h+='<div class="card"><span class="slbl">Vibe History</span>';
-  if(S.vibeHistory.length===0){
-    h+='<div style="text-align:center;padding:20px 0;color:var(--muted);font-size:13px">No vibes yet — check in!</div>';
-  } else {
-    S.vibeHistory.slice(0,8).forEach(function(v){
-      var c=VIBE_COLORS[v.key]||'#6B9FFF';
-      h+='<div class="hr"><div class="hrl"><div class="hre">'+icoSvg(v.key,c,18)+'</div>';
-      h+='<div><span class="hrn">'+v.name+'</span><span class="hrd">'+fmtDate(v.date)+'</span></div></div></div>';
-    });
-  }
-  h+='</div>';
-
-  // Divider
+  // ── FIX #2: Refer & Earn BEFORE Vibe History ──
   h+='<div class="divider"></div>';
   h+='<span class="slbl">Refer & Earn</span>';
 
@@ -1117,6 +1048,20 @@ function renderMe(){
     h+='<div style="padding:11px 14px;background:rgba(0,240,160,0.07);border:1px solid rgba(0,240,160,0.15);border-radius:11px;font-size:12px;font-weight:600;color:var(--green);margin-top:9px;font-family:var(--mono);display:flex;align-items:center;gap:7px">'+icoSvg('check','var(--green)',13)+' You joined via referral — +50 pts bonus!</div>';
   }
 
+  // Vibe History (now AFTER Refer & Earn)
+  h+='<div class="divider"></div>';
+  h+='<div class="card"><span class="slbl">Vibe History</span>';
+  if(S.vibeHistory.length===0){
+    h+='<div style="text-align:center;padding:20px 0;color:var(--muted);font-size:13px">No vibes yet — check in!</div>';
+  } else {
+    S.vibeHistory.slice(0,8).forEach(function(v){
+      var c=VIBE_COLORS[v.key]||'#6B9FFF';
+      h+='<div class="hr"><div class="hrl"><div class="hre">'+icoSvg(v.key,c,18)+'</div>';
+      h+='<div><span class="hrn">'+v.name+'</span><span class="hrd">'+fmtDate(v.date)+'</span></div></div></div>';
+    });
+  }
+  h+='</div>';
+
   // Disconnect
   h+='<div class="divider"></div>';
   h+='<button class="btn btn-red" onclick="confirmDisconnect()">'+icoSvg('logout','var(--red)',18)+' Disconnect Wallet</button>';
@@ -1124,18 +1069,10 @@ function renderMe(){
   return h;
 }
 
-function confirmDisconnect(){
-  if(confirm('Disconnect wallet? Your progress is saved to the database.')){
-    disconnectWallet();
-  }
-}
-
-// ── SPLASH + BOOT ─────────────────────────────
 window.addEventListener('load', function(){
   setTimeout(function(){
     var splash = document.getElementById('splash');
     if(splash){ splash.classList.add('hide'); setTimeout(function(){splash.remove();},500); }
-    // Handle referral from URL
     var _ref = new URLSearchParams(window.location.search).get('ref');
     if(_ref && S.wallet && !S.referredBy && _ref !== S.referCode){
       S.referredBy=_ref; S.points+=50; saveLocal(['referredBy','points']);
@@ -1147,41 +1084,3 @@ window.addEventListener('load', function(){
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
