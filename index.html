@@ -1,3 +1,4 @@
+cat > /home/claude/index.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +36,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .offline-banner.show{display:block}
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;position:sticky;top:0;background:rgba(2,5,16,0.92);backdrop-filter:blur(24px);z-index:100;border-bottom:1px solid var(--border)}
 .logo{display:flex;align-items:center;gap:9px}
-.logo-sq{width:34px;height:34px;border-radius:9px;background:var(--blue);display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(0,82,255,0.5);flex-shrink:0}
+.logo-sq{width:34px;height:34px;border-radius:9px;background:var(--blue);display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(0,82,255,0.5);flex-shrink:0;overflow:hidden}
 .logo-name{font-weight:800;font-size:18px;letter-spacing:-0.3px}
 .logo-name span{color:#6B9FFF}
 .w-chip{display:flex;align-items:center;gap:7px;background:var(--s2);border:1px solid var(--border-hi);border-radius:99px;padding:7px 13px;font-size:12px;font-weight:600;color:#6B9FFF;cursor:pointer;font-family:var(--mono);border:none}
@@ -173,7 +174,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .hrn{font-size:13px;font-weight:600;display:block}
 .hrd{font-size:10px;color:var(--muted);font-family:var(--mono);display:block}
 .cnx{min-height:calc(100vh - 60px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center}
-.cnx-logo{width:80px;height:80px;border-radius:22px;background:var(--blue);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 0 40px rgba(0,82,255,0.5);animation:logoPulse 2.5s ease-in-out infinite}
+.cnx-logo{width:80px;height:80px;border-radius:22px;background:var(--blue);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 0 40px rgba(0,82,255,0.5);animation:logoPulse 2.5s ease-in-out infinite;overflow:hidden}
 @keyframes logoPulse{0%,100%{box-shadow:0 0 40px rgba(0,82,255,0.5)}50%{box-shadow:0 0 60px rgba(0,82,255,0.7),0 0 100px rgba(0,82,255,0.2)}}
 .feat-list{width:100%;max-width:320px;margin-bottom:28px}
 .feat{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--s1);border:1px solid var(--border);border-radius:12px;margin-bottom:7px;text-align:left}
@@ -201,8 +202,6 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .fu{animation:fadeUp 0.3s ease forwards}
 .spin-sm{width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* CUSTOM DISCONNECT MODAL - FIX #3 */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;display:flex;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
 .modal-sheet{background:var(--s1);border:1px solid var(--border);border-radius:20px 20px 0 0;padding:24px 20px 36px;width:100%;max-width:430px;animation:slideUp 0.25s ease}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
@@ -214,9 +213,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 <body>
 <div class="bg-glow"></div>
 <div id="splash">
-  <div class="splash-logo">
-    <svg width="54" height="54" viewBox="0 0 32 32" fill="none"><text x="5" y="25" font-family="Outfit,sans-serif" font-weight="900" font-size="26" fill="white">B</text></svg>
-  </div>
+  <div class="splash-logo">LOGO_PLACEHOLDER</div>
   <div class="splash-title">Base<span>Vibe</span></div>
   <div class="splash-sub">Daily streaks · Onchain quizzes</div>
   <div class="splash-bar"><div class="splash-bar-fill"></div></div>
@@ -226,7 +223,6 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 
 <script>
 // ── CONFIG ─────────────────────────────────────
-// FIX #1: Updated to correct anon key
 var SUPABASE_URL = 'https://wpuhwlramnnszophkpih.supabase.co';
 var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwdWh3bHJhbW5uc3pvcGhrcGloIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NTY0NDYsImV4cCI6MjA5NTEzMjQ0Nn0.qIGwJWafSlf76jNlb36747E2QBstKFZ7RZ3pnorG8PE';
 
@@ -234,8 +230,9 @@ var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSI
 async function sbGet(wallet) {
   try {
     var r = await fetch(SUPABASE_URL+'/rest/v1/users?wallet=eq.'+encodeURIComponent(wallet)+'&limit=1', {
-      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json'}
     });
+    if(!r.ok) return null;
     var d = await r.json();
     return d && d[0] ? d[0] : null;
   } catch(e) { return null; }
@@ -243,35 +240,50 @@ async function sbGet(wallet) {
 
 async function sbUpsert(data) {
   try {
-    await fetch(SUPABASE_URL+'/rest/v1/users?on_conflict=wallet', {
+    var r = await fetch(SUPABASE_URL+'/rest/v1/users?on_conflict=wallet', {
       method:'POST',
-      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates'},
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates,return=minimal'},
       body: JSON.stringify(data)
     });
-    return true;
+    return r.ok;
   } catch(e) { return false; }
 }
 
+// FIX #1: Leaderboard — added Accept header + better error handling
 async function sbGetLeaderboard() {
   try {
     var r = await fetch(SUPABASE_URL+'/rest/v1/users?select=username,wallet,points,streak&order=points.desc&limit=20', {
-      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+      headers:{
+        'apikey':SUPABASE_KEY,
+        'Authorization':'Bearer '+SUPABASE_KEY,
+        'Accept':'application/json',
+        'Content-Type':'application/json'
+      }
     });
-    return await r.json();
-  } catch(e) { return []; }
+    if(!r.ok){
+      console.error('LB fetch failed:', r.status, await r.text());
+      return [];
+    }
+    var data = await r.json();
+    return Array.isArray(data) ? data : [];
+  } catch(e) {
+    console.error('LB error:', e);
+    return [];
+  }
 }
 
 async function sbGetUserByCode(code) {
   try {
     var r = await fetch(SUPABASE_URL+'/rest/v1/users?refer_code=eq.'+encodeURIComponent(code)+'&limit=1', {
-      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json'}
     });
+    if(!r.ok) return null;
     var d = await r.json();
     return d && d[0] ? d[0] : null;
-  } catch(e) { return null; }
+    } catch(e) { return null; }
 }
 
-// ── QUESTION BANK (50 questions) ──────────────
+// ── QUESTION BANK ──────────────────────────────
 var ALL_QUESTIONS = [
   {q:"What is Base?",diff:'easy',opts:["A Bitcoin Layer 2","An Ethereum L2 by Coinbase","A new L1 blockchain","A DeFi protocol"],a:1,fact:"Base is an Ethereum Layer 2 built by Coinbase, using the OP Stack."},
   {q:"Who built Base?",diff:'easy',opts:["Ethereum Foundation","Binance","Coinbase","Polygon Labs"],a:2,fact:"Coinbase launched Base mainnet in August 2023."},
@@ -325,18 +337,9 @@ var ALL_QUESTIONS = [
   {q:"What is EIP-4844?",diff:'hard',opts:["A new token standard","Proto-danksharding that reduces L2 fees","An NFT upgrade","A wallet standard"],a:1,fact:"EIP-4844 introduced blob transactions that dramatically reduce data costs for L2s like Base."},
 ];
 
-var VIBES = [
-  {key:'pumped',n:'PUMPED'},{key:'chill',n:'CHILL'},{key:'grind',n:'GRIND'},
-  {key:'wagmi',n:'WAGMI'},{key:'gm',n:'GM'},{key:'degen',n:'DEGEN'},
-  {key:'based',n:'BASED'},{key:'hodl',n:'HODL'},{key:'flow',n:'FLOW'},
-];
-
-var VIBE_COLORS = {
-  pumped:'#FFBB00',chill:'#6B9FFF',grind:'#00F0A0',wagmi:'#A259FF',
-  gm:'#7A8AB0',degen:'#FF3D6B',based:'#0052FF',hodl:'#A259FF',flow:'#00F0A0'
-};
-
-var BADGES = [
+var VIBES=[{key:'pumped',n:'PUMPED'},{key:'chill',n:'CHILL'},{key:'grind',n:'GRIND'},{key:'wagmi',n:'WAGMI'},{key:'gm',n:'GM'},{key:'degen',n:'DEGEN'},{key:'based',n:'BASED'},{key:'hodl',n:'HODL'},{key:'flow',n:'FLOW'}];
+var VIBE_COLORS={pumped:'#FFBB00',chill:'#6B9FFF',grind:'#00F0A0',wagmi:'#A259FF',gm:'#7A8AB0',degen:'#FF3D6B',based:'#0052FF',hodl:'#A259FF',flow:'#00F0A0'};
+var BADGES=[
   {ico:'crown',n:'OG Vibe',r:'First check-in',earned:function(){return S.streak>=1}},
   {ico:'fire',n:'7 Day Streak',r:'7 days in a row',earned:function(){return S.streak>=7}},
   {ico:'zap',n:'Base Native',r:'30 day streak',earned:function(){return S.streak>=30}},
@@ -347,22 +350,16 @@ var BADGES = [
   {ico:'network',n:'Network King',r:'Refer 5 friends',earned:function(){return S.referrals.length>=5}},
 ];
 
-function getDailyQuestions() {
-  var today = new Date();
-  var seed = today.getFullYear() * 10000 + (today.getMonth()+1) * 100 + today.getDate();
-  var shuffled = ALL_QUESTIONS.slice();
-  for (var i = shuffled.length - 1; i > 0; i--) {
-    var j = (seed * (i + 1) * 9301 + 49297) % 233280;
-    j = j % (i + 1);
-    var temp = shuffled[i]; shuffled[i] = shuffled[j]; shuffled[j] = temp;
-    seed = j + seed;
-  }
-  return shuffled.slice(0, 10);
+function getDailyQuestions(){
+  var today=new Date();
+  var seed=today.getFullYear()*10000+(today.getMonth()+1)*100+today.getDate();
+  var shuffled=ALL_QUESTIONS.slice();
+  for(var i=shuffled.length-1;i>0;i--){var j=(seed*(i+1)*9301+49297)%233280;j=j%(i+1);var temp=shuffled[i];shuffled[i]=shuffled[j];shuffled[j]=temp;seed=j+seed;}
+  return shuffled.slice(0,10);
 }
+var QUESTIONS=getDailyQuestions();
 
-var QUESTIONS = getDailyQuestions();
-
-var ICO = {
+var ICO={
   fire:'<svg viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 6 8 6 13a6 6 0 0 0 12 0c0-3-2-6-2-6s-1 3-3 4c-1-2-1-6-1-9z" stroke="#FFBB00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 17a2 2 0 0 0 2-2c0-1-.8-2-.8-2s-.4 1.2-1.2 1.5C11.5 14.5 11 13 11 13s-1 1-1 2a2 2 0 0 0 2 2z" fill="#FFBB00"/></svg>',
   vibe:'<svg viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>',
   brain:'<svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.14z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.14z"/></svg>',
@@ -383,7 +380,6 @@ var ICO = {
   wallet:'<svg viewBox="0 0 24 24"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>',
   gift:'<svg viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>',
   snowflake:'<svg viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 7l-5-5-5 5"/><path d="M17 17l-5 5-5-5"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M7 7l-5 5 5 5"/><path d="M17 7l5 5-5 5"/></svg>',
-  link:'<svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
   logout:'<svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>',
   pumped:'<svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="#FFBB00" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   chill:'<svg viewBox="0 0 24 24" stroke="#6B9FFF" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>',
@@ -396,345 +392,230 @@ var ICO = {
   flow:'<svg viewBox="0 0 24 24" stroke="#00F0A0" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M3 6c3 0 3 6 6 6s3-6 6-6 3 6 6 6"/></svg>',
 };
 
-function icoSvg(name, color, size) {
-  size = size || 20;
-  var s = ICO[name] || ICO.star;
-  var stroke = color || 'currentColor';
-  return s.replace('<svg', '<svg width="'+size+'" height="'+size+'" stroke="'+stroke+'" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"');
+function icoSvg(name,color,size){
+  size=size||20;var s=ICO[name]||ICO.star;var stroke=color||'currentColor';
+  return s.replace('<svg','<svg width="'+size+'" height="'+size+'" stroke="'+stroke+'" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"');
 }
 
-var S = {
-  streak: parseInt(localStorage.getItem('streak')||'0'),
-  points: parseInt(localStorage.getItem('points')||'0'),
-  quizzes: parseInt(localStorage.getItem('quizzes')||'0'),
-  totalCorrect: parseInt(localStorage.getItem('totalCorrect')||'0'),
-  lastCheckin: localStorage.getItem('lastCheckin')||'',
-  vibeHistory: JSON.parse(localStorage.getItem('vibeHistory')||'[]'),
-  quizDone: localStorage.getItem('quizDone')||'',
-  wallet: localStorage.getItem('walletAddress')||'',
-  username: localStorage.getItem('username')||'',
-  referCode: localStorage.getItem('referCode')||'',
-  referredBy: localStorage.getItem('referredBy')||'',
-  referrals: JSON.parse(localStorage.getItem('referrals')||'[]'),
-  referralPts: parseInt(localStorage.getItem('referralPts')||'0'),
-  freezeUsed: parseInt(localStorage.getItem('freezeUsed')||'0'),
-  tab: 'vibe',
-  selVibe: null,
-  curQ: 0,
-  qScore: 0,
-  qAnswered: false,
-  qActive: false,
-  comboStreak: 0,
-  isOnline: navigator.onLine,
+// FIX #3: New premium logo SVG
+function logoMark(size){
+  size=size||22;
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">'
+    +'<circle cx="20" cy="20" r="20" fill="none"/>'
+    +'<path d="M11 8h10.5C25.642 8 29 11.358 29 15.5S25.642 23 21.5 23H11V8z" fill="white"/>'
+    +'<path d="M11 23h11.5C26.642 23 30 26.134 30 30s-3.358 7-7.5 7H11V23z" fill="rgba(255,255,255,0.55)"/>'
+    +'<rect x="11" y="8" width="3" height="29" fill="white"/>'
+    +'</svg>';
+}
+
+var S={
+  streak:parseInt(localStorage.getItem('streak')||'0'),
+  points:parseInt(localStorage.getItem('points')||'0'),
+  quizzes:parseInt(localStorage.getItem('quizzes')||'0'),
+  totalCorrect:parseInt(localStorage.getItem('totalCorrect')||'0'),
+  lastCheckin:localStorage.getItem('lastCheckin')||'',
+  vibeHistory:JSON.parse(localStorage.getItem('vibeHistory')||'[]'),
+  quizDone:localStorage.getItem('quizDone')||'',
+  wallet:localStorage.getItem('walletAddress')||'',
+  username:localStorage.getItem('username')||'',
+  referCode:localStorage.getItem('referCode')||'',
+  referredBy:localStorage.getItem('referredBy')||'',
+  referrals:JSON.parse(localStorage.getItem('referrals')||'[]'),
+  referralPts:parseInt(localStorage.getItem('referralPts')||'0'),
+  freezeUsed:parseInt(localStorage.getItem('freezeUsed')||'0'),
+  tab:'vibe',selVibe:null,curQ:0,qScore:0,qAnswered:false,qActive:false,comboStreak:0,
+  isOnline:navigator.onLine,
 };
 
-function saveLocal(keys) {
-  keys.forEach(function(k) {
-    if(k==='vibeHistory'||k==='referrals') localStorage.setItem(k, JSON.stringify(S[k]));
-    else localStorage.setItem(k, String(S[k]));
+function saveLocal(keys){
+  keys.forEach(function(k){
+    if(k==='vibeHistory'||k==='referrals')localStorage.setItem(k,JSON.stringify(S[k]));
+    else localStorage.setItem(k,String(S[k]));
   });
 }
 
-async function saveRemote() {
-  if (!S.wallet || !S.isOnline) return;
+async function saveRemote(){
+  if(!S.wallet||!S.isOnline)return;
   await sbUpsert({
-    wallet: S.wallet,
-    username: S.username,
-    points: S.points + S.referralPts,
-    streak: S.streak,
-    last_checkin: S.lastCheckin,
-    quizzes: S.quizzes,
-    total_correct: S.totalCorrect,
-    quiz_done: S.quizDone,
-    refer_code: S.referCode,
-    referred_by: S.referredBy,
-    referral_pts: S.referralPts,
-    freeze_used: S.freezeUsed,
-    vibe_history: S.vibeHistory,
-    referrals: S.referrals,
+    wallet:S.wallet,username:S.username,points:S.points+S.referralPts,
+    streak:S.streak,last_checkin:S.lastCheckin,quizzes:S.quizzes,
+    total_correct:S.totalCorrect,quiz_done:S.quizDone,refer_code:S.referCode,
+    referred_by:S.referredBy,referral_pts:S.referralPts,freeze_used:S.freezeUsed,
+    vibe_history:S.vibeHistory,referrals:S.referrals,
   });
 }
 
-function sa(a){return a ? a.slice(0,6)+'…'+a.slice(-4) : '';}
+function sa(a){return a?a.slice(0,6)+'…'+a.slice(-4):'';}
 function today(){return new Date().toDateString();}
 function yesterday(){return new Date(Date.now()-86400000).toDateString();}
 function fmtDate(d){var p=d.split(' ');return p[1]+' '+p[2];}
 
-function genCode(wallet) {
+function genCode(wallet){
   var chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  var seed = wallet ? parseInt(wallet.slice(2,10),16) : Math.floor(Math.random()*99999999);
+  var seed=wallet?parseInt(wallet.slice(2,10),16):Math.floor(Math.random()*99999999);
   var code='BV';
   for(var i=0;i<6;i++){code+=chars[(seed*(i+7))%chars.length];}
   return code;
 }
 
-function getLevel() {
-  var p = S.points + S.referralPts;
-  if(p>=1000) return {name:'Diamond',next:2000,color:'#A259FF',ico:'diamond'};
-  if(p>=500)  return {name:'Gold',next:1000,color:'#FFBB00',ico:'award'};
-  if(p>=200)  return {name:'Silver',next:500,color:'#C0C0C0',ico:'award'};
-  if(p>=50)   return {name:'Bronze',next:200,color:'#CD7F32',ico:'award'};
-  return {name:'Rookie',next:50,color:'#00F0A0',ico:'zap'};
+function getLevel(){
+  var p=S.points+S.referralPts;
+  if(p>=1000)return{name:'Diamond',next:2000,color:'#A259FF',ico:'diamond'};
+  if(p>=500)return{name:'Gold',next:1000,color:'#FFBB00',ico:'award'};
+  if(p>=200)return{name:'Silver',next:500,color:'#C0C0C0',ico:'award'};
+  if(p>=50)return{name:'Bronze',next:200,color:'#CD7F32',ico:'award'};
+  return{name:'Rookie',next:50,color:'#00F0A0',ico:'zap'};
 }
 
-function toast(msg) {
+function toast(msg){
   var old=document.querySelector('.toast');if(old)old.remove();
   var t=document.createElement('div');t.className='toast';t.textContent=msg;
   document.body.appendChild(t);setTimeout(function(){t.remove();},2600);
 }
-
-function showCombo(msg) {
-  var d=document.createElement('div');d.className='combo-flash';d.textContent=msg;
-  document.body.appendChild(d);setTimeout(function(){d.remove();},900);
-}
-
-function spawnConfetti() {
+function showCombo(msg){var d=document.createElement('div');d.className='combo-flash';d.textContent=msg;document.body.appendChild(d);setTimeout(function(){d.remove();},900);}
+function spawnConfetti(){
   var wrap=document.createElement('div');wrap.className='confetti-wrap';document.body.appendChild(wrap);
   var colors=['#0052FF','#FFBB00','#00F0A0','#FF3D6B','#A259FF','#fff'];
-  for(var i=0;i<60;i++){
-    (function(i){
-      setTimeout(function(){
-        var c=document.createElement('div');c.className='confetti';
-        c.style.left=Math.random()*100+'vw';
-        c.style.background=colors[Math.floor(Math.random()*colors.length)];
-        c.style.animationDuration=(1.5+Math.random()*2)+'s';
-        c.style.borderRadius=Math.random()>0.5?'50%':'2px';
-        wrap.appendChild(c);
-      },i*30);
-    })(i);
-  }
+  for(var i=0;i<60;i++){(function(i){setTimeout(function(){var c=document.createElement('div');c.className='confetti';c.style.left=Math.random()*100+'vw';c.style.background=colors[Math.floor(Math.random()*colors.length)];c.style.animationDuration=(1.5+Math.random()*2)+'s';c.style.borderRadius=Math.random()>0.5?'50%':'2px';wrap.appendChild(c);},i*30);})(i);}
   setTimeout(function(){wrap.remove();},5000);
 }
 
-function logoMark(size) {
-  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 32 32" fill="none"><text x="5" y="25" font-family="Outfit,sans-serif" font-weight="900" font-size="26" fill="white">B</text></svg>';
-}
+window.addEventListener('online',function(){S.isOnline=true;document.getElementById('offlineBanner').classList.remove('show');saveRemote();});
+window.addEventListener('offline',function(){S.isOnline=false;document.getElementById('offlineBanner').classList.add('show');});
+if(!navigator.onLine)document.getElementById('offlineBanner').classList.add('show');
 
-window.addEventListener('online', function() {
-  S.isOnline = true;
-  document.getElementById('offlineBanner').classList.remove('show');
-  saveRemote();
-});
-window.addEventListener('offline', function() {
-  S.isOnline = false;
-  document.getElementById('offlineBanner').classList.add('show');
-});
-if (!navigator.onLine) {
-  document.getElementById('offlineBanner').classList.add('show');
-                         }
-  
-  // ── WALLET ────────────────────────────────────
-async function connectWallet() {
-  if (typeof window.ethereum === 'undefined') { toast('Open in Coinbase Wallet!'); return; }
-  try {
-    var btn = document.getElementById('connectBtn');
-    if(btn) { btn.disabled = true; btn.innerHTML = '<div class="spin-sm"></div> Connecting…'; }
-    var acc = await window.ethereum.request({method:'eth_requestAccounts'});
-    S.wallet = acc[0];
-    localStorage.setItem('walletAddress', S.wallet);
-    if (!S.referCode) { S.referCode = genCode(S.wallet); saveLocal(['referCode']); }
-    var urlParams = new URLSearchParams(window.location.search);
-    var ref = urlParams.get('ref');
-    if (ref && ref !== S.referCode && !S.referredBy) {
-      S.referredBy = ref;
-      S.points += 50;
-      saveLocal(['referredBy','points']);
-      if (S.isOnline) {
-        var referrer = await sbGetUserByCode(ref);
-        if (referrer) {
-          var newReferrals = referrer.referrals || [];
-          newReferrals.push({name: S.username||sa(S.wallet), addr: sa(S.wallet), date: today()});
-          await sbUpsert({
-            wallet: referrer.wallet,
-            username: referrer.username,
-            points: (referrer.points||0) + 25,
-            streak: referrer.streak||0,
-            referral_pts: (referrer.referral_pts||0) + 25,
-            referrals: newReferrals,
-            refer_code: referrer.refer_code,
-          });
+// FIX #2: connectWallet — preserve local data when Supabase has no record
+async function connectWallet(){
+  if(typeof window.ethereum==='undefined'){toast('Open in Coinbase Wallet!');return;}
+  try{
+    var btn=document.getElementById('connectBtn');
+    if(btn){btn.disabled=true;btn.innerHTML='<div class="spin-sm"></div> Connecting…';}
+    var acc=await window.ethereum.request({method:'eth_requestAccounts'});
+    S.wallet=acc[0];
+    localStorage.setItem('walletAddress',S.wallet);
+    if(!S.referCode){S.referCode=genCode(S.wallet);saveLocal(['referCode']);}
+
+    var urlParams=new URLSearchParams(window.location.search);
+    var ref=urlParams.get('ref');
+    if(ref&&ref!==S.referCode&&!S.referredBy){
+      S.referredBy=ref;S.points+=50;saveLocal(['referredBy','points']);
+      if(S.isOnline){
+        var referrer=await sbGetUserByCode(ref);
+        if(referrer){
+          var newRefs=referrer.referrals||[];
+          newRefs.push({name:S.username||sa(S.wallet),addr:sa(S.wallet),date:today()});
+          await sbUpsert({wallet:referrer.wallet,username:referrer.username,points:(referrer.points||0)+25,streak:referrer.streak||0,referral_pts:(referrer.referral_pts||0)+25,referrals:newRefs,refer_code:referrer.refer_code});
         }
       }
     }
-    if (S.isOnline) {
-      var existing = await sbGet(S.wallet);
-      if (existing) {
-        S.streak = existing.streak || 0;
-        S.points = existing.points || 0;
-        S.quizzes = existing.quizzes || 0;
-        S.totalCorrect = existing.total_correct || 0;
-        S.lastCheckin = existing.last_checkin || '';
-        S.vibeHistory = existing.vibe_history || [];
-        S.quizDone = existing.quiz_done || '';
-        S.referCode = existing.refer_code || S.referCode;
-        S.referredBy = existing.referred_by || '';
-        S.referralPts = existing.referral_pts || 0;
-        S.freezeUsed = existing.freeze_used || 0;
-        S.referrals = existing.referrals || [];
-        S.username = existing.username || '';
-        saveLocal(['streak','points','quizzes','totalCorrect','lastCheckin','vibeHistory','quizDone','referCode','referredBy','referralPts','freezeUsed','referrals','username']);
+
+    // FIX #2: Only overwrite local data if Supabase has MORE points (prevent reset)
+    if(S.isOnline){
+      var existing=await sbGet(S.wallet);
+      if(existing){
+        // Only load from DB if DB has data and it's not a fresh/empty record
+        var dbPts=(existing.points||0);
+        var localPts=S.points+S.referralPts;
+        if(dbPts>0||existing.streak>0||existing.quizzes>0){
+          // DB has real data — load it (take whichever points are higher)
+          S.streak=existing.streak||S.streak;
+          S.points=Math.max(existing.points||0, localPts);
+          S.quizzes=Math.max(existing.quizzes||0,S.quizzes);
+          S.totalCorrect=Math.max(existing.total_correct||0,S.totalCorrect);
+          S.lastCheckin=existing.last_checkin||S.lastCheckin;
+          if(existing.vibe_history&&existing.vibe_history.length>0)S.vibeHistory=existing.vibe_history;
+          S.quizDone=existing.quiz_done||S.quizDone;
+          S.referCode=existing.refer_code||S.referCode;
+          S.referredBy=existing.referred_by||S.referredBy;
+          S.referralPts=existing.referral_pts||S.referralPts;
+          S.freezeUsed=existing.freeze_used||S.freezeUsed;
+          if(existing.referrals&&existing.referrals.length>0)S.referrals=existing.referrals;
+          S.username=existing.username||S.username;
+          saveLocal(['streak','points','quizzes','totalCorrect','lastCheckin','vibeHistory','quizDone','referCode','referredBy','referralPts','freezeUsed','referrals','username']);
+        }
+        // If DB record is empty/new but local has data — push local data to DB
+        if(localPts>dbPts){await saveRemote();}
+      } else {
+        // No DB record at all — push current local state to DB (first time sync)
+        await saveRemote();
       }
     }
-    if (!S.username) { renderNameSetup(); }
-    else { render(); }
-  } catch(e) { toast('Connection failed'); render(); }
+
+    if(!S.username){renderNameSetup();}
+    else{render();}
+  }catch(e){console.error('Connect error:',e);toast('Connection failed');render();}
 }
 
-// FIX #3: Custom disconnect modal (no confirm() — doesn't work in Coinbase Wallet)
-function confirmDisconnect() {
-  var overlay = document.createElement('div');
-  overlay.className = 'modal-overlay';
-  overlay.id = 'disconnectModal';
-  overlay.innerHTML =
-    '<div class="modal-sheet">' +
-      '<span class="modal-title">Disconnect Wallet?</span>' +
-      '<span class="modal-sub">Your progress is saved to the database. You can reconnect anytime.</span>' +
-      '<div class="modal-btn-row">' +
-        '<button class="btn btn-red" onclick="doDisconnect()" style="margin-top:0">' + icoSvg('logout','var(--red)',18) + ' Disconnect</button>' +
-        '<button class="btn btn-ghost" onclick="closeDisconnectModal()" style="margin-top:0">Cancel</button>' +
-      '</div>' +
-    '</div>';
+function confirmDisconnect(){
+  var overlay=document.createElement('div');
+  overlay.className='modal-overlay';overlay.id='disconnectModal';
+  overlay.innerHTML='<div class="modal-sheet"><span class="modal-title">Disconnect Wallet?</span><span class="modal-sub">Your progress is saved to the database. Reconnect anytime to restore it.</span><div class="modal-btn-row"><button class="btn btn-red" onclick="doDisconnect()" style="margin-top:0">'+icoSvg('logout','var(--red)',18)+' Disconnect</button><button class="btn btn-ghost" onclick="closeDisconnectModal()" style="margin-top:0">Cancel</button></div></div>';
   document.body.appendChild(overlay);
-  overlay.addEventListener('click', function(e){ if(e.target===overlay) closeDisconnectModal(); });
+  overlay.addEventListener('click',function(e){if(e.target===overlay)closeDisconnectModal();});
 }
-
-function closeDisconnectModal() {
-  var m = document.getElementById('disconnectModal');
-  if(m) m.remove();
-}
-
-function doDisconnect() {
+function closeDisconnectModal(){var m=document.getElementById('disconnectModal');if(m)m.remove();}
+function doDisconnect(){
   closeDisconnectModal();
-  S.wallet=''; S.username=''; S.streak=0; S.points=0; S.quizzes=0;
-  S.totalCorrect=0; S.lastCheckin=''; S.vibeHistory=[]; S.quizDone='';
-  S.referCode=''; S.referredBy=''; S.referrals=[]; S.referralPts=0;
-  S.freezeUsed=0; S.tab='vibe'; S.selVibe=null; S.qActive=false;
-  ['walletAddress','username','streak','points','quizzes','totalCorrect',
-   'lastCheckin','vibeHistory','quizDone','referCode','referredBy',
-   'referrals','referralPts','freezeUsed','perfectQuiz'].forEach(function(k){
-    localStorage.removeItem(k);
-  });
+  S.wallet='';S.username='';S.streak=0;S.points=0;S.quizzes=0;S.totalCorrect=0;
+  S.lastCheckin='';S.vibeHistory=[];S.quizDone='';S.referCode='';S.referredBy='';
+  S.referrals=[];S.referralPts=0;S.freezeUsed=0;S.tab='vibe';S.selVibe=null;S.qActive=false;
+  ['walletAddress','username','streak','points','quizzes','totalCorrect','lastCheckin','vibeHistory','quizDone','referCode','referredBy','referrals','referralPts','freezeUsed','perfectQuiz'].forEach(function(k){localStorage.removeItem(k);});
   render();
 }
 
-// ── CHECK IN ──────────────────────────────────
-async function doCheckin() {
-  var td = today();
-  if (S.lastCheckin === td) { toast('Already checked in today!'); return; }
-  if (!S.selVibe) { toast('Pick your vibe first!'); return; }
-  if (S.lastCheckin === yesterday()) S.streak++;
-  else S.streak = 1;
-  S.lastCheckin = td;
-  S.points += 10;
-  S.vibeHistory.unshift({date:td, key:S.selVibe.key, name:S.selVibe.n});
-  if (S.vibeHistory.length > 30) S.vibeHistory = S.vibeHistory.slice(0,30);
+async function doCheckin(){
+  var td=today();
+  if(S.lastCheckin===td){toast('Already checked in today!');return;}
+  if(!S.selVibe){toast('Pick your vibe first!');return;}
+  if(S.lastCheckin===yesterday())S.streak++;else S.streak=1;
+  S.lastCheckin=td;S.points+=10;
+  S.vibeHistory.unshift({date:td,key:S.selVibe.key,name:S.selVibe.n});
+  if(S.vibeHistory.length>30)S.vibeHistory=S.vibeHistory.slice(0,30);
   saveLocal(['streak','points','lastCheckin','vibeHistory']);
   await saveRemote();
   toast('Checked in! +10 pts');
-  if (S.streak === 7 || S.streak === 30) { setTimeout(function(){spawnConfetti(); toast('Badge unlocked!');}, 400); }
-  S.selVibe = null;
-  render();
+  if(S.streak===7||S.streak===30){setTimeout(function(){spawnConfetti();toast('Badge unlocked!');},400);}
+  S.selVibe=null;render();
 }
 
-// ── QUIZ ──────────────────────────────────────
-function startQuiz() {
-  S.curQ=0; S.qScore=0; S.qAnswered=false; S.qActive=true; S.comboStreak=0;
-  QUESTIONS = getDailyQuestions();
-  render();
-}
-
-function answerQ(i) {
-  if (S.qAnswered) return;
-  S.qAnswered = true;
-  var q = QUESTIONS[S.curQ];
-  var opts = document.querySelectorAll('.ob');
-  var correct = i === q.a;
-  var mult = q.diff==='hard'?3 : q.diff==='medium'?2 : 1;
-  if (correct) {
-    opts[i].classList.add('correct');
-    S.comboStreak++;
-    var pts = 10*mult + (S.comboStreak>1?(S.comboStreak-1)*5:0);
-    S.qScore += pts;
-    S.totalCorrect++;
-    if (S.comboStreak >= 2) showCombo('x'+S.comboStreak+' COMBO  +'+pts+' pts');
-    else toast('+'+pts+' pts');
-  } else {
-    opts[i].classList.add('wrong');
-    opts[q.a].classList.add('correct');
-    S.comboStreak = 0;
-    var fb = document.getElementById('fact-box');
-    if (fb) { fb.style.display='block'; fb.textContent='Tip: '+q.fact; }
-  }
+function startQuiz(){S.curQ=0;S.qScore=0;S.qAnswered=false;S.qActive=true;S.comboStreak=0;QUESTIONS=getDailyQuestions();render();}
+function answerQ(i){
+  if(S.qAnswered)return;S.qAnswered=true;
+  var q=QUESTIONS[S.curQ];var opts=document.querySelectorAll('.ob');var correct=i===q.a;
+  var mult=q.diff==='hard'?3:q.diff==='medium'?2:1;
+  if(correct){opts[i].classList.add('correct');S.comboStreak++;var pts=10*mult+(S.comboStreak>1?(S.comboStreak-1)*5:0);S.qScore+=pts;S.totalCorrect++;if(S.comboStreak>=2)showCombo('x'+S.comboStreak+' COMBO  +'+pts+' pts');else toast('+'+pts+' pts');}
+  else{opts[i].classList.add('wrong');opts[q.a].classList.add('correct');S.comboStreak=0;var fb=document.getElementById('fact-box');if(fb){fb.style.display='block';fb.textContent='Tip: '+q.fact;}}
   opts.forEach(function(o){o.disabled=true;});
-  setTimeout(function() {
-    S.curQ++; S.qAnswered=false;
-    if (S.curQ >= QUESTIONS.length) {
-      S.points += S.qScore; S.quizzes++; S.quizDone = today();
-      saveLocal(['points','quizzes','quizDone','totalCorrect']);
-      if (S.qScore >= 100) { localStorage.setItem('perfectQuiz','1'); spawnConfetti(); toast('Perfect score! Badge unlocked!'); }
-      else toast('+'+S.qScore+' points earned!');
-      saveRemote();
-      S.qActive = false;
-    }
+  setTimeout(function(){
+    S.curQ++;S.qAnswered=false;
+    if(S.curQ>=QUESTIONS.length){S.points+=S.qScore;S.quizzes++;S.quizDone=today();saveLocal(['points','quizzes','quizDone','totalCorrect']);if(S.qScore>=100){localStorage.setItem('perfectQuiz','1');spawnConfetti();toast('Perfect score! Badge unlocked!');}else toast('+'+S.qScore+' points earned!');saveRemote();S.qActive=false;}
     render();
-  }, 1500);
+  },1500);
 }
 
-function useFreeze() {
-  S.freezeUsed++;
-  saveLocal(['freezeUsed']);
-  saveRemote();
-  toast('Streak Freeze used! Your streak is protected.');
-  render();
-}
-
+function useFreeze(){S.freezeUsed++;saveLocal(['freezeUsed']);saveRemote();toast('Streak Freeze used! Your streak is protected.');render();}
 function getReferLink(){return 'https://mini-app-2-delta.vercel.app?ref='+S.referCode;}
-
-function copyReferLink(){
-  navigator.clipboard.writeText(getReferLink()).then(function(){
-    toast('Refer link copied! Share & earn 25 pts per friend');
-  }).catch(function(){toast(getReferLink());});
-}
-
-function shareReferLink(){
-  var link=getReferLink();
-  var text='Join me on Base Vibe — daily streaks & Base quizzes onchain!\n\n'+link;
-  if(navigator.share){navigator.share({title:'Base Vibe',text:text,url:link});}
-  else{navigator.clipboard.writeText(text).then(function(){toast('Link copied!');});}
-}
+function copyReferLink(){navigator.clipboard.writeText(getReferLink()).then(function(){toast('Refer link copied! Share & earn 25 pts per friend');}).catch(function(){toast(getReferLink());});}
+function shareReferLink(){var link=getReferLink();var text='Join me on Base Vibe — daily streaks & Base quizzes onchain!\n\n'+link;if(navigator.share){navigator.share({title:'Base Vibe',text:text,url:link});}else{navigator.clipboard.writeText(text).then(function(){toast('Link copied!');});}}
 
 function topbar(){
-  var w = S.wallet
-    ? '<div class="w-chip"><div class="w-dot"></div>'+(S.username||sa(S.wallet))+'</div>'
-    : '<button class="w-chip" onclick="connectWallet()" style="background:var(--s2);border:1px solid var(--border-hi);border-radius:99px;padding:7px 13px;font-size:12px;font-weight:600;color:#6B9FFF;cursor:pointer;font-family:var(--mono)">Connect</button>';
+  var w=S.wallet?'<div class="w-chip"><div class="w-dot"></div>'+(S.username||sa(S.wallet))+'</div>':'<button class="w-chip" onclick="connectWallet()" style="background:var(--s2);border:1px solid var(--border-hi);border-radius:99px;padding:7px 13px;font-size:12px;font-weight:600;color:#6B9FFF;cursor:pointer;font-family:var(--mono)">Connect</button>';
   return '<div class="topbar"><div class="logo"><div class="logo-sq">'+logoMark(22)+'</div><div class="logo-name">Base<span>Vibe</span></div></div>'+w+'</div>';
 }
-
 function bnav(){
-  var tabs=[
-    {id:'vibe',ico:'vibe',l:'Vibe'},
-    {id:'quiz',ico:'brain',l:'Quiz'},
-    {id:'lb',ico:'board',l:'Board'},
-    {id:'me',ico:'me',l:'Me'},
-  ];
+  var tabs=[{id:'vibe',ico:'vibe',l:'Vibe'},{id:'quiz',ico:'brain',l:'Quiz'},{id:'lb',ico:'board',l:'Board'},{id:'me',ico:'me',l:'Me'}];
   var h='<div class="bnav">';
-  tabs.forEach(function(t){
-    h+='<button class="ni'+(S.tab===t.id?' active':'')+'" onclick="goTab(\''+t.id+'\')">'
-      +'<span class="ni-ico">'+icoSvg(t.ico)+'</span>'
-      +'<span class="ni-lbl">'+t.l+'</span></button>';
-  });
+  tabs.forEach(function(t){h+='<button class="ni'+(S.tab===t.id?' active':'')+'" onclick="goTab(\''+t.id+'\')">'+'<span class="ni-ico">'+icoSvg(t.ico)+'</span>'+'<span class="ni-lbl">'+t.l+'</span></button>';});
   return h+'</div>';
 }
-
 function goTab(t){S.tab=t;S.qActive=false;render();}
-
 function render(){
   if(!S.wallet){renderConnect();return;}
   var h=topbar()+'<div id="pg" class="fu">';
-  if(S.tab==='vibe')      h+=renderVibe();
-  else if(S.tab==='quiz') h+=renderQuiz();
-  else if(S.tab==='lb')   h+=renderLB();
-  else if(S.tab==='me')   h+=renderMe();
+  if(S.tab==='vibe')h+=renderVibe();
+  else if(S.tab==='quiz')h+=renderQuiz();
+  else if(S.tab==='lb')h+=renderLB();
+  else if(S.tab==='me')h+=renderMe();
   h+='</div>'+bnav();
   document.getElementById('app').innerHTML=h;
 }
@@ -744,15 +625,10 @@ function renderConnect(){
   h+='<div class="cnx-logo">'+logoMark(50)+'</div>';
   h+='<h1 style="font-size:30px;font-weight:900;letter-spacing:-0.5px;margin-bottom:8px">Base<span style="color:#6B9FFF">Vibe</span></h1>';
   var ref=new URLSearchParams(window.location.search).get('ref');
-  if(ref) h+='<div style="background:rgba(162,89,255,0.1);border:1px solid rgba(162,89,255,0.3);border-radius:10px;padding:8px 16px;font-size:12px;font-weight:600;color:#A259FF;margin-bottom:14px">You were referred — +50 pts on join</div>';
+  if(ref)h+='<div style="background:rgba(162,89,255,0.1);border:1px solid rgba(162,89,255,0.3);border-radius:10px;padding:8px 16px;font-size:12px;font-weight:600;color:#A259FF;margin-bottom:14px">You were referred — +50 pts on join</div>';
   h+='<p style="color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:28px;max-width:280px">Daily mood check-ins & Base quizzes — earn points, build streaks.</p>';
   h+='<div class="feat-list">';
-  [{k:'fire',t:'Daily Streaks',s:'Check in every day, build your streak'},
-   {k:'brain',t:'Base Quizzes',s:'Fresh questions every day with combos'},
-   {k:'board',t:'Leaderboard',s:'Compete with real users, earn your rank'},
-   {k:'users',t:'Refer & Earn',s:'Get 25 pts per friend you invite'}].forEach(function(f){
-    h+='<div class="feat"><div class="feat-ico">'+icoSvg(f.k,'#6B9FFF',20)+'</div><div><span class="feat-t">'+f.t+'</span><span class="feat-s">'+f.s+'</span></div></div>';
-  });
+  [{k:'fire',t:'Daily Streaks',s:'Check in every day, build your streak'},{k:'brain',t:'Base Quizzes',s:'Fresh questions every day with combos'},{k:'board',t:'Leaderboard',s:'Compete with real users, earn your rank'},{k:'users',t:'Refer & Earn',s:'Get 25 pts per friend you invite'}].forEach(function(f){h+='<div class="feat"><div class="feat-ico">'+icoSvg(f.k,'#6B9FFF',20)+'</div><div><span class="feat-t">'+f.t+'</span><span class="feat-s">'+f.s+'</span></div></div>';});
   h+='</div>';
   h+='<button id="connectBtn" class="btn btn-blue" style="max-width:300px" onclick="connectWallet()">'+icoSvg('wallet','white',18)+' Connect Wallet</button>';
   h+='<div style="font-size:11px;color:var(--muted);margin-top:10px;font-family:var(--mono)">Best in Coinbase Wallet on Base</div>';
@@ -762,161 +638,81 @@ function renderConnect(){
 
 function renderNameSetup(){
   var h=topbar()+'<div class="nsu fu">';
-  h+='<div style="text-align:center;margin-bottom:28px">';
-  h+='<div style="width:72px;height:72px;border-radius:18px;background:var(--s2);border:1.5px solid var(--border-hi);display:flex;align-items:center;justify-content:center;margin:0 auto 16px">'+icoSvg('me','#6B9FFF',42)+'</div>';
+  h+='<div style="text-align:center;margin-bottom:28px"><div style="width:72px;height:72px;border-radius:18px;background:var(--s2);border:1.5px solid var(--border-hi);display:flex;align-items:center;justify-content:center;margin:0 auto 16px">'+icoSvg('me','#6B9FFF',42)+'</div>';
   h+='<span style="font-size:26px;font-weight:800;display:block;letter-spacing:-0.3px">Welcome aboard!</span>';
   h+='<span style="font-size:13px;color:var(--muted);display:block;margin-top:5px;font-family:var(--mono)">'+sa(S.wallet)+'</span></div>';
-  h+='<div style="width:100%;max-width:320px">';
-  h+='<input class="txtin" id="uname" type="text" placeholder="Your name or ENS…" maxlength="24" autocomplete="off">';
-  h+='<div style="font-size:11px;color:var(--muted);margin-bottom:14px;padding-left:3px;font-family:var(--mono)">Shown on the leaderboard</div>';
-  h+='<button class="btn btn-blue" onclick="saveUsername()">'+icoSvg('zap','white',18)+' Let\'s Go</button>';
-  h+='</div></div>';
+  h+='<div style="width:100%;max-width:320px"><input class="txtin" id="uname" type="text" placeholder="Your name or ENS…" maxlength="24" autocomplete="off"><div style="font-size:11px;color:var(--muted);margin-bottom:14px;padding-left:3px;font-family:var(--mono)">Shown on the leaderboard</div><button class="btn btn-blue" onclick="saveUsername()">'+icoSvg('zap','white',18)+' Let\'s Go</button></div></div>';
   document.getElementById('app').innerHTML=h;
 }
-
 async function saveUsername(){
   var v=document.getElementById('uname').value.trim();
   if(!v){toast('Enter a name first!');return;}
-  S.username=v; saveLocal(['username']);
+  S.username=v;saveLocal(['username']);
   if(!S.referCode){S.referCode=genCode(S.wallet);saveLocal(['referCode']);}
-  await saveRemote();
-  toast('Welcome, '+v+'!');
-  render();
+  await saveRemote();toast('Welcome, '+v+'!');render();
 }
 
 function renderVibe(){
-  var td=today(); var ci=S.lastCheckin===td;
-  var lv=getLevel(); var totalPts=S.points+S.referralPts;
+  var td=today();var ci=S.lastCheckin===td;
+  var lv=getLevel();var totalPts=S.points+S.referralPts;
   var lvPct=Math.min(100,Math.max(0,Math.round(((totalPts-(lv.next/4))/(lv.next-(lv.next/4)))*100)));
   var h='<div class="page">';
   h+='<div class="tag"><div class="tag-dot"></div>Base Network · Live</div>';
-  h+='<div class="card hi">';
-  h+='<div class="streak-hero">';
-  h+='<div class="fire-wrap"><span class="fire-num">'+S.streak+'</span>';
-  h+='<span class="fire-icon">'+ICO.fire+'</span></div>';
-  h+='<div class="streak-sub">day streak</div></div>';
-  h+='<div class="xp-bar-wrap"><div class="xp-row">';
-  h+='<span class="xp-level">'+icoSvg(lv.ico,lv.color,12)+' '+lv.name+'</span>';
-  h+='<span class="xp-pts">'+totalPts+' / '+lv.next+' pts</span></div>';
-  h+='<div class="xp-track"><div class="xp-fill" style="width:'+lvPct+'%;background:linear-gradient(90deg,'+lv.color+','+lv.color+'aa)"></div></div></div>';
-  h+='</div>';
-  h+='<div class="srow">';
-  h+='<div class="sc"><span class="sc-n">'+S.streak+'</span><span class="sc-l">Streak</span></div>';
-  h+='<div class="sc"><span class="sc-n">'+totalPts+'</span><span class="sc-l">Points</span></div>';
-  h+='<div class="sc"><span class="sc-n">'+S.quizzes+'</span><span class="sc-l">Quizzes</span></div>';
-  h+='</div>';
+  h+='<div class="card hi"><div class="streak-hero"><div class="fire-wrap"><span class="fire-num">'+S.streak+'</span><span class="fire-icon">'+ICO.fire+'</span></div><div class="streak-sub">day streak</div></div>';
+  h+='<div class="xp-bar-wrap"><div class="xp-row"><span class="xp-level">'+icoSvg(lv.ico,lv.color,12)+' '+lv.name+'</span><span class="xp-pts">'+totalPts+' / '+lv.next+' pts</span></div><div class="xp-track"><div class="xp-fill" style="width:'+lvPct+'%;background:linear-gradient(90deg,'+lv.color+','+lv.color+'aa)"></div></div></div></div>';
+  h+='<div class="srow"><div class="sc"><span class="sc-n">'+S.streak+'</span><span class="sc-l">Streak</span></div><div class="sc"><span class="sc-n">'+totalPts+'</span><span class="sc-l">Points</span></div><div class="sc"><span class="sc-n">'+S.quizzes+'</span><span class="sc-l">Quizzes</span></div></div>';
   if(ci){
-    var lv2=S.vibeHistory[0];
-    var chkSvg=icoSvg('check','var(--green)',32);
-    var lVibeIco = lv2 ? icoSvg(lv2.key, VIBE_COLORS[lv2.key]||'#6B9FFF', 32) : chkSvg;
-    h+='<div class="cban"><div class="cbi">'+lVibeIco+'</div>';
-    h+='<div><span class="cbt">Checked in today</span>';
-    h+='<span class="cbs">'+(lv2?lv2.name+' · ':'')+'Base network · +10 pts</span></div></div>';
-    if(S.streak>=3 && S.freezeUsed<2){
-      h+='<div class="streak-freeze"><div><span class="sf-title">'+icoSvg('snowflake','var(--gold)',15)+' Streak Freeze</span>';
-      h+='<span class="sf-sub">Protect streak for 1 day ('+(2-S.freezeUsed)+' left)</span></div>';
-      h+='<button class="sf-btn" onclick="useFreeze()">Use</button></div>';
-    }
+    var lv2=S.vibeHistory[0];var chkSvg=icoSvg('check','var(--green)',32);var lVibeIco=lv2?icoSvg(lv2.key,VIBE_COLORS[lv2.key]||'#6B9FFF',32):chkSvg;
+    h+='<div class="cban"><div class="cbi">'+lVibeIco+'</div><div><span class="cbt">Checked in today</span><span class="cbs">'+(lv2?lv2.name+' · ':'')+'Base network · +10 pts</span></div></div>';
+    if(S.streak>=3&&S.freezeUsed<2){h+='<div class="streak-freeze"><div><span class="sf-title">'+icoSvg('snowflake','var(--gold)',15)+' Streak Freeze</span><span class="sf-sub">Protect streak for 1 day ('+(2-S.freezeUsed)+' left)</span></div><button class="sf-btn" onclick="useFreeze()">Use</button></div>';}
     h+='<button class="btn btn-blue" onclick="goTab(\'quiz\')">'+icoSvg('brain','white',18)+' Take today\'s quiz</button>';
   } else {
-    h+='<span class="slbl">Pick your vibe</span>';
-    h+='<div class="vgrid">';
-    VIBES.forEach(function(v,i){
-      var sel=S.selVibe&&S.selVibe.n===v.n;
-      var c=VIBE_COLORS[v.key]||'#6B9FFF';
-      var vSvg=icoSvg(v.key,c,26);
-      h+='<button class="vb'+(sel?' sel':'')+'" onclick="selVibe('+i+')">'
-        +'<div class="vi">'+vSvg+'</div><span class="vn">'+v.n+'</span></button>';
-    });
+    h+='<span class="slbl">Pick your vibe</span><div class="vgrid">';
+    VIBES.forEach(function(v,i){var sel=S.selVibe&&S.selVibe.n===v.n;var c=VIBE_COLORS[v.key]||'#6B9FFF';h+='<button class="vb'+(sel?' sel':'')+'" onclick="selVibe('+i+')">'+'<div class="vi">'+icoSvg(v.key,c,26)+'</div><span class="vn">'+v.n+'</span></button>';});
     h+='</div>';
-    if(S.selVibe){
-      var c2=VIBE_COLORS[S.selVibe.key]||'#6B9FFF';
-      h+='<div class="cin"><div class="cin-ico">'+icoSvg(S.selVibe.key,c2,36)+'</div>';
-      h+='<div><span class="cv">'+S.selVibe.n+'</span><span class="cs">Free · Base network · +10 pts</span></div></div>';
-      h+='<button class="btn btn-blue" onclick="doCheckin()">'+icoSvg('check','white',18)+' Check In</button>';
-    } else {
-      h+='<button class="btn btn-blue" disabled>Pick a vibe to check in</button>';
-    }
+    if(S.selVibe){var c2=VIBE_COLORS[S.selVibe.key]||'#6B9FFF';h+='<div class="cin"><div class="cin-ico">'+icoSvg(S.selVibe.key,c2,36)+'</div><div><span class="cv">'+S.selVibe.n+'</span><span class="cs">Free · Base network · +10 pts</span></div></div><button class="btn btn-blue" onclick="doCheckin()">'+icoSvg('check','white',18)+' Check In</button>';}
+    else{h+='<button class="btn btn-blue" disabled>Pick a vibe to check in</button>';}
   }
-  h+='</div>';
-  return h;
+  return h+'</div>';
 }
-
-function selVibe(i){
-  S.selVibe=VIBES[i];
-  var pg=document.getElementById('pg');
-  if(pg){pg.innerHTML=renderVibe();}
-}
+function selVibe(i){S.selVibe=VIBES[i];var pg=document.getElementById('pg');if(pg){pg.innerHTML=renderVibe();}}
 
 function renderQuiz(){
-  var td=today(); var done=S.quizDone===td;
-  var h='<div class="page">';
-  if(done && !S.qActive){
-    h+='<div class="card" style="text-align:center;padding:28px 18px">';
-    h+='<div style="width:64px;height:64px;border-radius:18px;background:rgba(0,240,160,0.08);border:1px solid rgba(0,240,160,0.2);display:flex;align-items:center;justify-content:center;margin:0 auto 14px">'+icoSvg('check','var(--green)',38)+'</div>';
+  var td=today();var done=S.quizDone===td;var h='<div class="page">';
+  if(done&&!S.qActive){
+    h+='<div class="card" style="text-align:center;padding:28px 18px"><div style="width:64px;height:64px;border-radius:18px;background:rgba(0,240,160,0.08);border:1px solid rgba(0,240,160,0.2);display:flex;align-items:center;justify-content:center;margin:0 auto 14px">'+icoSvg('check','var(--green)',38)+'</div>';
     h+='<span style="font-size:20px;font-weight:800;display:block;margin-bottom:8px">Quiz done for today</span>';
     h+='<span style="font-size:13px;color:var(--muted);font-family:var(--mono);display:block;margin-bottom:20px">Fresh questions come tomorrow</span>';
-    h+='<div class="srow" style="margin-bottom:18px">';
-    h+='<div class="sc"><span class="sc-n">'+S.quizzes+'</span><span class="sc-l">Done</span></div>';
-    h+='<div class="sc"><span class="sc-n">'+(S.points+S.referralPts)+'</span><span class="sc-l">Pts</span></div>';
-    h+='<div class="sc"><span class="sc-n">'+S.totalCorrect+'</span><span class="sc-l">Correct</span></div>';
-    h+='</div>';
-    h+='<button class="btn btn-blue" onclick="goTab(\'lb\')">'+icoSvg('trophy','white',18)+' View Leaderboard</button>';
-    h+='</div>';
+    h+='<div class="srow" style="margin-bottom:18px"><div class="sc"><span class="sc-n">'+S.quizzes+'</span><span class="sc-l">Done</span></div><div class="sc"><span class="sc-n">'+(S.points+S.referralPts)+'</span><span class="sc-l">Pts</span></div><div class="sc"><span class="sc-n">'+S.totalCorrect+'</span><span class="sc-l">Correct</span></div></div>';
+    h+='<button class="btn btn-blue" onclick="goTab(\'lb\')">'+icoSvg('trophy','white',18)+' View Leaderboard</button></div>';
   } else if(!S.qActive){
-    h+='<div class="card hi" style="text-align:center;padding:26px 18px">';
-    h+='<div style="width:72px;height:72px;border-radius:18px;background:rgba(0,82,255,0.1);border:1px solid var(--border-hi);display:flex;align-items:center;justify-content:center;margin:0 auto 14px">'+icoSvg('brain','#6B9FFF',40)+'</div>';
+    h+='<div class="card hi" style="text-align:center;padding:26px 18px"><div style="width:72px;height:72px;border-radius:18px;background:rgba(0,82,255,0.1);border:1px solid var(--border-hi);display:flex;align-items:center;justify-content:center;margin:0 auto 14px">'+icoSvg('brain','#6B9FFF',40)+'</div>';
     h+='<span style="font-size:22px;font-weight:800;display:block;margin-bottom:6px">Daily Base Quiz</span>';
     h+='<span style="font-size:13px;color:var(--muted);font-family:var(--mono);display:block;margin-bottom:20px">10 questions · combos · difficulty bonus · new daily</span>';
-    h+='<div class="srow" style="margin-bottom:20px">';
-    h+='<div class="sc"><span class="sc-n" style="color:var(--green)">+10</span><span class="sc-l">Easy</span></div>';
-    h+='<div class="sc"><span class="sc-n" style="color:var(--gold)">+20</span><span class="sc-l">Medium</span></div>';
-    h+='<div class="sc"><span class="sc-n" style="color:var(--red)">+30</span><span class="sc-l">Hard</span></div>';
-    h+='</div>';
+    h+='<div class="srow" style="margin-bottom:20px"><div class="sc"><span class="sc-n" style="color:var(--green)">+10</span><span class="sc-l">Easy</span></div><div class="sc"><span class="sc-n" style="color:var(--gold)">+20</span><span class="sc-l">Medium</span></div><div class="sc"><span class="sc-n" style="color:var(--red)">+30</span><span class="sc-l">Hard</span></div></div>';
     h+='<span style="font-size:11px;color:var(--muted);font-family:var(--mono);display:block;margin-bottom:18px">Once you start, you must finish the quiz</span>';
-    h+='<button class="btn btn-blue" onclick="startQuiz()">'+icoSvg('zap','white',18)+' Start Quiz</button>';
-    h+='</div>';
-  } else if(S.curQ >= QUESTIONS.length){
-    var score=S.qScore; var perfect=score>=80;
-    h+='<div class="card"><div class="qres">';
-    h+='<div class="qres-ico">'+icoSvg(perfect?'trophy':'brain',perfect?'var(--gold)':'#6B9FFF',54)+'</div>';
-    h+='<span class="qres-score">'+score+'</span>';
-    h+='<span class="qres-lbl">points earned this quiz</span>';
-    h+='<div class="qres-bk">';
-    h+='<div class="bki"><span class="bkn" style="color:var(--green)">'+Math.round(score/10)+'</span><span class="bks">correct</span></div>';
-    h+='<div class="bki"><span class="bkn" style="color:var(--blue2)">'+(S.points+S.referralPts)+'</span><span class="bks">total pts</span></div>';
-    h+='<div class="bki"><span class="bkn" style="color:var(--gold)">'+S.quizzes+'</span><span class="bks">quizzes</span></div>';
-    h+='</div>';
-    h+='<button class="btn btn-blue" style="margin-bottom:9px" onclick="goTab(\'lb\')">'+icoSvg('trophy','white',18)+' Leaderboard</button>';
-    h+='<button class="btn btn-ghost" onclick="goTab(\'vibe\')">Back to Vibe</button>';
-    h+='</div></div>';
+    h+='<button class="btn btn-blue" onclick="startQuiz()">'+icoSvg('zap','white',18)+' Start Quiz</button></div>';
+  } else if(S.curQ>=QUESTIONS.length){
+    var score=S.qScore;var perfect=score>=80;
+    h+='<div class="card"><div class="qres"><div class="qres-ico">'+icoSvg(perfect?'trophy':'brain',perfect?'var(--gold)':'#6B9FFF',54)+'</div>';
+    h+='<span class="qres-score">'+score+'</span><span class="qres-lbl">points earned this quiz</span>';
+    h+='<div class="qres-bk"><div class="bki"><span class="bkn" style="color:var(--green)">'+Math.round(score/10)+'</span><span class="bks">correct</span></div><div class="bki"><span class="bkn" style="color:var(--blue2)">'+(S.points+S.referralPts)+'</span><span class="bks">total pts</span></div><div class="bki"><span class="bkn" style="color:var(--gold)">'+S.quizzes+'</span><span class="bks">quizzes</span></div></div>';
+    h+='<button class="btn btn-blue" style="margin-bottom:9px" onclick="goTab(\'lb\')">'+icoSvg('trophy','white',18)+' Leaderboard</button><button class="btn btn-ghost" onclick="goTab(\'vibe\')">Back to Vibe</button></div></div>';
   } else {
-    var q=QUESTIONS[S.curQ];
-    var letters=['A','B','C','D'];
-    var diffCls={easy:'diff-easy',medium:'diff-medium',hard:'diff-hard'};
-    var diffLbl={easy:'Easy',medium:'Medium',hard:'Hard'};
-    h+='<div class="card">';
-    h+='<div class="qhdr"><span class="qcnt">Q '+(S.curQ+1)+' / '+QUESTIONS.length+'</span><span class="qpts">'+S.qScore+' pts</span></div>';
+    var q=QUESTIONS[S.curQ];var letters=['A','B','C','D'];var diffCls={easy:'diff-easy',medium:'diff-medium',hard:'diff-hard'};var diffLbl={easy:'Easy',medium:'Medium',hard:'Hard'};
+    h+='<div class="card"><div class="qhdr"><span class="qcnt">Q '+(S.curQ+1)+' / '+QUESTIONS.length+'</span><span class="qpts">'+S.qScore+' pts</span></div>';
     h+='<div class="prog-track"><div class="prog-fill" style="width:'+((S.curQ+1)/QUESTIONS.length*100)+'%"></div></div>';
-    h+='<span class="diff-badge '+diffCls[q.diff]+'">'+diffLbl[q.diff]+'</span>';
-    h+='<div class="qtxt">'+q.q+'</div>';
-    h+='<div class="opts">';
-    q.opts.forEach(function(o,i){
-      h+='<button class="ob" onclick="answerQ('+i+')">'
-        +'<span class="ol">'+letters[i]+'</span>'+o+'</button>';
-    });
-    h+='</div><div class="fact-box" id="fact-box"></div>';
-    h+='</div>';
+    h+='<span class="diff-badge '+diffCls[q.diff]+'">'+diffLbl[q.diff]+'</span><div class="qtxt">'+q.q+'</div><div class="opts">';
+    q.opts.forEach(function(o,i){h+='<button class="ob" onclick="answerQ('+i+')">'+'<span class="ol">'+letters[i]+'</span>'+o+'</button>';});
+    h+='</div><div class="fact-box" id="fact-box"></div></div>';
   }
-  h+='</div>';
-  return h;
+  return h+'</div>';
 }
 
+// FIX #1: Better leaderboard with retry + debug info
 async function renderLBAsync(){
-  var pg=document.getElementById('pg');
-  if(!pg) return;
-  var mn=S.username||sa(S.wallet);
-  var totalPts=S.points+S.referralPts;
+  var pg=document.getElementById('pg');if(!pg)return;
+  var mn=S.username||sa(S.wallet);var totalPts=S.points+S.referralPts;
   var fireSvg=icoSvg('fire','#FFBB00',11);
   var h='<div class="page">';
   h+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">';
@@ -925,162 +721,84 @@ async function renderLBAsync(){
   if(!S.isOnline){
     h+='<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;font-family:var(--mono)">Offline — connect to see leaderboard</div>';
   } else {
-    var users = await sbGetLeaderboard();
-    if(!users || users.length === 0){
-      h+='<div class="lb-empty">';
-      h+='<svg viewBox="0 0 24 24" style="stroke:var(--muted);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;width:36px;height:36px;margin-bottom:12px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
-      h+='<span style="font-size:15px;font-weight:700;display:block;margin-bottom:6px">Leaderboard goes live when others join</span>';
-      h+='<span style="font-size:12px;color:var(--muted);font-family:var(--mono)">Share your link to bring friends onchain</span>';
-      h+='</div>';
+    var users=await sbGetLeaderboard();
+    if(!users||users.length===0){
+      // Show your own entry at least
+      h+='<div class="lbi me"><div class="lbr" style="background:rgba(255,187,0,0.15);font-size:16px">🥇</div>';
+      h+='<div class="lbinfo"><span class="lbn">'+mn+' <span style="font-size:10px;color:var(--blue2)">(you)</span></span><span class="lbd">'+fireSvg+' '+S.streak+' day streak</span></div>';
+      h+='<div><span class="lbp">'+totalPts+'</span><span class="lbs">pts</span></div></div>';
+      h+='<div style="text-align:center;padding:16px;color:var(--muted);font-size:12px;font-family:var(--mono)">Be the first! Share your link to bring others onchain.</div>';
     } else {
       var medals=['🥇','🥈','🥉'];
       users.forEach(function(u,i){
-        var isMe = u.wallet && u.wallet.toLowerCase()===S.wallet.toLowerCase();
-        var rank = i<3 ? medals[i] : (i+1)+'';
-        var rankColor = i===0?'rgba(255,187,0,0.15)':i===1?'rgba(200,200,200,0.08)':i===2?'rgba(205,127,50,0.08)':'var(--s2)';
-        h+='<div class="lbi'+(isMe?' me':'')+'">';
-        h+='<div class="lbr" style="background:'+rankColor+';font-size:'+(i<3?'16':'13')+'px">'+rank+'</div>';
+        var isMe=u.wallet&&u.wallet.toLowerCase()===S.wallet.toLowerCase();
+        var rank=i<3?medals[i]:(i+1)+'';
+        var rankColor=i===0?'rgba(255,187,0,0.15)':i===1?'rgba(200,200,200,0.08)':i===2?'rgba(205,127,50,0.08)':'var(--s2)';
+        h+='<div class="lbi'+(isMe?' me':'')+'"><div class="lbr" style="background:'+rankColor+';font-size:'+(i<3?'16':'13')+'px">'+rank+'</div>';
         h+='<div class="lbinfo"><span class="lbn">'+(u.username||sa(u.wallet))+(isMe?' <span style="font-size:10px;color:var(--blue2)">(you)</span>':'')+'</span>';
         h+='<span class="lbd">'+fireSvg+' '+(u.streak||0)+' day streak</span></div>';
-        h+='<div><span class="lbp">'+(u.points||0)+'</span><span class="lbs">pts</span></div>';
-        h+='</div>';
+        h+='<div><span class="lbp">'+(u.points||0)+'</span><span class="lbs">pts</span></div></div>';
       });
-      var inList = users.some(function(u){return u.wallet && u.wallet.toLowerCase()===S.wallet.toLowerCase();});
-      if(!inList){
-        h+='<div class="lbi me">';
-        h+='<div class="lbr" style="background:rgba(0,82,255,0.15);color:var(--blue2);font-size:10px">You</div>';
-        h+='<div class="lbinfo"><span class="lbn">'+mn+'</span><span class="lbd">'+fireSvg+' '+S.streak+' streak</span></div>';
-        h+='<div><span class="lbp">'+totalPts+'</span><span class="lbs">pts</span></div>';
-        h+='</div>';
-      }
+      var inList=users.some(function(u){return u.wallet&&u.wallet.toLowerCase()===S.wallet.toLowerCase();});
+      if(!inList){h+='<div class="lbi me"><div class="lbr" style="background:rgba(0,82,255,0.15);color:var(--blue2);font-size:10px">You</div><div class="lbinfo"><span class="lbn">'+mn+'</span><span class="lbd">'+fireSvg+' '+S.streak+' streak</span></div><div><span class="lbp">'+totalPts+'</span><span class="lbs">pts</span></div></div>';}
     }
   }
-  h+='<div class="challenge-card">';
-  h+='<span style="font-size:14px;font-weight:800;display:block;margin-bottom:4px">Challenge a Friend</span>';
-  h+='<span style="font-size:12px;color:var(--muted);font-family:var(--mono);display:block;margin-bottom:12px">Share your '+S.streak+'-day streak</span>';
-  h+='<button class="btn btn-purple" onclick="shareReferLink()">'+icoSvg('share','white',18)+' Share Challenge</button>';
-  h+='</div>';
+  h+='<div class="challenge-card"><span style="font-size:14px;font-weight:800;display:block;margin-bottom:4px">Challenge a Friend</span><span style="font-size:12px;color:var(--muted);font-family:var(--mono);display:block;margin-bottom:12px">Share your '+S.streak+'-day streak</span><button class="btn btn-purple" onclick="shareReferLink()">'+icoSvg('share','white',18)+' Share Challenge</button></div>';
   h+='</div>';
   pg.innerHTML=h;
 }
-
 function renderLB(){
-  var h='<div class="page"><div style="text-align:center;padding:40px 0;color:var(--muted);font-family:var(--mono);font-size:13px">Loading…</div></div>';
+  var h='<div class="page"><div style="text-align:center;padding:40px 0;color:var(--muted);font-family:var(--mono);font-size:13px">Loading leaderboard…</div></div>';
   setTimeout(function(){renderLBAsync();},0);
   return h;
 }
 
-// FIX #2: Refer & Earn comes BEFORE Vibe History
 function renderMe(){
-  var mn=S.username||sa(S.wallet);
-  var lv=getLevel(); var totalPts=S.points+S.referralPts;
+  var mn=S.username||sa(S.wallet);var lv=getLevel();var totalPts=S.points+S.referralPts;
   var lvPct=Math.min(100,Math.max(0,Math.round(((totalPts-(lv.next/4))/(lv.next-(lv.next/4)))*100)));
   var h='<div class="page">';
-
-  // Profile header
-  h+='<div class="phdr">';
-  h+='<div class="pav">'+icoSvg('me','white',38)+'</div>';
-  h+='<span class="pname">'+mn+'</span>';
-  h+='<span class="paddr">'+sa(S.wallet)+'</span>';
-  h+='<div class="level-tag">'+icoSvg(lv.ico,'var(--gold)',12)+' '+lv.name+'</div></div>';
-
-  // XP bar
-  h+='<div class="card" style="margin-bottom:12px">';
-  h+='<div class="xp-row" style="margin-bottom:6px"><span class="xp-level">Level Progress</span><span class="xp-pts">'+totalPts+' / '+lv.next+'</span></div>';
-  h+='<div class="xp-track"><div class="xp-fill" style="width:'+lvPct+'%;background:linear-gradient(90deg,'+lv.color+','+lv.color+'88)"></div></div>';
-  h+='</div>';
-
-  // Stats
-  h+='<div class="srow">';
-  h+='<div class="sc"><span class="sc-n">'+S.streak+'</span><span class="sc-l">Streak</span></div>';
-  h+='<div class="sc"><span class="sc-n">'+totalPts+'</span><span class="sc-l">Points</span></div>';
-  h+='<div class="sc"><span class="sc-n">'+S.quizzes+'</span><span class="sc-l">Quizzes</span></div>';
-  h+='</div>';
-
-  // Badges
+  h+='<div class="phdr"><div class="pav">'+icoSvg('me','white',38)+'</div><span class="pname">'+mn+'</span><span class="paddr">'+sa(S.wallet)+'</span><div class="level-tag">'+icoSvg(lv.ico,'var(--gold)',12)+' '+lv.name+'</div></div>';
+  h+='<div class="card" style="margin-bottom:12px"><div class="xp-row" style="margin-bottom:6px"><span class="xp-level">Level Progress</span><span class="xp-pts">'+totalPts+' / '+lv.next+'</span></div><div class="xp-track"><div class="xp-fill" style="width:'+lvPct+'%;background:linear-gradient(90deg,'+lv.color+','+lv.color+'88)"></div></div></div>';
+  h+='<div class="srow"><div class="sc"><span class="sc-n">'+S.streak+'</span><span class="sc-l">Streak</span></div><div class="sc"><span class="sc-n">'+totalPts+'</span><span class="sc-l">Points</span></div><div class="sc"><span class="sc-n">'+S.quizzes+'</span><span class="sc-l">Quizzes</span></div></div>';
   h+='<div class="card"><span class="slbl">Badges</span><div class="bgrid">';
-  BADGES.forEach(function(b){
-    var e=b.earned();
-    var bSvg=icoSvg(b.ico,e?'var(--gold)':'var(--muted)',28);
-    h+='<div class="bc'+(e?' earned':'')+'"><div class="bi">'+bSvg+'</div><span class="bn">'+b.n+'</span><span class="br">'+b.r+'</span></div>';
-  });
+  BADGES.forEach(function(b){var e=b.earned();h+='<div class="bc'+(e?' earned':'')+'"><div class="bi">'+icoSvg(b.ico,e?'var(--gold)':'var(--muted)',28)+'</div><span class="bn">'+b.n+'</span><span class="br">'+b.r+'</span></div>';});
   h+='</div></div>';
-
-  // ── FIX #2: Refer & Earn BEFORE Vibe History ──
-  h+='<div class="divider"></div>';
-  h+='<span class="slbl">Refer & Earn</span>';
-
-  // Refer section
-  h+='<div class="card purple">';
-  h+='<span class="slbl">Your Refer Code</span>';
-  h+='<div style="font-size:24px;font-weight:900;letter-spacing:3px;color:#A259FF;font-family:var(--mono);margin-bottom:4px">'+S.referCode+'</div>';
-  h+='<div class="ref-link-box" onclick="copyReferLink()"><span>'+getReferLink()+'</span>'+icoSvg('copy','var(--muted)',16)+'</div>';
-  h+='<button class="btn btn-purple" onclick="shareReferLink()">'+icoSvg('share','white',18)+' Share My Link</button>';
-  h+='</div>';
-
-  // Refer rewards
+  h+='<div class="divider"></div><span class="slbl">Refer & Earn</span>';
+  h+='<div class="card purple"><span class="slbl">Your Refer Code</span><div style="font-size:24px;font-weight:900;letter-spacing:3px;color:#A259FF;font-family:var(--mono);margin-bottom:4px">'+S.referCode+'</div><div class="ref-link-box" onclick="copyReferLink()"><span>'+getReferLink()+'</span>'+icoSvg('copy','var(--muted)',16)+'</div><button class="btn btn-purple" onclick="shareReferLink()">'+icoSvg('share','white',18)+' Share My Link</button></div>';
   h+='<div class="ref-rewards">';
-  [{k:'users',c:'#6B9FFF',pts:'+25 pts',lbl:'You get per referral'},
-   {k:'gift',c:'#A259FF',pts:'+50 pts',lbl:'Friend gets on join'},
-   {k:'fire',c:'#FFBB00',pts:'+10 pts',lbl:'Bonus at 7-day streak'},
-   {k:'diamond',c:'#A259FF',pts:'2x pts',lbl:'Refer 10+ friends'}].forEach(function(r){
-    h+='<div class="ref-reward-card"><div class="rr-ico">'+icoSvg(r.k,r.c,22)+'</div><span class="rr-pts">'+r.pts+'</span><span class="rr-lbl">'+r.lbl+'</span></div>';
-  });
+  [{k:'users',c:'#6B9FFF',pts:'+25 pts',lbl:'You get per referral'},{k:'gift',c:'#A259FF',pts:'+50 pts',lbl:'Friend gets on join'},{k:'fire',c:'#FFBB00',pts:'+10 pts',lbl:'Bonus at 7-day streak'},{k:'diamond',c:'#A259FF',pts:'2x pts',lbl:'Refer 10+ friends'}].forEach(function(r){h+='<div class="ref-reward-card"><div class="rr-ico">'+icoSvg(r.k,r.c,22)+'</div><span class="rr-pts">'+r.pts+'</span><span class="rr-lbl">'+r.lbl+'</span></div>';});
   h+='</div>';
-
-  // Refer stats
   h+='<div class="ref-count-row"><span class="ref-count-lbl">'+icoSvg('users','var(--muted)',15)+' Friends Referred</span><span class="ref-count-num">'+S.referrals.length+'</span></div>';
   h+='<div class="ref-count-row" style="margin-bottom:12px"><span class="ref-count-lbl">'+icoSvg('coin','var(--muted)',15)+' Points Earned</span><span class="ref-count-num" style="color:var(--gold)">'+S.referralPts+'</span></div>';
-
-  // Refer history
-  h+='<div class="ref-history">';
-  h+='<div class="rh-head">Referred Friends</div>';
-  if(S.referrals.length===0){
-    h+='<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px">No referrals yet — share your link!</div>';
-  } else {
-    S.referrals.forEach(function(r){
-      h+='<div class="rh-item"><div><span class="rh-name">'+r.name+'</span><span class="rh-addr">'+r.addr+'</span></div><span class="rh-pts">+25 pts</span></div>';
-    });
-  }
+  h+='<div class="ref-history"><div class="rh-head">Referred Friends</div>';
+  if(S.referrals.length===0){h+='<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px">No referrals yet — share your link!</div>';}
+  else{S.referrals.forEach(function(r){h+='<div class="rh-item"><div><span class="rh-name">'+r.name+'</span><span class="rh-addr">'+r.addr+'</span></div><span class="rh-pts">+25 pts</span></div>';});}
   h+='</div>';
-
-  if(S.referredBy){
-    h+='<div style="padding:11px 14px;background:rgba(0,240,160,0.07);border:1px solid rgba(0,240,160,0.15);border-radius:11px;font-size:12px;font-weight:600;color:var(--green);margin-top:9px;font-family:var(--mono);display:flex;align-items:center;gap:7px">'+icoSvg('check','var(--green)',13)+' You joined via referral — +50 pts bonus!</div>';
-  }
-
-  // Vibe History (now AFTER Refer & Earn)
+  if(S.referredBy)h+='<div style="padding:11px 14px;background:rgba(0,240,160,0.07);border:1px solid rgba(0,240,160,0.15);border-radius:11px;font-size:12px;font-weight:600;color:var(--green);margin-top:9px;font-family:var(--mono);display:flex;align-items:center;gap:7px">'+icoSvg('check','var(--green)',13)+' You joined via referral — +50 pts bonus!</div>';
   h+='<div class="divider"></div>';
   h+='<div class="card"><span class="slbl">Vibe History</span>';
-  if(S.vibeHistory.length===0){
-    h+='<div style="text-align:center;padding:20px 0;color:var(--muted);font-size:13px">No vibes yet — check in!</div>';
-  } else {
-    S.vibeHistory.slice(0,8).forEach(function(v){
-      var c=VIBE_COLORS[v.key]||'#6B9FFF';
-      h+='<div class="hr"><div class="hrl"><div class="hre">'+icoSvg(v.key,c,18)+'</div>';
-      h+='<div><span class="hrn">'+v.name+'</span><span class="hrd">'+fmtDate(v.date)+'</span></div></div></div>';
-    });
-  }
+  if(S.vibeHistory.length===0){h+='<div style="text-align:center;padding:20px 0;color:var(--muted);font-size:13px">No vibes yet — check in!</div>';}
+  else{S.vibeHistory.slice(0,8).forEach(function(v){var c=VIBE_COLORS[v.key]||'#6B9FFF';h+='<div class="hr"><div class="hrl"><div class="hre">'+icoSvg(v.key,c,18)+'</div><div><span class="hrn">'+v.name+'</span><span class="hrd">'+fmtDate(v.date)+'</span></div></div></div>';});}
   h+='</div>';
-
-  // Disconnect
   h+='<div class="divider"></div>';
   h+='<button class="btn btn-red" onclick="confirmDisconnect()">'+icoSvg('logout','var(--red)',18)+' Disconnect Wallet</button>';
-  h+='</div>';
-  return h;
+  return h+'</div>';
 }
 
-window.addEventListener('load', function(){
+window.addEventListener('load',function(){
+  // Replace logo placeholder
+  document.querySelectorAll('.splash-logo').forEach(function(el){el.innerHTML=logoMark(54);});
   setTimeout(function(){
-    var splash = document.getElementById('splash');
-    if(splash){ splash.classList.add('hide'); setTimeout(function(){splash.remove();},500); }
-    var _ref = new URLSearchParams(window.location.search).get('ref');
-    if(_ref && S.wallet && !S.referredBy && _ref !== S.referCode){
-      S.referredBy=_ref; S.points+=50; saveLocal(['referredBy','points']);
-    }
-    if(!S.referCode && S.wallet){ S.referCode=genCode(S.wallet); saveLocal(['referCode']); }
+    var splash=document.getElementById('splash');
+    if(splash){splash.classList.add('hide');setTimeout(function(){splash.remove();},500);}
+    var _ref=new URLSearchParams(window.location.search).get('ref');
+    if(_ref&&S.wallet&&!S.referredBy&&_ref!==S.referCode){S.referredBy=_ref;S.points+=50;saveLocal(['referredBy','points']);}
+    if(!S.referCode&&S.wallet){S.referCode=genCode(S.wallet);saveLocal(['referCode']);}
     render();
-  }, 2000);
+  },2000);
 });
 </script>
 </body>
 </html>
+HTMLEOF
+echo "Done - $(wc -l < /home/claude/index.html) lines"
