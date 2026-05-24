@@ -524,34 +524,26 @@ async function connectWallet(){
       }
     }
 
-    // FIX #2: Only overwrite local data if Supabase has MORE points (prevent reset)
     if(S.isOnline){
       var existing=await sbGet(S.wallet);
-      if(existing){
-        // Only load from DB if DB has data and it's not a fresh/empty record
-        var dbPts=(existing.points||0);
-        var localPts=S.points+S.referralPts;
-        if(dbPts>0||existing.streak>0||existing.quizzes>0){
-          // DB has real data — load it (take whichever points are higher)
-          S.streak=existing.streak||S.streak;
-          S.points=Math.max(existing.points||0, localPts);
-          S.quizzes=Math.max(existing.quizzes||0,S.quizzes);
-          S.totalCorrect=Math.max(existing.total_correct||0,S.totalCorrect);
-          S.lastCheckin=existing.last_checkin||S.lastCheckin;
-          if(existing.vibe_history&&existing.vibe_history.length>0)S.vibeHistory=existing.vibe_history;
-          S.quizDone=existing.quiz_done||S.quizDone;
-          S.referCode=existing.refer_code||S.referCode;
-          S.referredBy=existing.referred_by||S.referredBy;
-          S.referralPts=existing.referral_pts||S.referralPts;
-          S.freezeUsed=existing.freeze_used||S.freezeUsed;
-          if(existing.referrals&&existing.referrals.length>0)S.referrals=existing.referrals;
-          S.username=existing.username||S.username;
-          saveLocal(['streak','points','quizzes','totalCorrect','lastCheckin','vibeHistory','quizDone','referCode','referredBy','referralPts','freezeUsed','referrals','username']);
-        }
-        // If DB record is empty/new but local has data — push local data to DB
-        if(localPts>dbPts){await saveRemote();}
+      if(existing && existing.username){
+        S.username=existing.username;
+        S.streak=existing.streak||0;
+        S.points=existing.points||0;
+        S.referralPts=existing.referral_pts||0;
+        S.quizzes=existing.quizzes||0;
+        S.totalCorrect=existing.total_correct||0;
+        S.lastCheckin=existing.last_checkin||'';
+        S.vibeHistory=existing.vibe_history||[];
+        S.quizDone=existing.quiz_done||'';
+        S.referCode=existing.refer_code||S.referCode;
+        S.referredBy=existing.referred_by||'';
+        S.freezeUsed=existing.freeze_used||0;
+        S.referrals=existing.referrals||[];
+        saveLocal(['streak','points','quizzes','totalCorrect','lastCheckin','vibeHistory','quizDone','referCode','referredBy','referralPts','freezeUsed','referrals','username']);
+        render();
+        return;
       } else {
-        // No DB record at all — push current local state to DB (first time sync)
         await saveRemote();
       }
     }
@@ -815,5 +807,3 @@ window.addEventListener('load',function(){
 </script>
 </body>
 </html>
-
-        
