@@ -239,13 +239,29 @@ async function sbGet(wallet) {
 
 async function sbUpsert(data) {
   try {
-    var r = await fetch(SUPABASE_URL+'/rest/v1/users?on_conflict=wallet', {
-      method:'POST',
-      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates,return=minimal'},
+    // First try to update existing record
+    var wallet = data.wallet;
+    var updateR = await fetch(SUPABASE_URL+'/rest/v1/users?wallet=eq.'+encodeURIComponent(wallet), {
+      method:'PATCH',
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
       body: JSON.stringify(data)
     });
-    return r.ok;
-  } catch(e) { return false; }
+    if(updateR.ok){
+      // Check if any row was updated (if not, insert new)
+      var check = await fetch(SUPABASE_URL+'/rest/v1/users?wallet=eq.'+encodeURIComponent(wallet)+'&select=wallet', {
+        headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+      });
+      var rows = await check.json();
+      if(rows && rows.length > 0) return true;
+    }
+    // Insert new record
+    var insertR = await fetch(SUPABASE_URL+'/rest/v1/users', {
+      method:'POST',
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body: JSON.stringify(data)
+    });
+    return insertR.ok;
+  } catch(e) { console.error('sbUpsert error:',e); return false; }
 }
 
 // FIX #1: Leaderboard — added Accept header + better error handling
@@ -279,7 +295,7 @@ async function sbGetUserByCode(code) {
     if(!r.ok) return null;
     var d = await r.json();
     return d && d[0] ? d[0] : null;
-    } catch(e) { return null; }
+  } catch(e) { return null; }
 }
 
 // ── QUESTION BANK ──────────────────────────────
