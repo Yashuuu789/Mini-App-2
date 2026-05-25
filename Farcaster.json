@@ -1,15 +1,18 @@
 {
   "accountAssociation": {
-    "header": "eyJmaWQiOjEyMTg1NTMsInR5cGUiOiJjdXN0b2R5In0",
+    "header": "eyJmaWQiOjEyMTg1NTMsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHhkNTkxOWY4YjkzN0ZjMDg3ZDllYTg2MjM4ZUZkMjUyMzgxQUY1NTBDIn0",
     "payload": "eyJkb21haW4iOiJiYXNldmliZWRhaWx5LnZlcmNlbC5hcHAifQ",
-    "signature": "NEED_FROM_WARPCAST"
+    "signature": "FoQMBhRLAMYl5mNQJHHHie4T2coJ0voLf3IelbgmORZMzHqPMC3D3GnNG/CpN1P1mbsLy/eJUCVenqT2WzLTcRw="
   },
   "frame": {
     "version": "1",
     "name": "BaseVibe",
     "iconUrl": "https://basevibedaily.vercel.app/icon.png",
     "homeUrl": "https://basevibedaily.vercel.app",
+    "imageUrl": "https://basevibedaily.vercel.app/image.png",
     "buttonTitle": "Play BaseVibe",
-    "splashBackgroundColor": "#020510"
+    "splashImageUrl": "https://basevibedaily.vercel.app/splash.png",
+    "splashBackgroundColor": "#020510",
+    "webhookUrl": "https://basevibedaily.vercel.app/api/webhook"
   }
 }
