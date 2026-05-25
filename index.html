@@ -524,28 +524,41 @@ async function connectWallet(){
       }
     }
 
+    // Load local data first (always available even after disconnect)
+    S.streak=parseInt(localStorage.getItem('streak')||'0');
+    S.points=parseInt(localStorage.getItem('points')||'0');
+    S.quizzes=parseInt(localStorage.getItem('quizzes')||'0');
+    S.totalCorrect=parseInt(localStorage.getItem('totalCorrect')||'0');
+    S.lastCheckin=localStorage.getItem('lastCheckin')||'';
+    S.vibeHistory=JSON.parse(localStorage.getItem('vibeHistory')||'[]');
+    S.quizDone=localStorage.getItem('quizDone')||'';
+    S.username=localStorage.getItem('username')||'';
+    S.referCode=localStorage.getItem('referCode')||'';
+    S.referredBy=localStorage.getItem('referredBy')||'';
+    S.referrals=JSON.parse(localStorage.getItem('referrals')||'[]');
+    S.referralPts=parseInt(localStorage.getItem('referralPts')||'0');
+    S.freezeUsed=parseInt(localStorage.getItem('freezeUsed')||'0');
+
     if(S.isOnline){
       var existing=await sbGet(S.wallet);
       if(existing && existing.username){
-        S.username=existing.username;
-        S.streak=existing.streak||0;
-        S.points=existing.points||0;
-        S.referralPts=existing.referral_pts||0;
-        S.quizzes=existing.quizzes||0;
-        S.totalCorrect=existing.total_correct||0;
-        S.lastCheckin=existing.last_checkin||'';
-        S.vibeHistory=existing.vibe_history||[];
-        S.quizDone=existing.quiz_done||'';
+        // DB has data — use whichever is more up to date
+        S.username=existing.username||S.username;
+        S.streak=Math.max(existing.streak||0, S.streak);
+        S.points=Math.max(existing.points||0, S.points+S.referralPts);
+        S.referralPts=existing.referral_pts||S.referralPts;
+        S.quizzes=Math.max(existing.quizzes||0, S.quizzes);
+        S.totalCorrect=Math.max(existing.total_correct||0, S.totalCorrect);
+        if(existing.last_checkin) S.lastCheckin=existing.last_checkin;
+        if(existing.vibe_history && existing.vibe_history.length>0) S.vibeHistory=existing.vibe_history;
+        if(existing.quiz_done) S.quizDone=existing.quiz_done;
         S.referCode=existing.refer_code||S.referCode;
-        S.referredBy=existing.referred_by||'';
-        S.freezeUsed=existing.freeze_used||0;
-        S.referrals=existing.referrals||[];
+        S.referredBy=existing.referred_by||S.referredBy;
+        S.freezeUsed=existing.freeze_used||S.freezeUsed;
+        if(existing.referrals && existing.referrals.length>0) S.referrals=existing.referrals;
         saveLocal(['streak','points','quizzes','totalCorrect','lastCheckin','vibeHistory','quizDone','referCode','referredBy','referralPts','freezeUsed','referrals','username']);
-        render();
-        return;
-      } else {
-        await saveRemote();
       }
+      await saveRemote();
     }
 
     if(!S.username){renderNameSetup();}
@@ -563,10 +576,10 @@ function confirmDisconnect(){
 function closeDisconnectModal(){var m=document.getElementById('disconnectModal');if(m)m.remove();}
 function doDisconnect(){
   closeDisconnectModal();
-  S.wallet='';S.username='';S.streak=0;S.points=0;S.quizzes=0;S.totalCorrect=0;
-  S.lastCheckin='';S.vibeHistory=[];S.quizDone='';S.referCode='';S.referredBy='';
-  S.referrals=[];S.referralPts=0;S.freezeUsed=0;S.tab='vibe';S.selVibe=null;S.qActive=false;
-  ['walletAddress','username','streak','points','quizzes','totalCorrect','lastCheckin','vibeHistory','quizDone','referCode','referredBy','referrals','referralPts','freezeUsed','perfectQuiz'].forEach(function(k){localStorage.removeItem(k);});
+  // Only clear wallet address — keep all data in localStorage so it restores on reconnect
+  S.wallet='';
+  localStorage.removeItem('walletAddress');
+  S.tab='vibe';S.selVibe=null;S.qActive=false;
   render();
 }
 
