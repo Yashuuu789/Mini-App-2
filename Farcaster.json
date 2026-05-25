@@ -1,8 +1,15 @@
 {
-  "rewrites": [
-    {
-      "source": "/.well-known/farcaster.json",
-      "destination": "/Farcaster.json"
-    }
-  ]
+  "accountAssociation": {
+    "header": "eyJmaWQiOjEyMTg1NTMsInR5cGUiOiJjdXN0b2R5In0",
+    "payload": "eyJkb21haW4iOiJiYXNldmliZWRhaWx5LnZlcmNlbC5hcHAifQ",
+    "signature": "NEED_FROM_WARPCAST"
+  },
+  "frame": {
+    "version": "1",
+    "name": "BaseVibe",
+    "iconUrl": "https://basevibedaily.vercel.app/icon.png",
+    "homeUrl": "https://basevibedaily.vercel.app",
+    "buttonTitle": "Play BaseVibe",
+    "splashBackgroundColor": "#020510"
+  }
 }
