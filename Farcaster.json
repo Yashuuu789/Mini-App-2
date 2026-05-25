@@ -1,0 +1,18 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjEsInR5cGUiOiJjdXN0b2R5IiwKImtleSI6IjB4MDAwMCJ9",
+    "payload": "eyJkb21haW4iOiJtaW5pLWFwcC0yLWRlbHRhLnZlcmNlbC5hcHAifQ",
+    "signature": "placeholder"
+  },
+  "frame": {
+    "version": "1",
+    "name": "BaseVibe",
+    "iconUrl": "https://mini-app-2-delta.vercel.app/icon.png",
+    "homeUrl": "https://mini-app-2-delta.vercel.app",
+    "imageUrl": "https://mini-app-2-delta.vercel.app/og.png",
+    "buttonTitle": "Play BaseVibe",
+    "splashImageUrl": "https://mini-app-2-delta.vercel.app/splash.png",
+    "splashBackgroundColor": "#020510",
+    "webhookUrl": "https://mini-app-2-delta.vercel.app/api/webhook"
+  }
+}
