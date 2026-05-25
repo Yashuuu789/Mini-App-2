@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Base Vibe</title>
+<meta name="fc:frame" content='{"version":"1","imageUrl":"https://mini-app-2-delta.vercel.app/og.png","button":{"title":"Play BaseVibe","action":{"type":"launch_frame","name":"BaseVibe","url":"https://mini-app-2-delta.vercel.app","splashBackgroundColor":"#020510"}}}' />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -177,7 +178,6 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .streak-freeze{background:linear-gradient(135deg,rgba(255,187,0,0.08),rgba(255,150,0,0.04));border:1px solid rgba(255,187,0,0.2);border-radius:14px;padding:14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .sf-title{font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px}
 .sf-sub{font-size:11px;color:var(--muted);display:block;margin-top:3px}
-.sf-sub{font-size:11px;color:var(--muted);display:block;margin-top:3px}
 .sf-btn{padding:8px 14px;background:rgba(255,187,0,0.15);border:1px solid rgba(255,187,0,0.3);border-radius:9px;color:var(--gold);font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
 .challenge-card{background:linear-gradient(135deg,rgba(0,82,255,0.09),rgba(162,89,255,0.06));border:1px solid var(--border-hi);border-radius:16px;padding:16px;margin-top:12px}
 .divider{height:1px;background:var(--border);margin:16px 0}
@@ -304,7 +304,7 @@ var ALL_QUESTIONS=[
   {q:"What is a DEX?",diff:'medium',opts:["A centralized exchange","Decentralized exchange running on smart contracts","A crypto wallet","A block explorer"],a:1,fact:"DEXs like Uniswap allow trading without a central intermediary."},
   {q:"What is Uniswap?",diff:'medium',opts:["A centralized exchange","A leading decentralized exchange on Ethereum and Base","A wallet app","A Layer 2"],a:1,fact:"Uniswap is one of the most popular DEXs, available on Base."},
   {q:"What is a rug pull?",diff:'easy',opts:["A carpet theft","When developers abandon a project and take investor funds","A DeFi strategy","A type of airdrop"],a:1,fact:"A rug pull is when developers abandon a project and steal funds."},
-    {q:"What is Web3?",diff:'easy',opts:["The third version of HTML","The decentralized internet built on blockchain","A new browser","A crypto exchange"],a:1,fact:"Web3 refers to the decentralized internet powered by blockchain technology."},
+  {q:"What is Web3?",diff:'easy',opts:["The third version of HTML","The decentralized internet built on blockchain","A new browser","A crypto exchange"],a:1,fact:"Web3 refers to the decentralized internet powered by blockchain technology."},
   {q:"What is a gas limit?",diff:'hard',opts:["The maximum speed of a transaction","The maximum computational work for a transaction","A fee cap","A block size limit"],a:1,fact:"The gas limit is the maximum amount of gas you're willing to use for a transaction."},
   {q:"What is proof of stake?",diff:'medium',opts:["Proving you own a steak","A consensus mechanism where validators stake tokens","A mining algorithm","A DeFi strategy"],a:1,fact:"Proof of Stake replaced Proof of Work in Ethereum's 2022 Merge upgrade."},
   {q:"What was The Merge?",diff:'hard',opts:["Two blockchains combining","Ethereum switching from Proof of Work to Proof of Stake","A DeFi protocol merge","A Base upgrade"],a:1,fact:"The Merge in 2022 transitioned Ethereum to Proof of Stake, reducing energy use by 99.9%."},
