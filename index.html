@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="base:app_id" content="6a145b13ed0edcf2e9a87708" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Base Vibe</title>
+<meta name="base:app_id" content="6a145b13ed0edcf2e9a87708" />
 <meta name="fc:frame" content='{"version":"1","imageUrl":"https://basevibedaily.vercel.app/og.png","button":{"title":"Play BaseVibe","action":{"type":"launch_frame","name":"BaseVibe","url":"https://basevibedaily.vercel.app","splashBackgroundColor":"#020510"}}}' />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -192,6 +192,48 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .modal-title{font-size:18px;font-weight:800;margin-bottom:8px;display:block}
 .modal-sub{font-size:13px;color:var(--muted);font-family:var(--mono);display:block;margin-bottom:20px}
 .modal-btn-row{display:flex;flex-direction:column;gap:9px}
+/* VIBE ANIMATIONS */
+.vibe-explosion{position:fixed;inset:0;z-index:500;pointer-events:none;display:flex;align-items:center;justify-content:center;animation:vibeExplode 0.6s ease forwards}
+@keyframes vibeExplode{0%{opacity:0}20%{opacity:1}80%{opacity:1}100%{opacity:0}}
+.vibe-ripple{position:fixed;inset:0;z-index:499;pointer-events:none}
+.vibe-particle{position:absolute;border-radius:50%;animation:particleFly linear forwards}
+@keyframes particleFly{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}
+.vibe-text-flash{font-size:52px;font-weight:900;letter-spacing:-2px;text-shadow:0 0 40px currentColor;animation:textFlash 0.6s ease forwards}
+@keyframes textFlash{0%{transform:scale(0.5);opacity:0}40%{transform:scale(1.3);opacity:1}70%{transform:scale(0.95)}100%{transform:scale(1);opacity:0}}
+.vibe-screen-flash{position:fixed;inset:0;z-index:498;pointer-events:none;animation:screenFlash 0.5s ease forwards}
+@keyframes screenFlash{0%{opacity:0}15%{opacity:0.15}100%{opacity:0}}
+
+/* COMMUNITY MOOD */
+.mood-bar-wrap{margin-bottom:16px}
+.mood-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.mood-live{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--green)}
+.mood-live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:moodPulse 1.5s ease-in-out infinite}
+@keyframes moodPulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.mood-bars{display:flex;flex-direction:column;gap:7px}
+.mood-row{display:flex;align-items:center;gap:9px}
+.mood-ico{width:20px;text-align:center;font-size:13px;flex-shrink:0}
+.mood-bar-track{flex:1;height:8px;background:var(--s3);border-radius:99px;overflow:hidden}
+.mood-bar-fill{height:100%;border-radius:99px;transition:width 1s cubic-bezier(0.34,1.56,0.64,1)}
+.mood-pct{font-size:10px;font-weight:700;color:var(--muted);width:28px;text-align:right;font-family:var(--mono);flex-shrink:0}
+.mood-winner{background:linear-gradient(135deg,rgba(0,82,255,0.08),rgba(0,82,255,0.03));border:1px solid var(--border-hi);border-radius:14px;padding:13px 15px;margin-bottom:12px;display:flex;align-items:center;gap:12px}
+.mood-winner-ico{font-size:28px}
+.mood-winner-title{font-size:15px;font-weight:800;display:block}
+.mood-winner-sub{font-size:11px;color:var(--muted);font-family:var(--mono);display:block;margin-top:2px}
+
+/* WEEKLY LEADERBOARD */
+.lb-tabs{display:flex;gap:8px;margin-bottom:14px}
+.lb-tab{flex:1;padding:9px;background:var(--s2);border:1px solid var(--border);border-radius:10px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;text-align:center;transition:all 0.2s;font-family:var(--font)}
+.lb-tab.active{background:var(--blue);border-color:var(--blue);color:white;box-shadow:0 4px 12px rgba(0,82,255,0.3)}
+
+/* TIMER */
+.timer-wrap{display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.timer-circle{width:52px;height:52px;position:relative;flex-shrink:0}
+.timer-circle svg{transform:rotate(-90deg)}
+.timer-circle .bg{fill:none;stroke:var(--s3);stroke-width:4}
+.timer-circle .fg{fill:none;stroke:var(--blue2);stroke-width:4;stroke-linecap:round;stroke-dasharray:138;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear,stroke 0.3s}
+.timer-circle .fg.warn{stroke:var(--gold)}
+.timer-circle .fg.danger{stroke:var(--red)}
+.timer-num{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:14px;font-weight:800;font-family:var(--mono)}
 /* ONBOARDING */
 .ob-step{display:flex;align-items:flex-start;gap:14px;padding:14px;background:var(--s2);border:1px solid var(--border);border-radius:14px;margin-bottom:9px}
 .ob-num{width:28px;height:28px;border-radius:8px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
@@ -214,7 +256,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 <body>
 <div class="bg-glow"></div>
 <div id="splash">
-  <div class="splash-logo" id="splashLogo"></div>
+  <div class="splash-logo" id="splashLogo"><svg width="54" height="54" viewBox="0 0 40 40" fill="none"><path d="M11 8h10.5C25.642 8 29 11.358 29 15.5S25.642 23 21.5 23H11V8z" fill="white"/><path d="M11 23h11.5C26.642 23 30 26.134 30 30s-3.358 7-7.5 7H11V23z" fill="rgba(255,255,255,0.55)"/><rect x="11" y="8" width="3" height="29" fill="white"/></svg></div>
   <div class="splash-title">Base<span>Vibe</span></div>
   <div class="splash-sub">Daily streaks · Onchain quizzes</div>
   <div class="splash-bar"><div class="splash-bar-fill"></div></div>
@@ -241,103 +283,97 @@ async function sbGetUserByCode(code){
 }
 
 var ALL_QUESTIONS=[
-  {q:"What is Base?",diff:'easy',opts:["A Bitcoin Layer 2","An Ethereum L2 by Coinbase","A new L1 blockchain","A DeFi protocol"],a:1,fact:"Base is an Ethereum Layer 2 built by Coinbase using the OP Stack."},
-  {q:"Who built Base?",diff:'easy',opts:["Ethereum Foundation","Binance","Coinbase","Polygon Labs"],a:2,fact:"Coinbase launched Base mainnet in August 2023."},
-  {q:"What tech stack does Base use?",diff:'medium',opts:["ZK Rollup","OP Stack (Optimism)","Arbitrum Nitro","Polygon CDK"],a:1,fact:"Base uses the OP Stack, making it part of the Superchain."},
-  {q:"What is the native gas token on Base?",diff:'easy',opts:["$BASE","$USDC","$ETH","$OP"],a:2,fact:"ETH is the native gas token on Base."},
-  {q:"What is OnchainKit?",diff:'medium',opts:["A Base wallet","Open-source toolkit for building onchain apps","A governance token","A DeFi protocol"],a:1,fact:"OnchainKit is Coinbase's open-source React component library."},
-  {q:"What is MiniKit?",diff:'medium',opts:["Mining tool","Building mini apps on Base","Sending NFTs","Trading tokens"],a:1,fact:"MiniKit lets developers build mini apps inside Farcaster frames."},
-  {q:"Base is part of which broader vision?",diff:'hard',opts:["Ethereum 2.0","The Superchain by Optimism","Web3 Alliance","DeFi Summer 2.0"],a:1,fact:"The Superchain is a network of OP Stack chains."},
-  {q:"What is Farcaster?",diff:'medium',opts:["A Base token","A decentralized social protocol","A DeFi app","A hardware wallet"],a:1,fact:"Farcaster is a decentralized social protocol."},
-  {q:"What does going onchain mean?",diff:'easy',opts:["Storing data on AWS","Recording data on blockchain","Encrypted off-chain data","Using a VPN"],a:1,fact:"Going onchain means actions are permanently recorded on blockchain."},
-  {q:"What year did Base mainnet launch?",diff:'easy',opts:["2021","2022","2023","2024"],a:2,fact:"Base launched on August 9, 2023."},
-  {q:"What is a smart contract?",diff:'easy',opts:["A legal agreement","Self-executing code on blockchain","A crypto wallet","A type of NFT"],a:1,fact:"Smart contracts run automatically when conditions are met."},
-  {q:"What does L2 stand for?",diff:'easy',opts:["Layer 2","Ledger 2","Level 2","Logic 2"],a:0,fact:"L2 means Layer 2 — a scaling solution on top of a Layer 1."},
-  {q:"What is a gas fee?",diff:'easy',opts:["A staking reward","Cost to execute transactions","A type of token","A mining reward"],a:1,fact:"Gas fees compensate for computing energy on the network."},
-  {q:"What is USDC?",diff:'easy',opts:["A meme coin","USD-pegged stablecoin by Circle","A DeFi token","A Bitcoin fork"],a:1,fact:"USDC is a stablecoin pegged 1:1 to the US dollar."},
-  {q:"What is an NFT?",diff:'easy',opts:["Non-Fungible Token","New Finance Token","Network Fee Token","None of the above"],a:0,fact:"NFTs are unique digital assets verified on blockchain."},
-  {q:"What does DeFi stand for?",diff:'easy',opts:["Digital Finance","Decentralized Finance","Defined Finance","Direct Finance"],a:1,fact:"DeFi refers to financial services built on blockchain."},
-  {q:"What is a block in blockchain?",diff:'medium',opts:["A failed transaction","A group of validated transactions","A type of wallet","A mining tool"],a:1,fact:"A block contains a batch of verified transactions."},
-  {q:"What is staking?",diff:'medium',opts:["Buying tokens","Locking tokens to earn rewards","Selling tokens","Mining tokens"],a:1,fact:"Staking means locking crypto to support network security."},
-  {q:"What is a seed phrase?",diff:'medium',opts:["A DeFi strategy","A backup recovery phrase for your wallet","A type of token","A network protocol"],a:1,fact:"A seed phrase can restore your crypto wallet if lost."},
-  {q:"What is the EVM?",diff:'hard',opts:["A cloud server","The runtime environment for smart contracts","A crypto wallet","A mining rig"],a:1,fact:"The EVM executes smart contract code on Ethereum and L2s like Base."},
-  {q:"What is a liquidity pool?",diff:'medium',opts:["A savings account","Locked tokens enabling DEX trading","A type of NFT","A blockchain node"],a:1,fact:"Liquidity pools hold token pairs to enable decentralized trading."},
-  {q:"What does TVL mean in DeFi?",diff:'medium',opts:["Total Value Locked","Token Value Listed","Transaction Volume Ledger","Total Verified Loans"],a:0,fact:"TVL is the total value of crypto assets deposited in a DeFi protocol."},
-  {q:"What is a DAO?",diff:'medium',opts:["Digital Asset Office","Decentralized Autonomous Organization","Data Access Object","Direct Asset Offering"],a:1,fact:"A DAO is governed by smart contracts and token holder votes."},
-  {q:"What is bridging in crypto?",diff:'medium',opts:["Mining new tokens","Transferring assets between blockchains","Creating an NFT","Staking tokens"],a:1,fact:"Bridging moves tokens from one blockchain to another."},
-  {q:"What is slippage in DeFi?",diff:'hard',opts:["A transaction error","Difference between expected and actual trade price","A type of fee","A wallet issue"],a:1,fact:"Slippage is the difference between expected price and execution price."},
-  {q:"Coinbase's vision for Base?",diff:'hard',opts:["Replace Ethereum","Bring 1 billion people onchain","Launch a new token","Compete with Bitcoin"],a:1,fact:"Coinbase's vision is to bring 1 billion users onchain through Base."},
-  {q:"What is an EOA?",diff:'hard',opts:["Externally Owned Account","Exchange Only Access","Ethereum Official Asset","Extended On-chain Action"],a:0,fact:"An EOA is a user-controlled wallet account."},
-  {q:"What is a rollup?",diff:'hard',opts:["A type of NFT","A scaling technique that batches transactions offchain","A staking strategy","A wallet backup"],a:1,fact:"Rollups execute transactions off L1 but post data onchain."},
-  {q:"What does WAGMI stand for?",diff:'easy',opts:["We Are Going to Make It","Wallet And Gas Management Interface","Web3 And Gaming Market Index","None of the above"],a:0,fact:"WAGMI means 'We're All Gonna Make It'."},
-  {q:"What is a dApp?",diff:'easy',opts:["A mobile app","Decentralized application running on blockchain","A developer application","A data application"],a:1,fact:"dApps run on decentralized networks rather than central servers."},
-  {q:"What is the mempool?",diff:'hard',opts:["A type of NFT pool","Waiting area for unconfirmed transactions","A DeFi liquidity pool","A mining reward pool"],a:1,fact:"The mempool is where pending transactions wait before inclusion in a block."},
-  {q:"What does GM mean in Web3?",diff:'easy',opts:["General Manager","Good Morning — a community greeting","Get Money","Gas Minimizer"],a:1,fact:"GM (Good Morning) is a popular Web3 community greeting."},
-  {q:"What is an airdrop?",diff:'easy',opts:["A parachute delivery","Free token distribution to wallet holders","A type of NFT mint","A staking reward"],a:1,fact:"Airdrops are free token distributions to reward early users."},
-  {q:"What is a hot wallet?",diff:'medium',opts:["A physical hardware wallet","An internet-connected software wallet","A cold storage device","A multisig wallet"],a:1,fact:"Hot wallets are internet-connected and convenient."},
-  {q:"What is a cold wallet?",diff:'medium',opts:["An offline hardware wallet","An internet-connected wallet","A broken wallet","A shared wallet"],a:0,fact:"Cold wallets store private keys offline for better security."},
-  {q:"What is yield farming?",diff:'hard',opts:["Growing crypto on farms","Maximizing returns by moving funds between DeFi protocols","A type of staking","Token mining"],a:1,fact:"Yield farming moves crypto between protocols to maximize returns."},
-  {q:"What is a block explorer?",diff:'medium',opts:["A wallet app","A tool to view blockchain transactions","A DeFi protocol","A mining tool"],a:1,fact:"Block explorers like Basescan let you look up any transaction."},
-  {q:"What is Basescan?",diff:'medium',opts:["A Base token scanner","Block explorer for Base network","A Base security tool","A Base wallet"],a:1,fact:"Basescan is the official block explorer for the Base network."},
-  {q:"What is a private key?",diff:'medium',opts:["Your wallet username","A secret code that proves wallet ownership","A public identifier","A recovery phrase"],a:1,fact:"Your private key controls access to your wallet — never share it."},
-  {q:"What does DYOR mean?",diff:'easy',opts:["Don't Yield on Returns","Do Your Own Research","DeFi Yield Optimization Ratio","Direct Your Own Rewards"],a:1,fact:"DYOR means Do Your Own Research."},
-  {q:"What is an AMM?",diff:'hard',opts:["Automated Market Maker","Asset Management Module","Advanced Mining Machine","Airdrop Management Method"],a:0,fact:"AMMs use algorithms and liquidity pools to enable decentralized swaps."},
-  {q:"What is Optimism?",diff:'medium',opts:["A DeFi token","An Ethereum L2 using optimistic rollups","A Bitcoin sidechain","A ZK rollup"],a:1,fact:"Optimism is the Ethereum L2 whose OP Stack powers Base."},
+  {q:"What is Base?",diff:'easy',opts:["A Bitcoin Layer 2","A new L1 blockchain","An Ethereum L2 by Coinbase","A DeFi protocol"],a:2,fact:"Base is an Ethereum Layer 2 built by Coinbase using the OP Stack."},
+  {q:"Who built Base?",diff:'easy',opts:["Ethereum Foundation","Coinbase","Binance","Polygon Labs"],a:1,fact:"Coinbase launched Base mainnet in August 2023."},
+  {q:"What tech stack does Base use?",diff:'medium',opts:["ZK Rollup","Arbitrum Nitro","Polygon CDK","OP Stack (Optimism)"],a:3,fact:"Base uses the OP Stack, making it part of the Superchain."},
+  {q:"What is the native gas token on Base?",diff:'easy',opts:["$BASE","$OP","$ETH","$USDC"],a:2,fact:"ETH is the native gas token on Base."},
+  {q:"What is OnchainKit?",diff:'medium',opts:["A governance token","A Base wallet","A DeFi protocol","Open-source toolkit for building onchain apps"],a:3,fact:"OnchainKit is Coinbase's open-source React component library."},
+  {q:"What is MiniKit?",diff:'medium',opts:["Building mini apps on Base","Mining tool","Sending NFTs","Trading tokens"],a:0,fact:"MiniKit lets developers build mini apps inside Farcaster frames."},
+  {q:"Base is part of which broader vision?",diff:'hard',opts:["Web3 Alliance","DeFi Summer 2.0","Ethereum 2.0","The Superchain by Optimism"],a:3,fact:"The Superchain is a network of OP Stack chains."},
+  {q:"What is Farcaster?",diff:'medium',opts:["A hardware wallet","A Base token","A decentralized social protocol","A DeFi app"],a:2,fact:"Farcaster is a decentralized social protocol."},
+  {q:"What does going onchain mean?",diff:'easy',opts:["Using a VPN","Encrypted off-chain data","Storing data on AWS","Recording data on blockchain"],a:3,fact:"Going onchain means actions are permanently recorded on blockchain."},
+  {q:"What year did Base mainnet launch?",diff:'easy',opts:["2024","2021","2023","2022"],a:2,fact:"Base launched on August 9, 2023."},
+  {q:"What is a smart contract?",diff:'easy',opts:["A crypto wallet","Self-executing code on blockchain","A legal agreement","A type of NFT"],a:1,fact:"Smart contracts run automatically when conditions are met."},
+  {q:"What does L2 stand for?",diff:'easy',opts:["Logic 2","Level 2","Ledger 2","Layer 2"],a:3,fact:"L2 means Layer 2 — a scaling solution on top of a Layer 1."},
+  {q:"What is a gas fee?",diff:'easy',opts:["A mining reward","A type of token","Cost to execute transactions","A staking reward"],a:2,fact:"Gas fees compensate for computing energy on the network."},
+  {q:"What is USDC?",diff:'easy',opts:["A Bitcoin fork","A DeFi token","A meme coin","USD-pegged stablecoin by Circle"],a:3,fact:"USDC is a stablecoin pegged 1:1 to the US dollar."},
+  {q:"What is an NFT?",diff:'easy',opts:["Network Fee Token","None of the above","New Finance Token","Non-Fungible Token"],a:3,fact:"NFTs are unique digital assets verified on blockchain."},
+  {q:"What does DeFi stand for?",diff:'easy',opts:["Direct Finance","Defined Finance","Decentralized Finance","Digital Finance"],a:2,fact:"DeFi refers to financial services built on blockchain."},
+  {q:"What is a block in blockchain?",diff:'medium',opts:["A mining tool","A group of validated transactions","A failed transaction","A type of wallet"],a:1,fact:"A block contains a batch of verified transactions."},
+  {q:"What is staking?",diff:'medium',opts:["Mining tokens","Selling tokens","Buying tokens","Locking tokens to earn rewards"],a:3,fact:"Staking means locking crypto to support network security."},
+  {q:"What is a seed phrase?",diff:'medium',opts:["A network protocol","A DeFi strategy","A backup recovery phrase for your wallet","A type of token"],a:2,fact:"A seed phrase can restore your crypto wallet if lost."},
+  {q:"What is the EVM?",diff:'hard',opts:["A mining rig","The runtime environment for smart contracts","A cloud server","A crypto wallet"],a:1,fact:"The EVM executes smart contract code on Ethereum and L2s like Base."},
+  {q:"What is a liquidity pool?",diff:'medium',opts:["A blockchain node","A type of NFT","A savings account","Locked tokens enabling DEX trading"],a:3,fact:"Liquidity pools hold token pairs to enable decentralized trading."},
+  {q:"What does TVL mean in DeFi?",diff:'medium',opts:["Token Value Listed","Total Value Locked","Transaction Volume Ledger","Total Verified Loans"],a:1,fact:"TVL is the total value of crypto assets deposited in a DeFi protocol."},
+  {q:"What is a DAO?",diff:'medium',opts:["Direct Asset Offering","Digital Asset Office","Data Access Object","Decentralized Autonomous Organization"],a:3,fact:"A DAO is governed by smart contracts and token holder votes."},
+  {q:"What is bridging in crypto?",diff:'medium',opts:["Staking tokens","Mining new tokens","Creating an NFT","Transferring assets between blockchains"],a:3,fact:"Bridging moves tokens from one blockchain to another."},
+  {q:"What is slippage in DeFi?",diff:'hard',opts:["A wallet issue","A type of fee","Difference between expected and actual trade price","A transaction error"],a:2,fact:"Slippage is the difference between expected price and execution price."},
+  {q:"Coinbase's vision for Base?",diff:'hard',opts:["Launch a new token","Bring 1 billion people onchain","Replace Ethereum","Compete with Bitcoin"],a:1,fact:"Coinbase's vision is to bring 1 billion users onchain through Base."},
+  {q:"What is an EOA?",diff:'hard',opts:["Extended On-chain Action","Exchange Only Access","Externally Owned Account","Ethereum Official Asset"],a:2,fact:"An EOA is a user-controlled wallet account."},
+  {q:"What is a rollup?",diff:'hard',opts:["A wallet backup","A staking strategy","A type of NFT","A scaling technique that batches transactions offchain"],a:3,fact:"Rollups execute transactions off L1 but post data onchain."},
+  {q:"What does WAGMI stand for?",diff:'easy',opts:["None of the above","Web3 And Gaming Market Index","We Are Going to Make It","Wallet And Gas Management Interface"],a:2,fact:"WAGMI means 'We're All Gonna Make It'."},
+  {q:"What is a dApp?",diff:'easy',opts:["A data application","A developer application","A mobile app","Decentralized application running on blockchain"],a:3,fact:"dApps run on decentralized networks rather than central servers."},
+  {q:"What is the mempool?",diff:'hard',opts:["Waiting area for unconfirmed transactions","A DeFi liquidity pool","A type of NFT pool","A mining reward pool"],a:0,fact:"The mempool is where pending transactions wait before inclusion in a block."},
+  {q:"What does GM mean in Web3?",diff:'easy',opts:["Gas Minimizer","Get Money","General Manager","Good Morning — a community greeting"],a:3,fact:"GM (Good Morning) is a popular Web3 community greeting."},
+  {q:"What is an airdrop?",diff:'easy',opts:["A type of NFT mint","A staking reward","A parachute delivery","Free token distribution to wallet holders"],a:3,fact:"Airdrops are free token distributions to reward early users."},
+  {q:"What is a hot wallet?",diff:'medium',opts:["A cold storage device","An internet-connected software wallet","A physical hardware wallet","A multisig wallet"],a:1,fact:"Hot wallets are internet-connected and convenient."},
+  {q:"What is a cold wallet?",diff:'medium',opts:["An offline hardware wallet","A broken wallet","An internet-connected wallet","A shared wallet"],a:0,fact:"Cold wallets store private keys offline for better security."},
+  {q:"What is yield farming?",diff:'hard',opts:["Token mining","A type of staking","Growing crypto on farms","Maximizing returns by moving funds between DeFi protocols"],a:3,fact:"Yield farming moves crypto between protocols to maximize returns."},
+  {q:"What is a block explorer?",diff:'medium',opts:["A mining tool","A DeFi protocol","A wallet app","A tool to view blockchain transactions"],a:3,fact:"Block explorers like Basescan let you look up any transaction."},
+  {q:"What is Basescan?",diff:'medium',opts:["A Base security tool","A Base wallet","Block explorer for Base network","A Base token scanner"],a:2,fact:"Basescan is the official block explorer for the Base network."},
+  {q:"What is a private key?",diff:'medium',opts:["A recovery phrase","A public identifier","A secret code that proves wallet ownership","Your wallet username"],a:2,fact:"Your private key controls access to your wallet — never share it."},
+  {q:"What does DYOR mean?",diff:'easy',opts:["DeFi Yield Optimization Ratio","Direct Your Own Rewards","Do Your Own Research","Don't Yield on Returns"],a:2,fact:"DYOR means Do Your Own Research."},
+  {q:"What is an AMM?",diff:'hard',opts:["Airdrop Management Method","Advanced Mining Machine","Asset Management Module","Automated Market Maker"],a:3,fact:"AMMs use algorithms and liquidity pools to enable decentralized swaps."},
+  {q:"What is Optimism?",diff:'medium',opts:["A ZK rollup","A Bitcoin sidechain","A DeFi token","An Ethereum L2 using optimistic rollups"],a:3,fact:"Optimism is the Ethereum L2 whose OP Stack powers Base."},
   {q:"What does HODL mean?",diff:'easy',opts:["Hold On for Dear Life","High Order Data Ledger","Hybrid On-chain Data Layer","None of the above"],a:0,fact:"HODL means Hold On for Dear Life — holding crypto long term."},
-  {q:"What is a validator?",diff:'hard',opts:["A password validator","A node that verifies and adds transactions","A smart contract auditor","A wallet provider"],a:1,fact:"Validators secure proof-of-stake networks by verifying transactions."},
-  {q:"What is the Superchain?",diff:'hard',opts:["A new L1 blockchain","A network of OP Stack chains including Base","A Bitcoin upgrade","A DeFi aggregator"],a:1,fact:"The Superchain is Optimism's vision of interoperable OP Stack chains."},
-  {q:"What is FUD?",diff:'easy',opts:["Fear Uncertainty and Doubt","Fast User Data","Fungible Unit Distribution","Forward User Demand"],a:0,fact:"FUD means Fear, Uncertainty, and Doubt — negative crypto sentiment."},
-  {q:"What is a multisig wallet?",diff:'hard',opts:["A wallet with multiple passwords","A wallet requiring multiple signatures","A multi-currency wallet","A shared exchange account"],a:1,fact:"Multisig wallets require multiple private key signatures."},
-  {q:"What is Base's block time?",diff:'hard',opts:["10 minutes","~2 seconds","1 minute","30 seconds"],a:1,fact:"Base produces blocks roughly every 2 seconds."},
-  {q:"What is EIP-4844?",diff:'hard',opts:["A new token standard","Proto-danksharding that reduces L2 fees","An NFT upgrade","A wallet standard"],a:1,fact:"EIP-4844 introduced blob transactions that reduce data costs for L2s."},
-  {q:"What is Warpcast?",diff:'medium',opts:["A crypto exchange","The main Farcaster client app","A Base wallet","A DeFi protocol"],a:1,fact:"Warpcast is the most popular client for the Farcaster social protocol."},
-  {q:"What is a Frame in Farcaster?",diff:'medium',opts:["A photo filter","An interactive mini app inside a Farcaster post","A wallet type","A token standard"],a:1,fact:"Frames are interactive apps embedded in Farcaster posts."},
-  {q:"What is Base Camp?",diff:'hard',opts:["A camping app","Coinbase's onchain education platform","A Base validator","A DeFi protocol"],a:1,fact:"Base Camp is Coinbase's learning platform for onchain development."},
-  {q:"What does 'onchain summer' refer to?",diff:'medium',opts:["A crypto price rally","A Coinbase/Base event celebrating onchain apps","A staking season","An NFT drop period"],a:1,fact:"Onchain Summer was a Base event celebrating onchain creativity and apps."},
-  {q:"What is a contract address?",diff:'medium',opts:["A developer's email","The address where a smart contract lives on blockchain","A wallet password","A DNS address"],a:1,fact:"Every deployed smart contract has a unique address on the blockchain."},
-  {q:"What is minting an NFT?",diff:'easy',opts:["Buying an existing NFT","Creating a new NFT on the blockchain","Selling an NFT","Burning an NFT"],a:1,fact:"Minting creates a new NFT by recording it on the blockchain."},
-  {q:"What is a crypto whale?",diff:'easy',opts:["A large ocean creature","Someone holding a large amount of crypto","A DeFi protocol","A type of NFT"],a:1,fact:"A whale is someone who holds a very large amount of cryptocurrency."},
-  {q:"What is gas optimization?",diff:'hard',opts:["Saving money on oil","Writing smart contracts to minimize transaction costs","A DeFi strategy","A wallet feature"],a:1,fact:"Gas optimization reduces the computational cost of smart contracts."},
-  {q:"What is a token standard?",diff:'medium',opts:["A government regulation","A set of rules defining how tokens behave on blockchain","A wallet type","A mining protocol"],a:1,fact:"Token standards like ERC-20 define rules for fungible tokens on Ethereum."},
-  {q:"What is ERC-20?",diff:'medium',opts:["A wallet standard","The fungible token standard on Ethereum","An NFT standard","A Layer 2 protocol"],a:1,fact:"ERC-20 is the standard for creating fungible tokens on Ethereum and Base."},
-  {q:"What is ERC-721?",diff:'medium',opts:["A fungible token standard","The NFT token standard","A DeFi protocol","A wallet standard"],a:1,fact:"ERC-721 is the standard for non-fungible tokens (NFTs)."},
-  {q:"What is impermanent loss?",diff:'hard',opts:["A permanent fund loss","Temporary loss from providing liquidity vs just holding","A hack result","A gas fee issue"],a:1,fact:"Impermanent loss occurs when token prices change after providing liquidity."},
-  {q:"What is a DEX?",diff:'medium',opts:["A centralized exchange","Decentralized exchange running on smart contracts","A crypto wallet","A block explorer"],a:1,fact:"DEXs like Uniswap allow trading without a central intermediary."},
-  {q:"What is Uniswap?",diff:'medium',opts:["A centralized exchange","A leading decentralized exchange on Ethereum and Base","A wallet app","A Layer 2"],a:1,fact:"Uniswap is one of the most popular DEXs, available on Base."},
-  {q:"What is a rug pull?",diff:'easy',opts:["A carpet theft","When developers abandon a project and take investor funds","A DeFi strategy","A type of airdrop"],a:1,fact:"A rug pull is when developers abandon a project and steal funds."},
-  {q:"What is Web3?",diff:'easy',opts:["The third version of HTML","The decentralized internet built on blockchain","A new browser","A crypto exchange"],a:1,fact:"Web3 refers to the decentralized internet powered by blockchain technology."},
-  {q:"What is a gas limit?",diff:'hard',opts:["The maximum speed of a transaction","The maximum computational work for a transaction","A fee cap","A block size limit"],a:1,fact:"The gas limit is the maximum amount of gas you're willing to use for a transaction."},
-  {q:"What is proof of stake?",diff:'medium',opts:["Proving you own a steak","A consensus mechanism where validators stake tokens","A mining algorithm","A DeFi strategy"],a:1,fact:"Proof of Stake replaced Proof of Work in Ethereum's 2022 Merge upgrade."},
-  {q:"What was The Merge?",diff:'hard',opts:["Two blockchains combining","Ethereum switching from Proof of Work to Proof of Stake","A DeFi protocol merge","A Base upgrade"],a:1,fact:"The Merge in 2022 transitioned Ethereum to Proof of Stake, reducing energy use by 99.9%."},
-  {q:"What is a crypto mixer?",diff:'hard',opts:["A DeFi protocol","A tool that obfuscates transaction trails","A wallet feature","A token standard"],a:1,fact:"Crypto mixers obscure transaction history for privacy purposes."},
-  {q:"What is Base's relationship with Optimism?",diff:'hard',opts:["Base acquired Optimism","Base is built on Optimism's OP Stack","They are competitors","No relationship"],a:1,fact:"Base contributes a portion of fees to the Optimism Collective."},
-  {q:"What is a flash loan?",diff:'hard',opts:["A quick bank loan","An uncollateralized DeFi loan repaid in one transaction","A staking reward","A type of airdrop"],a:1,fact:"Flash loans are borrowed and repaid within a single blockchain transaction."},
-  {q:"What does 'gm' mean in crypto?",diff:'easy',opts:["Good Market","Good Morning","Get Money","Go More"],a:1,fact:"'gm' means Good Morning — a daily greeting in crypto communities."},
-  {q:"What is a paper wallet?",diff:'medium',opts:["A wallet made of paper","A printed private key and address for offline storage","A type of hardware wallet","A digital wallet backup"],a:1,fact:"A paper wallet is a physical printout of your private and public keys."},
-  {q:"What is KYC in crypto?",diff:'medium',opts:["Know Your Coin","Know Your Customer — identity verification","Keep Your Crypto","A DeFi protocol"],a:1,fact:"KYC is identity verification required by centralized exchanges."},
-  {q:"What is a genesis block?",diff:'hard',opts:["A new NFT collection","The first block in a blockchain","A smart contract","A validator node"],a:1,fact:"The genesis block is the very first block mined in a blockchain."},
-  {q:"What is tokenomics?",diff:'medium',opts:["Token economics — supply, distribution, and utility of a crypto","Token art","A trading strategy","A wallet feature"],a:1,fact:"Tokenomics covers supply, distribution, and economic design of a token."},
-  {q:"What is a whitepaper?",diff:'easy',opts:["A blank page","A document explaining a crypto project's technology and vision","A government regulation","A smart contract"],a:1,fact:"Whitepapers explain a blockchain project's technology, vision, and tokenomics."},
-  {q:"What is FOMO in crypto?",diff:'easy',opts:["Fear Of Missing Out","Fast Order Management Operations","Fungible On-chain Market Order","None of the above"],a:0,fact:"FOMO means Fear Of Missing Out — buying due to fear of missing gains."},
-  {q:"What is a crypto bull market?",diff:'easy',opts:["A market with falling prices","A market with rising prices","A sideways market","A bear attack"],a:1,fact:"A bull market is characterized by rising crypto prices and positive sentiment."},
-  {q:"What is a crypto bear market?",diff:'easy',opts:["A market with rising prices","A market with falling prices","A sideways market","A bull reversal"],a:1,fact:"A bear market features falling prices, often 20%+ decline from highs."},
-  {q:"What is a crypto index?",diff:'medium',opts:["A book about crypto","A basket tracking multiple crypto assets","A wallet feature","A DeFi protocol"],a:1,fact:"A crypto index tracks the performance of multiple cryptocurrencies."},
-  {q:"What is layer 0 in blockchain?",diff:'hard',opts:["The hardware layer","The infrastructure layer enabling cross-chain communication","The application layer","The consensus layer"],a:1,fact:"Layer 0 provides the underlying infrastructure for multiple blockchains to communicate."},
-  {q:"What is a cross-chain bridge?",diff:'medium',opts:["A physical bridge","A protocol enabling asset transfer between different blockchains","A wallet feature","A DeFi strategy"],a:1,fact:"Cross-chain bridges allow assets to move between different blockchain networks."},
-  {q:"What is the Base bridge?",diff:'medium',opts:["A literal bridge in San Francisco","The official bridge to move assets between Ethereum and Base","A DeFi protocol on Base","A Base wallet feature"],a:1,fact:"The Base bridge lets users move ETH and tokens from Ethereum mainnet to Base."},
-  {q:"What is a testnet?",diff:'medium',opts:["A test for internet speed","A test blockchain for development without real funds","A wallet backup","A DeFi simulation"],a:1,fact:"Testnets allow developers to test smart contracts without using real money."},
-  {q:"What is Sepolia?",diff:'hard',opts:["A Greek island","Ethereum's main testnet for developers","A DeFi protocol","A token standard"],a:1,fact:"Sepolia is the primary testnet for Ethereum and Base development."},
-  {q:"What is a smart contract audit?",diff:'medium',opts:["A government check","A security review of smart contract code","A token distribution","A wallet backup"],a:1,fact:"Audits identify vulnerabilities in smart contract code before deployment."},
-  {q:"What is TVL used to measure?",diff:'medium',opts:["Transaction speed","The health and size of a DeFi protocol","Token price","User count"],a:1,fact:"TVL indicates how much value users trust a DeFi protocol with."},
-  {q:"What is a governance token?",diff:'medium',opts:["A government-issued coin","A token giving holders voting rights in a protocol","A stablecoin","A utility token"],a:1,fact:"Governance tokens let holders vote on protocol changes and upgrades."},
-  {q:"What is wrapped ETH (WETH)?",diff:'hard',opts:["Broken ETH","ETH wrapped in an ERC-20 compatible format","A new token","ETH on Bitcoin"],a:1,fact:"WETH is ETH wrapped as an ERC-20 token to work with DeFi protocols."},
-  {q:"What is a nonce in blockchain?",diff:'hard',opts:["A nonsense word","A number used once to prevent replay attacks","A type of token","A block identifier"],a:1,fact:"A nonce is a number ensuring each transaction is unique and processed once."},
-  {q:"What is Coinbase?",diff:'easy',opts:["A crypto mining company","The largest US crypto exchange that built Base","A DeFi protocol","A wallet provider"],a:1,fact:"Coinbase is the largest US crypto exchange and the company behind Base."},
-  {q:"What is an on-chain transaction?",diff:'easy',opts:["A transaction recorded on the blockchain","An off-chain payment","A bank transfer","A database entry"],a:1,fact:"On-chain transactions are permanently recorded and verifiable on the blockchain."},
-  {q:"What is a crypto wallet?",diff:'easy',opts:["A physical wallet for coins","Software storing private keys to access crypto","A bank account","A mining tool"],a:1,fact:"Crypto wallets store private keys that give access to your on-chain assets."},
-  {q:"What is decentralization?",diff:'easy',opts:["One company controls everything","Control distributed across many participants","A type of token","A consensus mechanism"],a:1,fact:"Decentralization means no single entity controls the network."},
-  {q:"What is a public key?",diff:'medium',opts:["Your wallet password","A shareable address derived from your private key","A recovery phrase","A smart contract address"],a:1,fact:"Your public key (wallet address) can be shared to receive crypto."},
-  {q:"What is hash rate?",diff:'hard',opts:["The speed of internet","A measure of mining computational power","A transaction fee","A block size"],a:1,fact:"Hash rate measures the computational power used in crypto mining."},
+  {q:"What is a validator?",diff:'hard',opts:["A wallet provider","A smart contract auditor","A password validator","A node that verifies and adds transactions"],a:3,fact:"Validators secure proof-of-stake networks by verifying transactions."},
+  {q:"What is the Superchain?",diff:'hard',opts:["A DeFi aggregator","A network of OP Stack chains including Base","A Bitcoin upgrade","A new L1 blockchain"],a:1,fact:"The Superchain is Optimism's vision of interoperable OP Stack chains."},
+  {q:"What is FUD?",diff:'easy',opts:["Forward User Demand","Fungible Unit Distribution","Fast User Data","Fear Uncertainty and Doubt"],a:3,fact:"FUD means Fear, Uncertainty, and Doubt — negative crypto sentiment."},
+  {q:"What is a multisig wallet?",diff:'hard',opts:["A shared exchange account","A multi-currency wallet","A wallet with multiple passwords","A wallet requiring multiple signatures"],a:3,fact:"Multisig wallets require multiple private key signatures."},
+  {q:"What is Base's block time?",diff:'hard',opts:["30 seconds","1 minute","10 minutes","~2 seconds"],a:3,fact:"Base produces blocks roughly every 2 seconds."},
+  {q:"What is EIP-4844?",diff:'hard',opts:["A wallet standard","An NFT upgrade","A new token standard","Proto-danksharding that reduces L2 fees"],a:3,fact:"EIP-4844 introduced blob transactions that reduce data costs for L2s."},
+  {q:"What is Warpcast?",diff:'medium',opts:["A DeFi protocol","A crypto exchange","A Base wallet","The main Farcaster client app"],a:3,fact:"Warpcast is the most popular client for the Farcaster social protocol."},
+  {q:"What is a Frame in Farcaster?",diff:'medium',opts:["A wallet type","A photo filter","A token standard","An interactive mini app inside a Farcaster post"],a:3,fact:"Frames are interactive apps embedded in Farcaster posts."},
+  {q:"What does 'gm' mean in crypto?",diff:'easy',opts:["Go More","Get Money","Good Morning","Good Market"],a:2,fact:"'gm' means Good Morning — a daily greeting in crypto communities."},
+  {q:"What is minting an NFT?",diff:'easy',opts:["Burning an NFT","Selling an NFT","Buying an existing NFT","Creating a new NFT on the blockchain"],a:3,fact:"Minting creates a new NFT by recording it on the blockchain."},
+  {q:"What is a crypto whale?",diff:'easy',opts:["A type of NFT","A DeFi protocol","A large ocean creature","Someone holding a large amount of crypto"],a:3,fact:"A whale is someone who holds a very large amount of cryptocurrency."},
+  {q:"What is ERC-20?",diff:'medium',opts:["An NFT standard","A Layer 2 protocol","A wallet standard","The fungible token standard on Ethereum"],a:3,fact:"ERC-20 is the standard for creating fungible tokens on Ethereum and Base."},
+  {q:"What is ERC-721?",diff:'medium',opts:["A DeFi protocol","A wallet standard","The NFT token standard","A fungible token standard"],a:2,fact:"ERC-721 is the standard for non-fungible tokens (NFTs)."},
+  {q:"What is a DEX?",diff:'medium',opts:["A block explorer","A crypto wallet","Decentralized exchange running on smart contracts","A centralized exchange"],a:2,fact:"DEXs like Uniswap allow trading without a central intermediary."},
+  {q:"What is Uniswap?",diff:'medium',opts:["A Layer 2","A wallet app","A centralized exchange","A leading decentralized exchange on Ethereum and Base"],a:3,fact:"Uniswap is one of the most popular DEXs, available on Base."},
+  {q:"What is a rug pull?",diff:'easy',opts:["A DeFi strategy","A type of airdrop","A carpet theft","When developers abandon a project and take investor funds"],a:3,fact:"A rug pull is when developers abandon a project and steal funds."},
+  {q:"What is Web3?",diff:'easy',opts:["A crypto exchange","A new browser","The third version of HTML","The decentralized internet built on blockchain"],a:3,fact:"Web3 refers to the decentralized internet powered by blockchain technology."},
+  {q:"What is proof of stake?",diff:'medium',opts:["A DeFi strategy","A mining algorithm","A consensus mechanism where validators stake tokens","Proving you own a steak"],a:2,fact:"Proof of Stake replaced Proof of Work in Ethereum's 2022 Merge upgrade."},
+  {q:"What was The Merge?",diff:'hard',opts:["A Base upgrade","A DeFi protocol merge","Ethereum switching from Proof of Work to Proof of Stake","Two blockchains combining"],a:2,fact:"The Merge in 2022 transitioned Ethereum to Proof of Stake."},
+  {q:"What is a flash loan?",diff:'hard',opts:["A type of airdrop","A staking reward","A quick bank loan","An uncollateralized DeFi loan repaid in one transaction"],a:3,fact:"Flash loans are borrowed and repaid within a single blockchain transaction."},
+  {q:"What is a cross-chain bridge?",diff:'medium',opts:["A DeFi strategy","A wallet feature","A physical bridge","A protocol enabling asset transfer between different blockchains"],a:3,fact:"Cross-chain bridges allow assets to move between different blockchain networks."},
+  {q:"What is the Base bridge?",diff:'medium',opts:["A Base wallet feature","A DeFi protocol on Base","A literal bridge in San Francisco","The official bridge to move assets between Ethereum and Base"],a:3,fact:"The Base bridge lets users move ETH and tokens from Ethereum mainnet to Base."},
+  {q:"What is a testnet?",diff:'medium',opts:["A wallet backup","A DeFi simulation","A test for internet speed","A test blockchain for development without real funds"],a:3,fact:"Testnets allow developers to test smart contracts without using real money."},
+  {q:"What is tokenomics?",diff:'medium',opts:["A wallet feature","A trading strategy","Token art","Token economics — supply, distribution, and utility of a crypto"],a:3,fact:"Tokenomics covers supply, distribution, and economic design of a token."},
+  {q:"What is a whitepaper?",diff:'easy',opts:["A smart contract","A government regulation","A blank page","A document explaining a crypto project's technology and vision"],a:3,fact:"Whitepapers explain a blockchain project's technology, vision, and tokenomics."},
+  {q:"What is FOMO in crypto?",diff:'easy',opts:["Fungible On-chain Market Order","Fast Order Management Operations","None of the above","Fear Of Missing Out"],a:3,fact:"FOMO means Fear Of Missing Out — buying due to fear of missing gains."},
+  {q:"What is a crypto bull market?",diff:'easy',opts:["A bear attack","A sideways market","A market with falling prices","A market with rising prices"],a:3,fact:"A bull market is characterized by rising crypto prices and positive sentiment."},
+  {q:"What is a crypto bear market?",diff:'easy',opts:["A bull reversal","A market with rising prices","A market with falling prices","A sideways market"],a:2,fact:"A bear market features falling prices, often 20%+ decline from highs."},
+  {q:"What is layer 0 in blockchain?",diff:'hard',opts:["The consensus layer","The application layer","The hardware layer","The infrastructure layer enabling cross-chain communication"],a:3,fact:"Layer 0 provides the underlying infrastructure for multiple blockchains to communicate."},
+  {q:"What is a governance token?",diff:'medium',opts:["A utility token","A stablecoin","A government-issued coin","A token giving holders voting rights in a protocol"],a:3,fact:"Governance tokens let holders vote on protocol changes and upgrades."},
+  {q:"What is wrapped ETH (WETH)?",diff:'hard',opts:["ETH on Bitcoin","A new token","Broken ETH","ETH wrapped in an ERC-20 compatible format"],a:3,fact:"WETH is ETH wrapped as an ERC-20 token to work with DeFi protocols."},
+  {q:"What is Coinbase?",diff:'easy',opts:["A DeFi protocol","A wallet provider","A crypto mining company","The largest US crypto exchange that built Base"],a:3,fact:"Coinbase is the largest US crypto exchange and the company behind Base."},
+  {q:"What is a crypto wallet?",diff:'easy',opts:["A bank account","A mining tool","A physical wallet for coins","Software storing private keys to access crypto"],a:3,fact:"Crypto wallets store private keys that give access to your on-chain assets."},
+  {q:"What is decentralization?",diff:'easy',opts:["A consensus mechanism","A type of token","One company controls everything","Control distributed across many participants"],a:3,fact:"Decentralization means no single entity controls the network."},
+  {q:"What is a public key?",diff:'medium',opts:["A smart contract address","A recovery phrase","A wallet password","A shareable address derived from your private key"],a:3,fact:"Your public key (wallet address) can be shared to receive crypto."},
+  {q:"What is KYC in crypto?",diff:'medium',opts:["A DeFi protocol","Keep Your Crypto","Know Your Coin","Know Your Customer — identity verification"],a:3,fact:"KYC is identity verification required by centralized exchanges."},
+  {q:"What is a genesis block?",diff:'hard',opts:["A validator node","A smart contract","A new NFT collection","The first block in a blockchain"],a:3,fact:"The genesis block is the very first block mined in a blockchain."},
+  {q:"What is impermanent loss?",diff:'hard',opts:["A gas fee issue","A hack result","A permanent fund loss","Temporary loss from providing liquidity vs just holding"],a:3,fact:"Impermanent loss occurs when token prices change after providing liquidity."},
+  {q:"What is a paper wallet?",diff:'medium',opts:["A digital wallet backup","A type of hardware wallet","A wallet made of paper","A printed private key and address for offline storage"],a:3,fact:"A paper wallet is a physical printout of your private and public keys."},
+  {q:"What is Base Camp?",diff:'hard',opts:["A Base validator","A DeFi protocol","A camping app","Coinbase's onchain education platform"],a:3,fact:"Base Camp is Coinbase's learning platform for onchain development."},
+  {q:"What is gas optimization?",diff:'hard',opts:["A DeFi strategy","A wallet feature","Saving money on oil","Writing smart contracts to minimize transaction costs"],a:3,fact:"Gas optimization reduces the computational cost of smart contracts."},
+  {q:"What is a token standard?",diff:'medium',opts:["A wallet type","A mining protocol","A government regulation","A set of rules defining how tokens behave on blockchain"],a:3,fact:"Token standards like ERC-20 define rules for fungible tokens on Ethereum."},
+  {q:"What is Base's relationship with Optimism?",diff:'hard',opts:["No relationship","They are competitors","Base acquired Optimism","Base is built on Optimism's OP Stack"],a:3,fact:"Base contributes a portion of fees to the Optimism Collective."},
+  {q:"What is a nonce in blockchain?",diff:'hard',opts:["A block identifier","A type of token","A nonsense word","A number used once to prevent replay attacks"],a:3,fact:"A nonce is a number ensuring each transaction is unique and processed once."},
+  {q:"What is an on-chain transaction?",diff:'easy',opts:["A database entry","A bank transfer","An off-chain payment","A transaction recorded on the blockchain"],a:3,fact:"On-chain transactions are permanently recorded and verifiable on the blockchain."},
+  {q:"What is Sepolia?",diff:'hard',opts:["A token standard","A DeFi protocol","A Greek island","Ethereum's main testnet for developers"],a:3,fact:"Sepolia is the primary testnet for Ethereum and Base development."},
+  {q:"What is TVL used to measure?",diff:'medium',opts:["User count","Token price","Transaction speed","The health and size of a DeFi protocol"],a:3,fact:"TVL indicates how much value users trust a DeFi protocol with."},
+  {q:"What does 'onchain summer' refer to?",diff:'medium',opts:["An NFT drop period","A staking season","A crypto price rally","A Coinbase/Base event celebrating onchain apps"],a:3,fact:"Onchain Summer was a Base event celebrating onchain creativity and apps."},
 ];
 
 var VIBES=[{key:'pumped',n:'PUMPED'},{key:'chill',n:'CHILL'},{key:'grind',n:'GRIND'},{key:'wagmi',n:'WAGMI'},{key:'gm',n:'GM'},{key:'degen',n:'DEGEN'},{key:'based',n:'BASED'},{key:'hodl',n:'HODL'},{key:'flow',n:'FLOW'}];
@@ -404,7 +440,11 @@ function icoSvg(name,color,size){
 
 function logoMark(size){
   size=size||22;
-  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 40 40" fill="none"><path d="M11 8h10.5C25.642 8 29 11.358 29 15.5S25.642 23 21.5 23H11V8z" fill="white"/><path d="M11 23h11.5C26.642 23 30 26.134 30 30s-3.358 7-7.5 7H11V23z" fill="rgba(255,255,255,0.55)"/><rect x="11" y="8" width="3" height="29" fill="white"/></svg>';
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">'
+    +'<path d="M11 8h10.5C25.642 8 29 11.358 29 15.5S25.642 23 21.5 23H11V8z" fill="white"/>'
+    +'<path d="M11 23h11.5C26.642 23 30 26.134 30 30s-3.358 7-7.5 7H11V23z" fill="rgba(255,255,255,0.55)"/>'
+    +'<rect x="11" y="8" width="3" height="29" fill="white"/>'
+    +'</svg>';
 }
 
 var S={
@@ -459,7 +499,20 @@ async function connectWallet(){
     var ref=urlParams.get('ref');
     if(ref&&ref!==S.referCode&&!S.referredBy){
       S.referredBy=ref;S.points+=50;saveLocal(['referredBy','points']);
-      if(S.isOnline){var referrer=await sbGetUserByCode(ref);if(referrer){var newRefs=referrer.referrals||[];newRefs.push({name:S.username||sa(S.wallet),addr:sa(S.wallet),date:today()});await sbUpsert({wallet:referrer.wallet,username:referrer.username,points:(referrer.points||0)+25,streak:referrer.streak||0,referral_pts:(referrer.referral_pts||0)+25,referrals:newRefs,refer_code:referrer.refer_code,last_checkin:referrer.last_checkin||'',quizzes:referrer.quizzes||0,total_correct:referrer.total_correct||0,quiz_done:referrer.quiz_done||'',referred_by:referrer.referred_by||'',freeze_used:referrer.freeze_used||0,vibe_history:referrer.vibe_history||[]});}}
+      if(S.isOnline){
+        var referrer=await sbGetUserByCode(ref);
+        if(referrer){
+          var newRefs=referrer.referrals||[];
+          // Only add if not already referred
+          var alreadyReferred=newRefs.some(function(r){return r.addr&&r.addr.indexOf(S.wallet.slice(-4))>=0;});
+          if(!alreadyReferred){
+            newRefs.push({name:S.username||sa(S.wallet),addr:sa(S.wallet),date:today(),wallet:S.wallet});
+            var refPts=(referrer.referral_pts||0)+25;
+            var totalPts=(referrer.points||0)+25;
+            await sbUpsert({wallet:referrer.wallet,username:referrer.username,points:totalPts,streak:referrer.streak||0,referral_pts:refPts,referrals:newRefs,refer_code:referrer.refer_code,last_checkin:referrer.last_checkin||'',quizzes:referrer.quizzes||0,total_correct:referrer.total_correct||0,quiz_done:referrer.quiz_done||'',referred_by:referrer.referred_by||'',freeze_used:referrer.freeze_used||0,vibe_history:referrer.vibe_history||[]});
+          }
+        }
+      }
     }
 
     // Always reload local data first
@@ -583,7 +636,156 @@ async function doCheckin(){
   S.selVibe=null;render();
 }
 
-function startQuiz(){S.curQ=0;S.qScore=0;S.qAnswered=false;S.qActive=true;S.comboStreak=0;QUESTIONS=getDailyQuestions();render();}
+function startQuiz(){S.curQ=0;S.qScore=0;S.qAnswered=false;S.qActive=true;S.comboStreak=0;QUESTIONS=getDailyQuestions();render();setTimeout(function(){startQuizTimer();},300);}
+// Timer variable
+var _quizTimer = null;
+var _timeLeft = 15;
+
+// VIBE ANIMATION SYSTEM
+var VIBE_ANIM = {
+  pumped: {color:'#FFBB00', emoji:'⚡', bg:'rgba(255,187,0,0.08)', label:'PUMPED UP!'},
+  chill:  {color:'#6B9FFF', emoji:'😌', bg:'rgba(107,159,255,0.08)', label:'CHILL VIBES'},
+  grind:  {color:'#00F0A0', emoji:'💪', bg:'rgba(0,240,160,0.08)', label:'GRIND MODE'},
+  wagmi:  {color:'#A259FF', emoji:'🚀', bg:'rgba(162,89,255,0.08)', label:'WAGMI!'},
+  gm:     {color:'#7A8AB0', emoji:'🌙', bg:'rgba(122,138,176,0.08)', label:'GM FREN!'},
+  degen:  {color:'#FF3D6B', emoji:'🎰', bg:'rgba(255,61,107,0.08)', label:'FULL DEGEN'},
+  based:  {color:'#0052FF', emoji:'🔵', bg:'rgba(0,82,255,0.08)', label:'BASED AF'},
+  hodl:   {color:'#A259FF', emoji:'💎', bg:'rgba(162,89,255,0.08)', label:'DIAMOND HANDS'},
+  flow:   {color:'#00F0A0', emoji:'🌊', bg:'rgba(0,240,160,0.08)', label:'IN THE FLOW'},
+};
+
+function playVibeAnimation(vibeKey) {
+  var anim = VIBE_ANIM[vibeKey] || VIBE_ANIM.pumped;
+  
+  // Screen flash
+  var flash = document.createElement('div');
+  flash.className = 'vibe-screen-flash';
+  flash.style.background = anim.color;
+  document.body.appendChild(flash);
+  setTimeout(function(){flash.remove();}, 500);
+
+  // Center text explosion
+  var explosion = document.createElement('div');
+  explosion.className = 'vibe-explosion';
+  explosion.innerHTML = '<div class="vibe-text-flash" style="color:'+anim.color+'">'+anim.emoji+' '+anim.label+'</div>';
+  document.body.appendChild(explosion);
+  setTimeout(function(){explosion.remove();}, 700);
+
+  // Particles
+  var particleWrap = document.createElement('div');
+  particleWrap.className = 'vibe-ripple';
+  document.body.appendChild(particleWrap);
+  var cx = window.innerWidth/2, cy = window.innerHeight/2;
+  for(var i=0;i<30;i++){
+    (function(i){
+      setTimeout(function(){
+        var p = document.createElement('div');
+        p.className = 'vibe-particle';
+        var size = 8 + Math.random()*12;
+        var angle = (Math.random()*360)*(Math.PI/180);
+        var dist = 100 + Math.random()*200;
+        p.style.cssText = 'width:'+size+'px;height:'+size+'px;background:'+anim.color+';left:'+cx+'px;top:'+cy+'px;--tx:'+(Math.cos(angle)*dist)+'px;--ty:'+(Math.sin(angle)*dist)+'px;animation-duration:'+(0.6+Math.random()*0.4)+'s';
+        particleWrap.appendChild(p);
+      }, i*20);
+    })(i);
+  }
+  setTimeout(function(){particleWrap.remove();}, 1500);
+}
+
+// COMMUNITY MOOD - reads from Supabase
+async function getCommunityMood() {
+  try {
+    var r = await fetch(SUPABASE_URL+'/rest/v1/users?select=vibe_history&limit=100', {
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Accept':'application/json'}
+    });
+    if(!r.ok) return null;
+    var users = await r.json();
+    var counts = {pumped:0,chill:0,grind:0,wagmi:0,gm:0,degen:0,based:0,hodl:0,flow:0};
+    var today = new Date().toDateString();
+    var total = 0;
+    users.forEach(function(u){
+      if(u.vibe_history && u.vibe_history.length > 0){
+        var todayVibe = u.vibe_history.find(function(v){return v.date === today;});
+        if(todayVibe && counts.hasOwnProperty(todayVibe.key)){
+          counts[todayVibe.key]++;
+          total++;
+        }
+      }
+    });
+    if(total === 0) return null;
+    return {counts:counts, total:total};
+  } catch(e){ return null; }
+}
+
+// WEEKLY LEADERBOARD
+async function sbGetWeeklyLeaderboard() {
+  try {
+    // Get users who did quiz in last 7 days
+    var r = await fetch(SUPABASE_URL+'/rest/v1/users?select=username,wallet,points,streak,quiz_done&order=points.desc&limit=20', {
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Accept':'application/json'}
+    });
+    if(!r.ok) return [];
+    var data = await r.json();
+    // Filter to users active in last 7 days
+    var weekAgo = new Date(Date.now() - 7*24*60*60*1000);
+    return data.filter(function(u){
+      if(!u.quiz_done) return false;
+      var d = new Date(u.quiz_done);
+      return d >= weekAgo;
+    });
+  } catch(e){ return []; }
+}
+
+var _lbTab = 'alltime';
+function setLbTab(el){ _lbTab = el.dataset ? el.dataset.t : el; renderLBAsync(); }
+
+function startQuizTimer(){
+  _timeLeft = 15;
+  clearInterval(_quizTimer);
+  updateTimerUI();
+  _quizTimer = setInterval(function(){
+    _timeLeft--;
+    updateTimerUI();
+    if(_timeLeft <= 0){
+      clearInterval(_quizTimer);
+      // Auto-answer wrong if time runs out
+      var opts = document.querySelectorAll('.ob');
+      if(opts.length > 0 && !S.qAnswered){
+        S.qAnswered = true;
+        S.comboStreak = 0;
+        var q = QUESTIONS[S.curQ];
+        opts[q.a].classList.add('correct');
+        opts.forEach(function(o){o.disabled=true;});
+        var fb = document.getElementById('fact-box');
+        if(fb){fb.style.display='block';fb.textContent='⏱ Time up! '+q.fact;}
+        toast('⏱ Time up!');
+        setTimeout(function(){
+          S.curQ++;S.qAnswered=false;
+          if(S.curQ>=QUESTIONS.length){
+            S.points+=S.qScore;S.quizzes++;S.quizDone=today();
+            saveLocal(['points','quizzes','quizDone','totalCorrect']);
+            saveRemote();S.qActive=false;
+            render();
+            setTimeout(function(){showScoreCard(S.qScore);},300);
+          } else {render();setTimeout(function(){startQuizTimer();},100);}
+        },1500);
+      }
+    }
+  },1000);
+}
+
+function updateTimerUI(){
+  var circle = document.querySelector('.timer-circle .fg');
+  var num = document.querySelector('.timer-num');
+  if(!circle || !num) return;
+  var pct = _timeLeft / 15;
+  var offset = 138 * (1 - pct);
+  circle.style.strokeDashoffset = offset;
+  num.textContent = _timeLeft;
+  circle.className = 'fg' + (_timeLeft <= 3 ? ' danger' : _timeLeft <= 6 ? ' warn' : '');
+  num.style.color = _timeLeft <= 5 ? 'var(--red)' : _timeLeft <= 10 ? 'var(--gold)' : 'var(--text)';
+}
+
 function answerQ(i){
   if(S.qAnswered)return;S.qAnswered=true;
   var q=QUESTIONS[S.curQ];var opts=document.querySelectorAll('.ob');var correct=i===q.a;
@@ -591,6 +793,7 @@ function answerQ(i){
   if(correct){opts[i].classList.add('correct');S.comboStreak++;var pts=10*mult+(S.comboStreak>1?(S.comboStreak-1)*5:0);S.qScore+=pts;S.totalCorrect++;if(S.comboStreak>=2)showCombo('x'+S.comboStreak+' COMBO  +'+pts+' pts');else toast('+'+pts+' pts');}
   else{opts[i].classList.add('wrong');opts[q.a].classList.add('correct');S.comboStreak=0;var fb=document.getElementById('fact-box');if(fb){fb.style.display='block';fb.textContent='Tip: '+q.fact;}}
   opts.forEach(function(o){o.disabled=true;});
+  clearInterval(_quizTimer);
   setTimeout(function(){
     S.curQ++;S.qAnswered=false;
     if(S.curQ>=QUESTIONS.length){
@@ -600,7 +803,7 @@ function answerQ(i){
       saveRemote();S.qActive=false;
       render();
       setTimeout(function(){showScoreCard(S.qScore);},300);
-    } else {render();}
+    } else {render();setTimeout(function(){startQuizTimer();},100);}
   },1500);
 }
 
@@ -676,6 +879,8 @@ function renderVibe(){
   h+='<div class="card hi"><div class="streak-hero"><div class="fire-wrap"><span class="fire-num">'+S.streak+'</span><span class="fire-icon">'+ICO.fire+'</span></div><div class="streak-sub">day streak</div></div>';
   h+='<div class="xp-row"><span class="xp-level">'+icoSvg(lv.ico,lv.color,12)+' '+lv.name+'</span><span class="xp-pts">'+totalPts+' / '+lv.next+' pts</span></div><div class="xp-track"><div class="xp-fill" style="width:'+lvPct+'%;background:linear-gradient(90deg,'+lv.color+','+lv.color+'aa)"></div></div></div>';
   h+='<div class="srow"><div class="sc"><span class="sc-n">'+S.streak+'</span><span class="sc-l">Streak</span></div><div class="sc"><span class="sc-n">'+totalPts+'</span><span class="sc-l">Points</span></div><div class="sc"><span class="sc-n">'+S.quizzes+'</span><span class="sc-l">Quizzes</span></div></div>';
+  // Community mood section (loaded async)
+  h+='<div id="communityMood"></div>';
   if(ci){
     var lv2=S.vibeHistory[0];var lVibeIco=lv2?icoSvg(lv2.key,VIBE_COLORS[lv2.key]||'#6B9FFF',32):icoSvg('check','var(--green)',32);
     h+='<div class="cban"><div class="cbi">'+lVibeIco+'</div><div><span class="cbt">Checked in today!</span><span class="cbs">'+(lv2?lv2.name+' · ':'')+'Base network · +10 pts</span></div></div>';
@@ -691,7 +896,12 @@ function renderVibe(){
   }
   return h+'</div>';
 }
-function selVibe(i){S.selVibe=VIBES[i];var pg=document.getElementById('pg');if(pg)pg.innerHTML=renderVibe();}
+function selVibe(i){
+  S.selVibe=VIBES[i];
+  playVibeAnimation(S.selVibe.key);
+  var pg=document.getElementById('pg');
+  if(pg)pg.innerHTML=renderVibe();
+}
 
 function renderQuiz(){
   var td=today();var done=S.quizDone===td;var h='<div class="page">';
@@ -732,10 +942,12 @@ function renderQuiz(){
 async function renderLBAsync(){
   var pg=document.getElementById('pg');if(!pg)return;
   var mn=S.username||sa(S.wallet);var totalPts=S.points+S.referralPts;var fireSvg=icoSvg('fire','#FFBB00',11);
-  var h='<div class="page"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px"><span style="font-size:18px;font-weight:800">Leaderboard</span><span style="font-size:11px;color:var(--muted);font-family:var(--mono)">All-time</span></div>';
+  var h='<div class="page">';
+  h+='<div style="font-size:18px;font-weight:800;margin-bottom:12px">Leaderboard</div>';
+  h+='<div class="lb-tabs"><button class="lb-tab" id="tab-alltime" onclick="setLbTab(this)" data-t="alltime">🏆 All-time</button><button class="lb-tab" id="tab-weekly" onclick="setLbTab(this)" data-t="weekly">⚡ This Week</button></div>';
   if(!S.isOnline){h+='<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px">Offline — can\'t load leaderboard</div>';}
   else{
-    var users=await sbGetLeaderboard();
+    var users = _lbTab==='weekly' ? await sbGetWeeklyLeaderboard() : await sbGetLeaderboard();
     if(!users||users.length===0){
       h+='<div class="lbi me"><div class="lbr" style="background:rgba(255,187,0,0.15);font-size:16px">🥇</div><div class="lbinfo"><span class="lbn">'+mn+' <span style="font-size:10px;color:var(--blue2)">(you)</span></span><span class="lbd">'+fireSvg+' '+S.streak+' day streak</span></div><div><span class="lbp">'+totalPts+'</span><span class="lbs">pts</span></div></div>';
       h+='<div style="text-align:center;padding:16px;color:var(--muted);font-size:12px;font-family:var(--mono)">Share your link to bring others onchain!</div>';
@@ -756,6 +968,13 @@ async function renderLBAsync(){
   h+='<div class="challenge-card"><span style="font-size:14px;font-weight:800;display:block;margin-bottom:4px">Challenge a Friend</span><span style="font-size:12px;color:var(--muted);font-family:var(--mono);display:block;margin-bottom:12px">Share your '+S.streak+'-day streak</span><button class="btn btn-purple" onclick="shareReferLink()">'+icoSvg('share','white',18)+' Share Challenge</button></div>';
   h+='</div>';
   pg.innerHTML=h;
+  // Set active tab styles
+  var t1=document.getElementById('tab-alltime');
+  var t2=document.getElementById('tab-weekly');
+  if(t1&&t2){
+    t1.style.cssText=_lbTab==='alltime'?'background:var(--blue);color:white;border-color:var(--blue)':'';
+    t2.style.cssText=_lbTab==='weekly'?'background:var(--blue);color:white;border-color:var(--blue)':'';
+  }
 }
 function renderLB(){var h='<div class="page"><div style="text-align:center;padding:40px 0;color:var(--muted);font-family:var(--mono);font-size:13px">Loading…</div></div>';setTimeout(function(){renderLBAsync();},0);return h;}
 
@@ -799,8 +1018,37 @@ function renderMe(){
   return h+'</div>';
 }
 
+function loadCommunityMood(){
+  getCommunityMood().then(function(mood){
+    var el = document.getElementById('communityMood');
+    if(!el || !mood) return;
+    var vibeEmojis = {pumped:'⚡',chill:'😌',grind:'💪',wagmi:'🚀',gm:'🌙',degen:'🎰',based:'🔵',hodl:'💎',flow:'🌊'};
+    var vibeColors = {pumped:'#FFBB00',chill:'#6B9FFF',grind:'#00F0A0',wagmi:'#A259FF',gm:'#7A8AB0',degen:'#FF3D6B',based:'#0052FF',hodl:'#A259FF',flow:'#00F0A0'};
+    // Find top vibe
+    var topVibe = Object.keys(mood.counts).reduce(function(a,b){return mood.counts[a]>mood.counts[b]?a:b;});
+    var topPct = Math.round((mood.counts[topVibe]/mood.total)*100);
+    // Sort vibes by count
+    var sorted = Object.keys(mood.counts).filter(function(k){return mood.counts[k]>0;}).sort(function(a,b){return mood.counts[b]-mood.counts[a];}).slice(0,5);
+    var h='<div class="card" style="margin-bottom:12px">';
+    h+='<div class="mood-winner"><div class="mood-winner-ico">'+vibeEmojis[topVibe]+'</div>';
+    h+='<div><span class="mood-winner-title" style="color:'+vibeColors[topVibe]+'">Community is '+topVibe.toUpperCase()+'</span>';
+    h+='<span class="mood-winner-sub">'+mood.total+' vibes today · '+topPct+'% '+topVibe+'</span></div></div>';
+    h+='<div class="mood-title"><span>Today\'s Vibe Distribution</span><div class="mood-live"><div class="mood-live-dot"></div>Live</div></div>';
+    h+='<div class="mood-bars">';
+    sorted.forEach(function(k){
+      var pct = Math.round((mood.counts[k]/mood.total)*100);
+      h+='<div class="mood-row"><div class="mood-ico">'+vibeEmojis[k]+'</div>';
+      h+='<div class="mood-bar-track"><div class="mood-bar-fill" style="width:'+pct+'%;background:'+vibeColors[k]+'"></div></div>';
+      h+='<div class="mood-pct">'+pct+'%</div></div>';
+    });
+    h+='</div></div>';
+    el.innerHTML = h;
+  });
+}
+
 window.addEventListener('load',function(){
   var sl=document.getElementById('splashLogo');if(sl)sl.innerHTML=logoMark(54);
+  var tl=document.querySelectorAll('.logo-sq');tl.forEach(function(el){if(!el.querySelector('svg'))el.innerHTML=logoMark(22);});
   setTimeout(function(){
     var splash=document.getElementById('splash');
     if(splash){splash.classList.add('hide');setTimeout(function(){splash.remove();},500);}
@@ -808,8 +1056,11 @@ window.addEventListener('load',function(){
     if(_ref&&S.wallet&&!S.referredBy&&_ref!==S.referCode){S.referredBy=_ref;S.points+=50;saveLocal(['referredBy','points']);}
     if(!S.referCode&&S.wallet){S.referCode=genCode(S.wallet);saveLocal(['referCode']);}
     render();
+    // Load community mood after render
+    if(S.wallet) loadCommunityMood();
   },2000);
 });
 </script>
 </body>
 </html>
+  
